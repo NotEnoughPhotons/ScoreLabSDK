@@ -10,18 +10,22 @@ namespace NEP.ScoreLab.Core
         public int Score;
         public float Multiplier;
         public List<Data.PackedMultiplier> ActiveMultipliers;
-        public bool testCondition = true;
+
+        public bool testCondition;
+        public static bool _testCondition;
 
         public Func<bool> TestFunc;
 
         private void Awake()
         {
             new ScoreTracker();
-            TestFunc = new Func<bool>(() => testCondition);
+            TestFunc = new Func<bool>(() => _testCondition);
         }
 
         private void Update()
         {
+            _testCondition = testCondition;
+
             ScoreTracker.Instance.Update();
 
             Score = ScoreTracker.Instance.Score;
@@ -33,6 +37,10 @@ namespace NEP.ScoreLab.Core
                 ScoreTracker.Instance.Add(new Data.PackedScore("Test", 100));
             }
             else if (Input.GetKeyDown(KeyCode.M))
+            {
+                ScoreTracker.Instance.Add(new Data.PackedMultiplier("Test", 100, API.GameConditions.IsPlayerInAir));
+            }
+            else if (Input.GetKeyDown(KeyCode.T))
             {
                 ScoreTracker.Instance.Add(new Data.PackedMultiplier("Test", 100, 5f));
             }

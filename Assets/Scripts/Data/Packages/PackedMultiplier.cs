@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+using NEP.ScoreLab.Core;
+
 namespace NEP.ScoreLab.Data
 {
     [System.Serializable]
@@ -39,22 +41,30 @@ namespace NEP.ScoreLab.Data
 
         public override void OnValueCreated()
         {
-            Core.ScoreTracker.Instance.AddMultiplier(multiplier);
-            Core.ScoreTracker.Instance.ActiveMultipliers.Add(this);
+            ScoreTracker.Instance.AddMultiplier(multiplier);
+            ScoreTracker.Instance.ActiveMultipliers.Add(this);
 
             API.Multiplier.OnMultiplierAdded?.Invoke(this);
         }
 
         public override void OnValueRemoved()
         {
-            Core.ScoreTracker.Instance.RemoveMultiplier(multiplier);
-            Core.ScoreTracker.Instance.ActiveMultipliers.Remove(this);
+            ScoreTracker.Instance.RemoveMultiplier(multiplier);
+            ScoreTracker.Instance.ActiveMultipliers.Remove(this);
 
             API.Multiplier.OnMultiplierRemoved?.Invoke(this);
         }
 
         public override void OnUpdate()
         {
+            if (condition != null)
+            {
+                if (!condition())
+                {
+                    ScoreTracker.Instance.Remove(this);
+                }
+            }
+
             if (_timed)
             {
                 if (!_timeBegin)
@@ -68,16 +78,8 @@ namespace NEP.ScoreLab.Data
                 if (elapsed > timer)
                 {
                     API.Multiplier.OnMultiplierTimeExpired?.Invoke(this);
-                    Core.ScoreTracker.Instance.Remove(this);
+                    ScoreTracker.Instance.Remove(this);
                     elapsed = 0f;
-                }
-            }
-
-            if(condition != null)
-            {
-                if (!condition())
-                {
-                    OnValueRemoved();
                 }
             }
         }

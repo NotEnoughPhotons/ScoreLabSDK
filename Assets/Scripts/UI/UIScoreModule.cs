@@ -39,7 +39,7 @@ namespace NEP.ScoreLab.UI
 
         public override void OnUpdate()
         {
-            UpdateDecayTimers();
+            UpdateDecay();
         }
     }
 }

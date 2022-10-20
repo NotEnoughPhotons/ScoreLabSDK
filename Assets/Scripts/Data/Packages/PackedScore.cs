@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using NEP.ScoreLab.Core;
 
 namespace NEP.ScoreLab.Data
 {
@@ -16,7 +14,7 @@ namespace NEP.ScoreLab.Data
 
         public override void OnValueCreated()
         {
-            Core.ScoreTracker.Instance.AddScore(score);
+            ScoreTracker.Instance.AddScore(score);
             API.Score.OnScoreAdded?.Invoke(this);
         }
 

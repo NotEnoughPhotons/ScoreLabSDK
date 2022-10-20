@@ -18,6 +18,8 @@ namespace NEP.ScoreLab.UI
         public UIModuleType ModuleType;
 
         public PackedValue PackedValue { get => _packedValue; }
+
+        public virtual bool CanDecay { get => transform.Find("-Persist") == null; }
         public float DecayTime { get => _decayTime; }
         public float PostDecayTime { get => _postDecayTime; }
 
@@ -39,18 +41,13 @@ namespace NEP.ScoreLab.UI
         protected virtual string Path_ValueText { get => "Value"; }
         protected virtual string Path_TimeBar { get => "TimeBar"; }
 
-        public virtual void OnModuleEnable() => CanDecay(transform.Find("-Persist") == null);
+        public virtual void OnModuleEnable() { }
 
         public virtual void OnModuleDisable() { }
 
         public virtual void OnUpdate() { }
 
         public void AssignPackedData(PackedValue packedValue) => _packedValue = packedValue;
-
-        public void CanDecay(bool decay)
-        {
-            this._canDecay = decay;
-        }
 
         public void SetDecayTime(float decayTime)
         {
@@ -89,9 +86,9 @@ namespace NEP.ScoreLab.UI
             timeBar.maxValue = value;
         }
 
-        protected void UpdateDecayTimers()
+        protected void UpdateDecay()
         {
-            if (!_canDecay)
+            if (!CanDecay)
             {
                 return;
             }
@@ -100,13 +97,13 @@ namespace NEP.ScoreLab.UI
             {
                 _tPostDecay -= Time.deltaTime;
 
-                print($"Post-Decay: {_tPostDecay}");
-
                 if (_tPostDecay < 0f)
                 {
                     _tDecay = _decayTime;
                     _tPostDecay = _postDecayTime;
+
                     gameObject.SetActive(false);
+
                     return;
                 }
 
@@ -114,7 +111,6 @@ namespace NEP.ScoreLab.UI
             }
 
             _tDecay -= Time.deltaTime;
-            print($"Decay: {_tDecay}");
         }
 
         private void Awake()

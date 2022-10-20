@@ -14,9 +14,12 @@ namespace NEP.ScoreLab.UI
 
         public override void OnModuleEnable()
         {
-            base.OnModuleEnable();
-
             if (_packedValue == null)
+            {
+                return;
+            }
+
+            if(_packedMultiplier == null)
             {
                 return;
             }
@@ -33,7 +36,7 @@ namespace NEP.ScoreLab.UI
 
             if(_timeBar != null)
             {
-                if(_packedMultiplier.timer <= 0f && _packedMultiplier.condition != null)
+                if(_packedMultiplier.condition != null)
                 {
                     _timeBar.gameObject.SetActive(false);
                 }
@@ -52,7 +55,24 @@ namespace NEP.ScoreLab.UI
 
         public override void OnUpdate()
         {
-            UpdateDecayTimers();
+            if(_packedMultiplier != null)
+            {
+                if(_packedMultiplier.condition != null)
+                {
+                    if (!_packedMultiplier.condition())
+                    {
+                        UpdateDecay();
+                    }
+                }
+                else
+                {
+                    UpdateDecay();
+                }
+            }
+            else
+            {
+                UpdateDecay();
+            }
 
             if(_timeBar != null)
             {

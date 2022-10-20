@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
@@ -35,19 +36,15 @@ namespace NEP.ScoreLab.UI
             }
         }
 
-        private void OnEnable()
+        private void Start()
         {
             API.Score.OnScoreAdded += SetScoreModuleActive;
-            API.Multiplier.OnMultiplierAdded += SetMultiplierModuleActive;
+
+            API.Multiplier.OnMultiplierAdded += (data) => SetMultiplierModuleActive(data, true);
+            API.Multiplier.OnMultiplierRemoved += (data) => SetMultiplierModuleActive(data, false);
         }
 
-        private void OnDisable()
-        {
-            API.Score.OnScoreAdded -= SetScoreModuleActive;
-            API.Multiplier.OnMultiplierAdded -= SetMultiplierModuleActive;
-        }
-
-        public void SetScoreModuleActive(Data.PackedScore packedValue)
+        public void SetScoreModuleActive(PackedScore packedValue)
         {
             if(modules == null || modules.Count == 0)
             {
@@ -76,7 +73,7 @@ namespace NEP.ScoreLab.UI
             }
         }
 
-        public void SetMultiplierModuleActive(Data.PackedMultiplier packedValue)
+        public void SetMultiplierModuleActive(PackedMultiplier packedValue, bool active)
         {
             if (modules == null || modules.Count == 0)
             {
@@ -99,7 +96,7 @@ namespace NEP.ScoreLab.UI
                     multiplierModule.SetDecayTime(packedValue.timer);
                     multiplierModule.SetPostDecayTime(0.5f);
 
-                    modules[i].gameObject.SetActive(true);
+                    modules[i].gameObject.SetActive(active);
                     return;
                 }
             }
