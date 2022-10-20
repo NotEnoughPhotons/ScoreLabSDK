@@ -16,6 +16,12 @@ namespace NEP.ScoreLab.Data
         public override void OnValueCreated()
         {
             Core.ScoreTracker.Instance.AddScore(score);
+            API.Score.OnScoreAdded?.Invoke(this);
+        }
+
+        public override void OnValueRemoved()
+        {
+            return;
         }
     }
 }

@@ -17,5 +17,10 @@ namespace NEP.ScoreLab.Data
         {
 
         }
+
+        public override void OnValueRemoved()
+        {
+            return;
+        }
     }
 }

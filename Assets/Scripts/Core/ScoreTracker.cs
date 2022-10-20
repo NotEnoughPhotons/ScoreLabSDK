@@ -1,15 +1,16 @@
+using System.Collections.Generic;
+
 using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.Core
 {
     public class ScoreTracker
     {
-        public ScoreTracker()
-        {
-            Initialize();
-        }
+        public ScoreTracker() => Initialize();
 
         public static ScoreTracker Instance { get; private set; }
+
+        public List<PackedMultiplier> ActiveMultipliers { get; set; }
 
         public int Score
         {
@@ -20,8 +21,8 @@ namespace NEP.ScoreLab.Core
             get => _multiplier;
         }
 
-        private int _score;
-        private float _multiplier;
+        private int _score = 0;
+        private float _multiplier = 1f;
 
         public void Initialize()
         {
@@ -29,22 +30,26 @@ namespace NEP.ScoreLab.Core
             {
                 Instance = this;
             }
+
+            ActiveMultipliers = new List<PackedMultiplier>();
         }
 
-        public void Add(PackedValue value)
+        public void Update()
         {
-            value.OnValueCreated();
+            for(int i = 0; i < ActiveMultipliers.Count; i++)
+            {
+                ActiveMultipliers[i].OnUpdate();
+            }
         }
 
-        public void AddScore(int score)
-        {
-            _score += score;
-        }
+        public void Add(PackedValue value) => value.OnValueCreated();
+        public void Remove(PackedValue value) => value.OnValueRemoved();
+        public void UpdateValue(PackedValue value) => value.OnUpdate();
 
-        public void AddMultiplier(float multiplier)
-        {
-            _multiplier += multiplier;
-        }
+        public void AddScore(int score) => _score += score;
+        public void AddMultiplier(float multiplier) => _multiplier += multiplier;
+        public void RemoveMultiplier(float multiplier) => _multiplier -= multiplier;
+
     }
 }
 
