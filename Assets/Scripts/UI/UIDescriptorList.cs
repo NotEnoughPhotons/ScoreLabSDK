@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using NEP.ScoreLab.Data;
+
 namespace NEP.ScoreLab.UI
 {
     public class UIDescriptorList : MonoBehaviour
     {
+        public PackedValue.PackedType packedType;
+
         public GameObject modulePrefab;
         public int count;
 
@@ -40,9 +44,14 @@ namespace NEP.ScoreLab.UI
             API.Multiplier.OnMultiplierAdded -= SetMultiplierModuleActive;
         }
 
-        public void SetScoreModuleActive(Data.PackedValue packedValue)
+        public void SetScoreModuleActive(Data.PackedScore packedValue)
         {
             if(modules == null || modules.Count == 0)
+            {
+                return;
+            }
+
+            if(packedValue.packedType != packedType)
             {
                 return;
             }
@@ -52,6 +61,7 @@ namespace NEP.ScoreLab.UI
                 if (!modules[i].gameObject.activeInHierarchy)
                 {
                     UIScoreModule scoreModule = (UIScoreModule)modules[i];
+
                     scoreModule.AssignPackedData(packedValue);
 
                     scoreModule.SetDecayTime(5f);
@@ -63,9 +73,14 @@ namespace NEP.ScoreLab.UI
             }
         }
 
-        public void SetMultiplierModuleActive(Data.PackedValue packedValue)
+        public void SetMultiplierModuleActive(Data.PackedMultiplier packedValue)
         {
             if (modules == null || modules.Count == 0)
+            {
+                return;
+            }
+
+            if (packedValue.packedType != packedType)
             {
                 return;
             }
@@ -74,12 +89,11 @@ namespace NEP.ScoreLab.UI
             {
                 if (!modules[i].gameObject.activeInHierarchy)
                 {
-                    Data.PackedMultiplier packedMult = (Data.PackedMultiplier)packedValue;
                     UIMultiplierModule multiplierModule = (UIMultiplierModule)modules[i];
 
                     multiplierModule.AssignPackedData(packedValue);
 
-                    multiplierModule.SetDecayTime(packedMult.timer);
+                    multiplierModule.SetDecayTime(packedValue.timer);
                     multiplierModule.SetPostDecayTime(0.5f);
 
                     modules[i].gameObject.SetActive(true);
@@ -87,7 +101,6 @@ namespace NEP.ScoreLab.UI
                 }
             }
         }
-
     }
 }
 

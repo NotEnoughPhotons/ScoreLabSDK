@@ -11,6 +11,7 @@ namespace NEP.ScoreLab.Data
             this.score = score;
         }
 
+        public override PackedType packedType => PackedType.Score;
         public int score;
 
         public override void OnValueCreated()

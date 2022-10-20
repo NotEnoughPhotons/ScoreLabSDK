@@ -12,7 +12,6 @@ namespace NEP.ScoreLab.UI
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private TextMeshProUGUI _value;
         [SerializeField] private Slider _timeBar;
-        [SerializeField] private Image _imageTimer;
 
         private Data.PackedValue _packedValue;
 
@@ -21,9 +20,6 @@ namespace NEP.ScoreLab.UI
             Transform titleTran = transform.Find("Title");
             Transform valueTran = transform.Find("Value");
             Transform timerTran = transform.Find("TimeBar");
-
-            Transform imageFillTran = transform.Find("FilledImage");
-            Transform imageFillTimerTran = transform.Find("FilledImage/Timer");
 
             if (titleTran != null)
             {
@@ -39,17 +35,9 @@ namespace NEP.ScoreLab.UI
             {
                 _timeBar = timerTran.GetComponent<Slider>();
             }
-
-            if(imageFillTran != null)
-            {
-                if(imageFillTimerTran != null)
-                {
-                    _imageTimer = imageFillTimerTran.GetComponent<Image>();
-                }
-            }
         }
 
-        public void AssignPackedData(Data.PackedValue packedValue)
+        public void AssignPackedData(PackedValue packedValue)
         {
             this._packedValue = packedValue;
         }
@@ -87,23 +75,6 @@ namespace NEP.ScoreLab.UI
                 }
             }
 
-            if (_imageTimer)
-            {
-                if(_imageTimer.type == Image.Type.Filled)
-                {
-                    var packedMultiplier = (PackedMultiplier)_packedValue;
-
-                    if (packedMultiplier.timer <= 0f && packedMultiplier.condition != null)
-                    {
-                        _imageTimer.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        _imageTimer.gameObject.SetActive(true);
-                    }
-                }
-            }
-
             CanDecay(transform.Find("-Persist") == null);
         }
 
@@ -119,14 +90,6 @@ namespace NEP.ScoreLab.UI
             if(_timeBar != null)
             {
                 _timeBar.value = _tDecay;
-            }
-
-            if(_imageTimer != null)
-            {
-                if(_imageTimer.type == Image.Type.Filled)
-                {
-                    _imageTimer.fillAmount = _tDecay;
-                }
             }
         }
     }

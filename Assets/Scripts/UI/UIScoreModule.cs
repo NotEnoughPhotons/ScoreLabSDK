@@ -9,6 +9,7 @@ namespace NEP.ScoreLab.UI
     {
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private TextMeshProUGUI _value;
+        [SerializeField] private Slider _timeBar;
 
         private Data.PackedValue _packedValue;
 
@@ -16,16 +17,11 @@ namespace NEP.ScoreLab.UI
         {
             Transform titleTran = transform.Find("Title");
             Transform valueTran = transform.Find("Value");
-
-            if (titleTran != null)
-            {
-                _title = titleTran.GetComponent<TextMeshProUGUI>();
-            }
-
-            if (valueTran != null)
-            {
-                _value = valueTran.GetComponent<TextMeshProUGUI>();
-            }
+            Transform timeBarTran = transform.Find("TimeBar");
+            
+            _title = titleTran?.GetComponent<TextMeshProUGUI>();
+            _value = valueTran?.GetComponent<TextMeshProUGUI>();
+            _timeBar = timeBarTran?.GetComponent<Slider>();
         }
 
         public void AssignPackedData(Data.PackedValue packedValue)

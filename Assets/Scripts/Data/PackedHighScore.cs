@@ -11,6 +11,7 @@ namespace NEP.ScoreLab.Data
             this.bestScore = bestScore;
         }
 
+        public override PackedType packedType => PackedType.HighScore;
         public int bestScore;
 
         public override void OnValueCreated()

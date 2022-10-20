@@ -28,6 +28,7 @@ namespace NEP.ScoreLab.Data
             this.condition = condition;
         }
 
+        public override PackedType packedType => PackedType.Multiplier;
         public float multiplier;
         public float timer;
         public float elapsed;
