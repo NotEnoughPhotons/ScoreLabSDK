@@ -14,6 +14,8 @@ namespace NEP.ScoreLab.UI
 
         public override void OnModuleEnable()
         {
+            base.OnModuleEnable();
+
             if (_packedValue == null)
             {
                 return;

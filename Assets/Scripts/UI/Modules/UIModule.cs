@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +17,11 @@ namespace NEP.ScoreLab.UI
             Main,
             Descriptor
         }
+
+        public Action OnModuleEnabled;
+        public Action OnModuleDisabled;
+        public Action OnModuleDecayed;
+        public Action OnModulePostDecayed;
 
         public UIModuleType ModuleType;
 
@@ -45,9 +52,9 @@ namespace NEP.ScoreLab.UI
         private bool _reachedDecay = false;
         private bool _reachedPostDecay = false;
 
-        public virtual void OnModuleEnable() { }
+        public virtual void OnModuleEnable() { OnModuleEnabled?.Invoke(); }
 
-        public virtual void OnModuleDisable() { }
+        public virtual void OnModuleDisable() { OnModuleDisabled?.Invoke(); }
 
         public virtual void OnUpdate() { }
 
@@ -101,8 +108,8 @@ namespace NEP.ScoreLab.UI
             {
                 if (!_reachedDecay)
                 {
-                    API.UI.OnModuleDecayed?.Invoke(this);
-                    _reachedDecay = false;
+                    OnModuleDecayed?.Invoke();
+                    _reachedDecay = true;
                 }
 
                 _tPostDecay -= Time.deltaTime;
@@ -111,12 +118,15 @@ namespace NEP.ScoreLab.UI
                 {
                     if (!_reachedPostDecay)
                     {
-                        API.UI.OnModulePostDecayed?.Invoke(this);
-                        _reachedPostDecay = false;
+                        OnModulePostDecayed?.Invoke();
+                        _reachedPostDecay = true;
                     }
 
                     _tDecay = _decayTime;
                     _tPostDecay = _postDecayTime;
+
+                    _reachedDecay = false;
+                    _reachedPostDecay = false;
 
                     gameObject.SetActive(false);
 
