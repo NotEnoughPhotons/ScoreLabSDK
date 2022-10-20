@@ -282,6 +282,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4488137830317002624}
   - component: {fileID: 4488137830317002625}
+  - component: {fileID: 6735218229365300644}
+  - component: {fileID: 5173444643305829071}
   m_Layer: 5
   m_Name: ScoreDescriptor
   m_TagString: Untagged
@@ -323,3 +325,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24d89fc13b204f4bac42f0723fa7b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModuleType: 0
+--- !u!114 &6735218229365300644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4488137830317002639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbef64dc50113274d9205207f281d001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 5173444643305829071}
+--- !u!95 &5173444643305829071
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4488137830317002639}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b5b3a64026a45454680ff69039232217, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
