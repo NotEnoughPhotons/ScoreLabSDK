@@ -30,15 +30,17 @@ namespace NEP.ScoreLab.UI
 
         private void OnEnable()
         {
-            API.Score.OnScoreAdded += SetModuleActive;
+            API.Score.OnScoreAdded += SetScoreModuleActive;
+            API.Multiplier.OnMultiplierAdded += SetMultiplierModuleActive;
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreAdded -= SetModuleActive;
+            API.Score.OnScoreAdded -= SetScoreModuleActive;
+            API.Multiplier.OnMultiplierAdded -= SetMultiplierModuleActive;
         }
 
-        public void SetModuleActive(Data.PackedValue packedValue)
+        public void SetScoreModuleActive(Data.PackedValue packedValue)
         {
             if(modules == null || modules.Count == 0)
             {
@@ -60,6 +62,32 @@ namespace NEP.ScoreLab.UI
                 }
             }
         }
+
+        public void SetMultiplierModuleActive(Data.PackedValue packedValue)
+        {
+            if (modules == null || modules.Count == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < modules.Count; i++)
+            {
+                if (!modules[i].gameObject.activeInHierarchy)
+                {
+                    Data.PackedMultiplier packedMult = (Data.PackedMultiplier)packedValue;
+                    UIMultiplierModule multiplierModule = (UIMultiplierModule)modules[i];
+
+                    multiplierModule.AssignPackedData(packedValue);
+
+                    multiplierModule.SetDecayTime(packedMult.timer);
+                    multiplierModule.SetPostDecayTime(0.5f);
+
+                    modules[i].gameObject.SetActive(true);
+                    return;
+                }
+            }
+        }
+
     }
 }
 

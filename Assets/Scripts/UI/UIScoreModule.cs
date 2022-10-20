@@ -17,19 +17,15 @@ namespace NEP.ScoreLab.UI
             Transform titleTran = transform.Find("Title");
             Transform valueTran = transform.Find("Value");
 
-            if(titleTran == null)
+            if (titleTran != null)
             {
-                return;
+                _title = titleTran.GetComponent<TextMeshProUGUI>();
             }
 
-            _title = transform.Find("Title").GetComponent<TextMeshProUGUI>();
-
-            if(valueTran == null)
+            if (valueTran != null)
             {
-                return;
+                _value = valueTran.GetComponent<TextMeshProUGUI>();
             }
-
-            _value = transform.Find("Value").GetComponent<TextMeshProUGUI>();
         }
 
         public void AssignPackedData(Data.PackedValue packedValue)
@@ -51,18 +47,8 @@ namespace NEP.ScoreLab.UI
 
             if(_value != null)
             {
-                if(_packedValue is Data.PackedScore packedScore)
-                {
-                    _value.text = packedScore.score.ToString();
-                }
-                else if(_packedValue is Data.PackedMultiplier packedMultiplier)
-                {
-                    _value.text = packedMultiplier.multiplier.ToString();
-                }
-                else if(_packedValue is Data.PackedHighScore packedHighScore)
-                {
-                    _value.text = packedHighScore.bestScore.ToString();
-                }
+                var packedScore = (Data.PackedScore)_packedValue;
+                _value.text = packedScore.score.ToString();
             }
 
             CanDecay(transform.Find("-Persist") == null);

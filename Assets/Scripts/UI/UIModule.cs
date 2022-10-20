@@ -6,6 +6,9 @@ namespace NEP.ScoreLab.UI
 {
     public class UIModule : MonoBehaviour
     {
+        public float DecayTime { get => _decayTime; }
+        public float PostDecayTime { get => _postDecayTime; }
+
         protected bool _canDecay { get; private set; }
         protected float _decayTime { get; private set; }
         protected float _postDecayTime { get; private set; }
