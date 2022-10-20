@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 using TMPro;
 
+using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
@@ -40,6 +41,9 @@ namespace NEP.ScoreLab.UI
         protected virtual string Path_TitleText { get => "Title"; }
         protected virtual string Path_ValueText { get => "Value"; }
         protected virtual string Path_TimeBar { get => "TimeBar"; }
+
+        private bool _reachedDecay = false;
+        private bool _reachedPostDecay = false;
 
         public virtual void OnModuleEnable() { }
 
@@ -95,10 +99,22 @@ namespace NEP.ScoreLab.UI
 
             if(_tDecay < 0f)
             {
+                if (!_reachedDecay)
+                {
+                    API.UI.OnModuleDecayed?.Invoke(this);
+                    _reachedDecay = false;
+                }
+
                 _tPostDecay -= Time.deltaTime;
 
                 if (_tPostDecay < 0f)
                 {
+                    if (!_reachedPostDecay)
+                    {
+                        API.UI.OnModulePostDecayed?.Invoke(this);
+                        _reachedPostDecay = false;
+                    }
+
                     _tDecay = _decayTime;
                     _tPostDecay = _postDecayTime;
 

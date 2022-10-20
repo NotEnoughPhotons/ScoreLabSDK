@@ -17,12 +17,12 @@ namespace NEP.ScoreLab.UI
 
         private void OnEnable()
         {
-            API.Score.OnScoreAdded += (data) => Animator.Play("show");
+            API.Score.OnScoreAdded += (data) => Animator.Play("score_show");
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreAdded -= (data) => Animator.Play("show");
+            API.Score.OnScoreAdded -= (data) => Animator.Play("score_show");
         }
     }
 }

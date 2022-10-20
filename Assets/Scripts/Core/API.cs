@@ -1,6 +1,7 @@
 using System;
 
 using NEP.ScoreLab.Data;
+using NEP.ScoreLab.UI;
 
 namespace NEP.ScoreLab.Core
 {
@@ -32,6 +33,15 @@ namespace NEP.ScoreLab.Core
         {
             public static Func<bool> IsPlayerMoving = new Func<bool>(() => true);
             public static Func<bool> IsPlayerInAir = new Func<bool>(() => Emulator._testCondition);
+        }
+
+        public static class UI
+        {
+            public static Action<UIModule> OnModuleEnabled;
+            public static Action<UIModule> OnModuleDisabled;
+
+            public static Action<UIModule> OnModuleDecayed;
+            public static Action<UIModule> OnModulePostDecayed;
         }
     }
 }
