@@ -1,53 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+using NEP.ScoreLab.Core;
+using NEP.ScoreLab.Data;
+
 using TMPro;
 
 namespace NEP.ScoreLab.UI
 {
     public class UIScoreModule : UIModule
     {
-        [SerializeField] private TextMeshProUGUI _title;
-        [SerializeField] private TextMeshProUGUI _value;
-        [SerializeField] private Slider _timeBar;
-
-        private Data.PackedValue _packedValue;
-
-        private void Awake()
-        {
-            Transform titleTran = transform.Find("Title");
-            Transform valueTran = transform.Find("Value");
-            Transform timeBarTran = transform.Find("TimeBar");
-            
-            _title = titleTran?.GetComponent<TextMeshProUGUI>();
-            _value = valueTran?.GetComponent<TextMeshProUGUI>();
-            _timeBar = timeBarTran?.GetComponent<Slider>();
-        }
-
-        public void AssignPackedData(Data.PackedValue packedValue)
-        {
-            this._packedValue = packedValue;
-        }
+        private PackedScore _packedScore { get => (PackedScore)_packedValue; }
 
         public override void OnModuleEnable()
         {
+            base.OnModuleEnable();
+
             if(_packedValue == null)
             {
                 return;
             }
 
-            if(_title != null)
+            if(ModuleType == UIModuleType.Main)
             {
-                _title.text = _packedValue.name;
+                SetText(_value, ScoreTracker.Instance.Score.ToString());
             }
-
-            if(_value != null)
+            else if (ModuleType == UIModuleType.Descriptor)
             {
-                var packedScore = (Data.PackedScore)_packedValue;
-                _value.text = packedScore.score.ToString();
+                SetText(_title, _packedScore.name);
+                SetText(_value, _packedScore.score.ToString());
             }
-
-            CanDecay(transform.Find("-Persist") == null);
         }
 
         public override void OnModuleDisable()

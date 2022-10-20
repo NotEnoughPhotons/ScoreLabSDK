@@ -257,6 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a852e29fa347ccd45864589d6ec0fe62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packedType: 1
   modulePrefab: {fileID: 4488137830317002639, guid: 8a39b79950d5dd74e9d919da8ddbba3b,
     type: 3}
   count: 6
@@ -440,9 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24d89fc13b204f4bac42f0723fa7b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 0}
-  _value: {fileID: 0}
-  _timeBar: {fileID: 0}
+  ModuleType: 0
 --- !u!1 &739951820
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a852e29fa347ccd45864589d6ec0fe62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packedType: 2
   modulePrefab: {fileID: 4488137830317002639, guid: 663adc364e90779438a19a66f48623ad,
     type: 3}
   count: 6
@@ -713,9 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24d89fc13b204f4bac42f0723fa7b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 0}
-  _value: {fileID: 0}
-  _timeBar: {fileID: 0}
+  ModuleType: 0
 --- !u!1 &968166159
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,7 +861,7 @@ GameObject:
   - component: {fileID: 1139428419}
   - component: {fileID: 1139428420}
   m_Layer: 5
-  m_Name: Multipliers
+  m_Name: Multiplier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -906,9 +904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b34c7d4e49e0aa4ba2452cf1f5b06e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 0}
-  _value: {fileID: 0}
-  _timeBar: {fileID: 0}
+  ModuleType: 0
 --- !u!1 &1185378230
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,9 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24d89fc13b204f4bac42f0723fa7b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 0}
-  _value: {fileID: 0}
-  _timeBar: {fileID: 0}
+  ModuleType: 0
 --- !u!1 &1872171041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,6 +1508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3d1aadca972764aa4b28214b0aeae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScoreModule: {fileID: 938090262}
+  MultiplierModule: {fileID: 1139428420}
+  HighScoreModule: {fileID: 0}
 --- !u!223 &2131981652
 Canvas:
   m_ObjectHideFlags: 0

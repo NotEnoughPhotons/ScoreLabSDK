@@ -26,9 +26,12 @@ namespace NEP.ScoreLab.UI
 
             for(int i = 0; i < count; i++)
             {
-                var module = GameObject.Instantiate(modulePrefab.gameObject, transform);
-                modules.Add(module.GetComponent<UIModule>());
-                module.SetActive(false);
+                var obj = GameObject.Instantiate(modulePrefab.gameObject, transform);
+                var module = obj.GetComponent<UIModule>();
+
+                module.ModuleType = UIModule.UIModuleType.Descriptor;
+                modules.Add(module);
+                obj.SetActive(false);
             }
         }
 
