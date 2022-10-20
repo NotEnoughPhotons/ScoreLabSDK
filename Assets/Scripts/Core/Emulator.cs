@@ -30,7 +30,7 @@ namespace NEP.ScoreLab.Core
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ScoreTracker.Instance.Add(new Data.PackedMultiplier("Test", 1f, 5f));
+                ScoreTracker.Instance.Add(new Data.PackedScore("Test", 100));
             }
         }
     }

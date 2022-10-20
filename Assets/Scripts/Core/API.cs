@@ -28,7 +28,7 @@ public static class API
 
     public static class GameConditions
     {
-        public static Func<bool> IsPlayerMoving;
-        public static Func<bool> IsPlayerInAir;
+        public static Func<bool> IsPlayerMoving = new Func<bool>(() => true);
+        public static Func<bool> IsPlayerInAir = new Func<bool>(() => true);
     }
 }
