@@ -423,10 +423,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 366575297783004662, guid: f88960438b0835b4ab73dd599c7c7013,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 366575297783004662, guid: f88960438b0835b4ab73dd599c7c7013,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 366575297783004662, guid: f88960438b0835b4ab73dd599c7c7013,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4155343008060947970, guid: f88960438b0835b4ab73dd599c7c7013,
         type: 3}
       propertyPath: m_Name
       value: '[SLHUD] - Coda'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4155343008060947970, guid: f88960438b0835b4ab73dd599c7c7013,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4155343008060947971, guid: f88960438b0835b4ab73dd599c7c7013,
         type: 3}

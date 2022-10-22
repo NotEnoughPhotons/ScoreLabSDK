@@ -11,6 +11,10 @@ namespace NEP.ScoreLab.Core
         public float Multiplier;
         public List<Data.PackedMultiplier> ActiveMultipliers;
 
+        public List<AssetBundle> bundles;
+        public List<GameObject> loadedStuff;
+        public List<string> uiNames;
+
         public bool testCondition;
         public static bool _testCondition;
 
@@ -18,6 +22,7 @@ namespace NEP.ScoreLab.Core
 
         private void Awake()
         {
+            Data.DataManager.Init();
             new ScoreTracker();
             TestFunc = new Func<bool>(() => _testCondition);
         }
@@ -25,6 +30,10 @@ namespace NEP.ScoreLab.Core
         private void Update()
         {
             _testCondition = testCondition;
+
+            bundles = Data.DataManager.Bundle.Bundles;
+            loadedStuff = Data.DataManager.UI.LoadedUIObjects;
+            uiNames = Data.DataManager.UI.UINames;
 
             ScoreTracker.Instance.Update();
 
