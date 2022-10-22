@@ -1,3 +1,6 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using System.IO;
 using System.Collections.Generic;
 
@@ -36,18 +39,59 @@ namespace NEP.ScoreLab.Data
             }
         }
 
-        public static class PackedValue
+        public static class PackedValues
         {
+            public static void Init()
+            {
 
+            }
         }
 
         public static class HighScore
         {
-            public static Dictionary<string, PackedHighScore> BestTable;
+            public static Dictionary<string, int> BestTable;
 
             public static void Init()
             {
-                BestTable = new Dictionary<string, PackedHighScore>();
+                BestTable = new Dictionary<string, int>();
+                BestTable = ReadFromFile();
+            }
+
+            public static void WriteBest(PackedHighScore highScore)
+            {
+                string sceneName = highScore.name;
+                int bestScore = highScore.bestScore;
+
+                BestTable.Add(sceneName, bestScore);
+            }
+
+            public static Dictionary<string, int> ReadFromFile()
+            {
+                string directory = File_HighScores;
+
+                if (!File.Exists(directory))
+                {
+                    Debug.LogWarning("High score file doesn't exist! Creating one.");
+                    File.Create(directory);
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject(directory) as Dictionary<string, int>;
+            }
+
+            public static void WriteToFile()
+            {
+                string directory = File_HighScores;
+
+                if (!File.Exists(directory))
+                {
+                    Debug.LogWarning("High score file doesn't exist! Creating one.");
+                    File.Create(directory);
+                    return;
+                }
+
+                var data = JsonConvert.SerializeObject(BestTable);
+                File.WriteAllText(directory, data);
             }
         }
 
@@ -144,17 +188,18 @@ namespace NEP.ScoreLab.Data
             }
         }
 
-        private static readonly string Path_UserData = Application.dataPath + "/Data/";
-        private static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
-        private static readonly string Path_Mod = Path_Developer + "ScoreLab/";
-        private static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
+        static readonly string Path_UserData = Application.dataPath + "/Data/";
+        static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
+        static readonly string Path_Mod = Path_Developer + "ScoreLab/";
+        static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
 
-        private static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
-        private static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
+        static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
+        static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
+        static readonly string Path_HighScoreData = Path_Mod + "Data/High Score/";
 
-        private static readonly string File_HighScores = Path_Mod + "sl_high_scores.json";
-        private static readonly string File_HUDSettings = Path_Mod + "sl_hud_settings.json";
-        private static readonly string File_CurrentHUD = Path_Mod + "sl_current_hud.txt";
+        static readonly string File_HighScores = Path_HighScoreData + "high_score_table.json";
+        static readonly string File_HUDSettings = Path_Mod + "sl_hud_settings.json";
+        static readonly string File_CurrentHUD = Path_Mod + "sl_current_hud.txt";
 
         public static void Init()
         {
@@ -162,6 +207,8 @@ namespace NEP.ScoreLab.Data
 
             Bundle.Init();
             UI.Init();
+            PackedValues.Init();
+            HighScore.Init();
         }
 
         public static string[] LoadAllFiles(string path)
