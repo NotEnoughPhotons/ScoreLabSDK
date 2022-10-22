@@ -11,29 +11,14 @@ namespace NEP.ScoreLab.UI
     {
         public PackedValue.PackedType packedType;
 
-        public GameObject modulePrefab;
-        public int count;
+        public GameObject modulePrefab { get; set; }
+        public int count = 6;
 
         public List<UIModule> modules;
 
         private void Awake()
         {
             modules = new List<UIModule>();
-
-            if(modulePrefab == null)
-            {
-                return;
-            }
-
-            for(int i = 0; i < count; i++)
-            {
-                var obj = GameObject.Instantiate(modulePrefab.gameObject, transform);
-                var module = obj.GetComponent<UIModule>();
-
-                module.ModuleType = UIModule.UIModuleType.Descriptor;
-                modules.Add(module);
-                obj.SetActive(false);
-            }
         }
 
         private void Start()
@@ -42,6 +27,24 @@ namespace NEP.ScoreLab.UI
 
             API.Multiplier.OnMultiplierAdded += (data) => SetMultiplierModuleActive(data, true);
             API.Multiplier.OnMultiplierRemoved += (data) => SetMultiplierModuleActive(data, false);
+        }
+
+        public void SetPackedType(int packedType)
+        {
+            this.packedType = (PackedValue.PackedType)packedType;
+        }
+
+        public void PopulateList()
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var obj = GameObject.Instantiate(modulePrefab.gameObject, transform);
+                var module = obj.GetComponent<UIModule>();
+
+                module.ModuleType = UIModule.UIModuleType.Descriptor;
+                modules.Add(module);
+                obj.SetActive(false);
+            }
         }
 
         public void SetScoreModuleActive(PackedScore packedValue)

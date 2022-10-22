@@ -27,6 +27,8 @@ namespace NEP.ScoreLab.UI
 
         public PackedValue PackedValue { get => _packedValue; }
 
+        public virtual PackedValue.PackedType PackedType { get => PackedValue.PackedType.Base; }
+
         public virtual bool CanDecay { get => transform.Find("-Persist") == null; }
         public float DecayTime { get => _decayTime; }
         public float PostDecayTime { get => _postDecayTime; }
