@@ -27,7 +27,7 @@ namespace NEP.ScoreLab.UI
             }
             else if (ModuleType == UIModuleType.Descriptor)
             {
-                SetText(_title, _packedScore.name);
+                SetText(_title, _packedScore.Name);
                 SetText(_value, _packedScore.score.ToString());
             }
         }

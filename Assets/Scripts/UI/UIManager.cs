@@ -17,6 +17,7 @@ namespace NEP.ScoreLab.UI
         {
             API.Score.OnScoreAdded += (data) => UpdateModule(data, ScoreModule);
 
+            API.Multiplier.OnMultiplierCloned += (data) => UpdateModule(data, MultiplierModule);
             API.Multiplier.OnMultiplierAdded += (data) => UpdateModule(data, MultiplierModule);
             API.Multiplier.OnMultiplierRemoved += (data) => UpdateModule(data, MultiplierModule);
         }

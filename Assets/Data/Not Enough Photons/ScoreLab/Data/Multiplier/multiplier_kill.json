@@ -1,0 +1,6 @@
+{
+	"EventType": "MULT_KILL",
+	"Name": "KILL",
+	"Multiplier": 2.20,
+	"Timer": 1.0
+}

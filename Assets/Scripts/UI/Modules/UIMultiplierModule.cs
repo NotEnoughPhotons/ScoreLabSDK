@@ -32,20 +32,20 @@ namespace NEP.ScoreLab.UI
             }
             else if (ModuleType == UIModuleType.Descriptor)
             {
-                SetText(_title, _packedMultiplier.name);
-                SetText(_value, _packedMultiplier.multiplier.ToString());
+                SetText(_title, _packedMultiplier.Name);
+                SetText(_value, $"{_packedMultiplier.Multiplier}");
             }
 
             if(_timeBar != null)
             {
-                if(_packedMultiplier.condition != null)
+                if(_packedMultiplier.Condition != null)
                 {
                     _timeBar.gameObject.SetActive(false);
                 }
                 else
                 {
                     _timeBar.gameObject.SetActive(true);
-                    SetMaxValueToBar(_timeBar, _packedMultiplier.timer);
+                    SetMaxValueToBar(_timeBar, _packedMultiplier.Timer);
                 }
             }
         }

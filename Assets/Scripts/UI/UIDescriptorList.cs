@@ -54,7 +54,7 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            if(packedValue.packedType != packedType)
+            if(packedValue.PackedValueType != packedType)
             {
                 return;
             }
@@ -83,7 +83,7 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            if (packedValue.packedType != packedType)
+            if (packedValue.PackedValueType != packedType)
             {
                 return;
             }
@@ -96,7 +96,7 @@ namespace NEP.ScoreLab.UI
 
                     multiplierModule.AssignPackedData(packedValue);
 
-                    multiplierModule.SetDecayTime(packedValue.timer);
+                    multiplierModule.SetDecayTime(packedValue.Timer);
                     multiplierModule.SetPostDecayTime(0.5f);
 
                     modules[i].gameObject.SetActive(active);

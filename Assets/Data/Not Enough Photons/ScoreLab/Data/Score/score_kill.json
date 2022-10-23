@@ -1,5 +1,5 @@
-"Score_Kill"
 {
-	"name": "KILL",
-	"score": 100
+	"EventType": "SCORE_KILL",
+	"Name": "KILL",
+	"Score": 100
 }
