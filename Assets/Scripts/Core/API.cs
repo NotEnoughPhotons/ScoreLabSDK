@@ -13,12 +13,13 @@ namespace NEP.ScoreLab.Core
             public static Action<PackedScore> OnScoreAdded;
             public static Action<PackedScore> OnScoreRemoved;
 
-            public static Action<PackedScore> OnScoreCloned;
+            public static Action<int> OnScoreUpdated;
+            public static Action<int> OnScoreDifferenceUpdated;
+            public static Action<int> OnLastScoreUpdated;
         }
 
         public static class Multiplier
         {
-            public static Action<PackedMultiplier> OnMultiplierCloned;
             public static Action<PackedMultiplier> OnMultiplierAdded;
             public static Action<PackedMultiplier> OnMultiplierRemoved;
 

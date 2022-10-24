@@ -16,12 +16,22 @@ namespace NEP.ScoreLab.Core
         {
             get => _score;
         }
+        public int ScoreDifference
+        {
+            get => _scoreDifference;
+        }
+        public int LastScore
+        {
+            get => _lastScore;
+        }
         public float Multiplier
         {
             get => _multiplier;
         }
 
         private int _score = 0;
+        private int _scoreDifference = 0;
+        private int _lastScore = 0;
         private float _multiplier = 1f;
 
         private float _baseMultiplier = 1f;
@@ -106,7 +116,9 @@ namespace NEP.ScoreLab.Core
 
         public void AddScore(int score)
         {
-            _score += score;
+            _lastScore = _score;
+            _score += UnityEngine.Mathf.RoundToInt(score * _multiplier);
+            _scoreDifference = _score - _lastScore;
         }
 
         public void AddMultiplier(float multiplier)

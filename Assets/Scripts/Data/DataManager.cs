@@ -176,7 +176,7 @@ namespace NEP.ScoreLab.Data
                 LoadCustomUIs(Bundle.Bundles);
                 LoadUINames();
 
-                SpawnDefaultUI();
+                //SpawnDefaultUI();
             }
 
             public static List<GameObject> LoadedUIObjects { get; private set; }
