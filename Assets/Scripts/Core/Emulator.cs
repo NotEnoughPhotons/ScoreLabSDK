@@ -51,19 +51,18 @@ namespace NEP.ScoreLab.Core
             Multiplier = ScoreTracker.Instance.Multiplier;
 
             ActiveValues = ScoreTracker.Instance.ActiveValues;
-            ClonedValues = ScoreTracker.Instance.ClonedValues;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ScoreTracker.Instance.Add(new PackedScore(Data.EventType.SCORE_KILL));
+                ScoreTracker.Instance.Add(Data.EventType.Score.Kill);
             }
             else if (Input.GetKeyDown(KeyCode.M))
             {
-                ScoreTracker.Instance.Add(new PackedMultiplier(Data.EventType.MULT_TEST));
+                ScoreTracker.Instance.Add(Data.EventType.Mult.Test);
             }
             else if (Input.GetKeyDown(KeyCode.T))
             {
-                ScoreTracker.Instance.Add(new PackedMultiplier(Data.EventType.MULT_KILL));
+                ScoreTracker.Instance.Add(Data.EventType.Mult.Kill);
             }
         }
     }

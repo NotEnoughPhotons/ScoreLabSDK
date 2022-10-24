@@ -60,7 +60,15 @@ namespace NEP.ScoreLab.UI
 
         public virtual void OnUpdate() { }
 
-        public void AssignPackedData(PackedValue packedValue) => _packedValue = packedValue;
+        public void AssignPackedData(PackedValue packedValue)
+        {
+            _packedValue = packedValue;
+
+            if(_packedValue.DecayTime != 0f)
+            {
+                SetDecayTime(_packedValue.DecayTime);
+            }
+        }
 
         public void SetDecayTime(float decayTime)
         {

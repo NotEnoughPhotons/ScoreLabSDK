@@ -33,7 +33,7 @@ namespace NEP.ScoreLab.UI
             else if (ModuleType == UIModuleType.Descriptor)
             {
                 SetText(_title, _packedMultiplier.Name);
-                SetText(_value, $"{_packedMultiplier.Multiplier}");
+                SetText(_value, $"{_packedMultiplier.AccumulatedMultiplier}x");
             }
 
             if(_timeBar != null)
@@ -45,7 +45,7 @@ namespace NEP.ScoreLab.UI
                 else
                 {
                     _timeBar.gameObject.SetActive(true);
-                    SetMaxValueToBar(_timeBar, _packedMultiplier.Timer);
+                    SetMaxValueToBar(_timeBar, _packedMultiplier.Elapsed);
                 }
             }
         }

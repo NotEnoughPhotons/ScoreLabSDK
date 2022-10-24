@@ -44,9 +44,65 @@ namespace NEP.ScoreLab.Core
             }
         }
 
-        public void Add(PackedValue value) => value.OnValueCreated();
-        public void Remove(PackedValue value) => value.OnValueRemoved();
-        public void UpdateValue(PackedValue value) => value.OnUpdate();
+        public void Add(string eventType)
+        {
+            var value = DataManager.PackedValues.Get(eventType);
+            Add(value);
+        }
+
+        public void Add(PackedValue value)
+        {
+            if (value.PackedValueType == PackedValue.PackedType.Score)
+            {
+                PackedScore score = value as PackedScore;
+                AddScore(score.Score);
+
+                if (!CheckDuplicate(value))
+                {
+                    ActiveValues.Add(value);
+                }
+                else
+                {
+                    score.AccumulatedScore += score.Score;
+                }
+
+                value.OnValueCreated();
+            }
+            else if (value.PackedValueType == PackedValue.PackedType.Multiplier)
+            {
+                PackedMultiplier mult = value as PackedMultiplier;
+                AddMultiplier(mult.Multiplier);
+
+                if (!CheckDuplicate(value))
+                {
+                    ActiveValues.Add(value);
+                }
+                else
+                {
+                    mult.AccumulatedMultiplier += mult.Multiplier;
+                }
+
+                value.OnValueCreated();
+            }
+        }
+
+        public void Remove(PackedValue value)
+        {
+            if(value.PackedValueType == PackedValue.PackedType.Score)
+            {
+                ActiveValues.Remove(value);
+
+                value.OnValueRemoved();
+            }
+            else if (value.PackedValueType == PackedValue.PackedType.Multiplier)
+            {
+                ActiveValues.Remove(value);
+                PackedMultiplier mult = value as PackedMultiplier;
+                RemoveMultiplier(mult.AccumulatedMultiplier);
+
+                value.OnValueRemoved();
+            }
+        }
 
         public void AddScore(int score)
         {
@@ -66,6 +122,19 @@ namespace NEP.ScoreLab.Core
             }
 
             _multiplier -= multiplier;
+        }
+
+        public bool CheckDuplicate(PackedValue value)
+        {
+            foreach(var val in ActiveValues)
+            {
+                if(val.eventType == value.eventType)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace NEP.ScoreLab.Core
         public static class Score
         {
             public static Action<PackedScore> OnScoreAdded;
+            public static Action<PackedScore> OnScoreRemoved;
 
             public static Action<PackedScore> OnScoreCloned;
         }

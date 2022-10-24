@@ -94,13 +94,13 @@ namespace NEP.ScoreLab.Data
 
                 foreach(var score in Scores)
                 {
-                    var data = new PackedScore(score.EventType, score.Name, score.Score);
+                    var data = new PackedScore(score.EventType, score.Name, score.Score, score.DecayTime);
                     ValueTable.Add(score.EventType, data);
                 }
 
                 foreach(var multiplier in Multipliers)
                 {
-                    var data = new PackedMultiplier(multiplier.EventType, multiplier.Name, multiplier.Multiplier, multiplier.Timer, multiplier.Condition);
+                    var data = new PackedMultiplier(multiplier.EventType, multiplier.DecayTime, multiplier.Name, multiplier.Multiplier, multiplier.Condition);
                     ValueTable.Add(multiplier.EventType, data);
                 }
             }
