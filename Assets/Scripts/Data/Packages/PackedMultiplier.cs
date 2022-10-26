@@ -65,6 +65,8 @@ namespace NEP.ScoreLab.Data
 
         public override void OnUpdateDecay()
         {
+            base.OnUpdateDecay();
+
             if (_timed)
             {
                 if (!_timeBegin)

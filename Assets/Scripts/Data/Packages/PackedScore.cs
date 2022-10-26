@@ -41,7 +41,9 @@ namespace NEP.ScoreLab.Data
 
         public override void OnUpdateDecay()
         {
-            if(_tDecay <= 0f)
+            base.OnUpdateDecay();
+
+            if (_tDecay <= 0f)
             {
                 ScoreTracker.Instance.Remove(this);
             }

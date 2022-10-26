@@ -11,6 +11,7 @@ namespace NEP.ScoreLab.Core
         public static class Score
         {
             public static Action<PackedScore> OnScoreAdded;
+            public static Action<PackedScore> OnScoreAccumulated;
             public static Action<PackedScore> OnScoreRemoved;
 
             public static Action<int> OnScoreUpdated;
@@ -21,6 +22,7 @@ namespace NEP.ScoreLab.Core
         public static class Multiplier
         {
             public static Action<PackedMultiplier> OnMultiplierAdded;
+            public static Action<PackedMultiplier> OnMultiplierAccumulated;
             public static Action<PackedMultiplier> OnMultiplierRemoved;
 
             public static Action<PackedMultiplier> OnMultiplierTimeBegin;

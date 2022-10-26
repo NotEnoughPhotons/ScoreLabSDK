@@ -64,6 +64,10 @@ namespace NEP.ScoreLab.Core
             {
                 ScoreTracker.Instance.Add(Data.EventType.Mult.Kill);
             }
+            else if (Input.GetKeyDown(KeyCode.G))
+            {
+                ScoreTracker.Instance.Add(Data.EventType.Mult.Test2);
+            }
         }
     }
 }

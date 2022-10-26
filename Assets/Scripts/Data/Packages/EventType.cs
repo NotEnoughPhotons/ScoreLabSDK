@@ -13,6 +13,7 @@ namespace NEP.ScoreLab.Data
         {
             public static readonly string Kill = "MULT_KILL";
             public static readonly string Test = "MULT_TEST";
+            public static readonly string Test2 = "MULT_TEST2";
         }
     }
 }

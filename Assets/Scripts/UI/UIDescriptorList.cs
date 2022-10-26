@@ -9,7 +9,9 @@ namespace NEP.ScoreLab.UI
 {
     public class UIDescriptorList : MonoBehaviour
     {
-        public PackedValue.PackedType packedType;
+        public List<UIModule> ActiveModules;
+
+        public PackedValue.PackedType packedType { get; set; }
 
         public GameObject modulePrefab { get; set; }
         public int count = 6;
@@ -18,14 +20,21 @@ namespace NEP.ScoreLab.UI
 
         private void Awake()
         {
-            modules = new List<UIModule>();
+            ActiveModules = new List<UIModule>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            API.Score.OnScoreAdded += SetScoreModuleActive;
+            API.UI.OnModuleDecayed += (item) => ActiveModules.Remove(item);
 
-            API.Multiplier.OnMultiplierAdded += (data) => SetMultiplierModuleActive(data, true);
+            API.Score.OnScoreAdded += SetModuleActive;
+            API.Multiplier.OnMultiplierAdded += SetModuleActive;
+        }
+
+        private void OnDisable()
+        {
+            API.Score.OnScoreAdded -= SetModuleActive;
+            API.Multiplier.OnMultiplierAdded -= SetModuleActive;
         }
 
         public void SetPackedType(int packedType)
@@ -33,98 +42,42 @@ namespace NEP.ScoreLab.UI
             this.packedType = (PackedValue.PackedType)packedType;
         }
 
-        public void PopulateList()
-        {
-            for (int i = 0; i < count; i++)
-            {
-                var obj = GameObject.Instantiate(modulePrefab.gameObject, transform);
-                var module = obj.GetComponent<UIModule>();
-
-                module.ModuleType = UIModule.UIModuleType.Descriptor;
-                modules.Add(module);
-                obj.SetActive(false);
-            }
-        }
-
-        public void SetScoreModuleActive(PackedScore packedValue)
-        {
-            if(modules == null || modules.Count == 0)
-            {
-                return;
-            }
-
-            if(packedValue.PackedValueType != packedType)
-            {
-                return;
-            }
-
-            for(int i = 0; i < modules.Count; i++)
-            {
-                UIScoreModule scoreModule = (UIScoreModule)modules[i];
-
-                if (!modules[i].gameObject.activeInHierarchy)
-                {
-                    scoreModule.AssignPackedData(packedValue);
-
-                    scoreModule.SetDecayTime(packedValue.DecayTime);
-                    scoreModule.SetPostDecayTime(0.5f);
-
-                    modules[i].gameObject.SetActive(true);
-                    return;
-                }
-                else
-                {
-                    if(scoreModule.PackedValue != null)
-                    {
-                        scoreModule.OnModuleEnable();
-                        scoreModule.SetDecayTime(packedValue.DecayTime);
-                        scoreModule.SetPostDecayTime(0.5f);
-
-                        return;
-                    }
-                }
-            }
-        }
-
-        public void SetMultiplierModuleActive(PackedMultiplier packedValue, bool active)
+        public void SetModuleActive(PackedValue value)
         {
             if (modules == null || modules.Count == 0)
             {
                 return;
             }
 
-            if (packedValue.PackedValueType != packedType)
+            if (value.PackedValueType != packedType)
             {
                 return;
             }
 
-            for (int i = 0; i < modules.Count; i++)
+            foreach (var module in modules)
             {
-                UIMultiplierModule multiplierModule = (UIMultiplierModule)modules[i];
-
-                if (!modules[i].gameObject.activeInHierarchy)
+                if (!ActiveModules.Contains(module))
                 {
-                    multiplierModule.AssignPackedData(packedValue);
+                    module.AssignPackedData(value);
 
-                    multiplierModule.SetDecayTime(packedValue.DecayTime);
-                    multiplierModule.SetPostDecayTime(0.5f);
+                    module.SetDecayTime(value.DecayTime);
+                    module.SetPostDecayTime(0.5f);
+                    module.gameObject.SetActive(true);
 
-                    modules[i].gameObject.SetActive(true);
-                    return;
+                    ActiveModules.Add(module);
+                    break;
                 }
                 else
                 {
-                    if (multiplierModule.PackedValue != null)
+                    if(module.PackedValue.eventType == value.eventType)
                     {
-                        multiplierModule.OnModuleEnable();
-                        multiplierModule.SetDecayTime(packedValue.DecayTime);
-                        multiplierModule.SetPostDecayTime(0.5f);
-
-                        return;
+                        module.OnModuleEnable();
+                        module.SetDecayTime(value.DecayTime);
+                        module.SetPostDecayTime(0.5f);
+                        break;
                     }
                 }
             }
-
         }
     }
 }

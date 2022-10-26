@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3805492558
+CRC: 1029599643
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f4955b87ae0d1eb13a2f01abc288c314
+    Hash: b9932e28567d35dd1f1ae9615c76ec8a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 555f9e90ce00f9376328f62e49e769f4
+    Hash: 0c3befb8ce3ce9c6e8d3b27f41fad7fa
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,8 +27,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 3f574d8b2153a0d4fa15f5de878f680c, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
 - Class: 114
@@ -116,12 +114,10 @@ Assets:
 - Assets/Shaders/UnlitZTestAlways.shader
 - Assets/Custom UIs/Coda/Fonts/CODE BOLD.OTF
 - Assets/Shaders/GUITextShader.shader
-- Assets/Custom UIs/Coda/Prefabs/MultiplierDescriptor.prefab
 - Assets/Custom UIs/Coda/Animations/score_descriptor_show.anim
 - Assets/Custom UIs/Coda/Animations/mult_descriptor_hide.anim
 - Assets/Custom UIs/Coda/Animations/mult_descriptor_show.anim
 - Assets/Custom UIs/Coda/Animations/score_descriptor_hide.anim
 - Assets/Custom UIs/Coda/Fonts/CODE LIGHT.OTF
 - Assets/Custom UIs/Coda/[SLHUD] - Coda.prefab
-- Assets/Custom UIs/Coda/Prefabs/ScoreDescriptor.prefab
 Dependencies: []

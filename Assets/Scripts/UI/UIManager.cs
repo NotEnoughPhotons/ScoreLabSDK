@@ -1,57 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
 {
     public class UIManager : MonoBehaviour
     {
-        public UIModule ScoreModule;
-        public UIModule MultiplierModule;
-        public UIModule HighScoreModule;
+        public static UIManager Instance { get; private set; }
 
-        public Transform followTarget;
+        public List<UIController> LoadedUIs { get; private set; }
+        public UIController ActiveUI { get; private set; }
 
         private void Awake()
         {
-            API.Score.OnScoreAdded += (data) => UpdateModule(data, ScoreModule);
-
-            API.Multiplier.OnMultiplierAdded += (data) => UpdateModule(data, MultiplierModule);
-            API.Multiplier.OnMultiplierRemoved += (data) => UpdateModule(data, MultiplierModule);
-        }
-
-        private void Update()
-        {
-            if(followTarget == null)
+            if(Instance == null)
             {
-                return;
+                Instance = this;
             }
 
-            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * 3f, 6f * Time.deltaTime);
-            Quaternion lookRot = Quaternion.LookRotation(followTarget.forward);
+            DontDestroyOnLoad(Instance.gameObject);
 
-            transform.position = move;
-            transform.rotation = lookRot;
+            LoadedUIs = new List<UIController>();
 
-            for (int i = 0; i < transform.childCount; i++)
+            for(int i = 0; i < DataManager.UI.LoadedUIObjects.Count; i++)
             {
-                if (transform.GetChild(i) != null)
+                var _object = GameObject.Instantiate(DataManager.UI.LoadedUIObjects[i]);
+                var controller = _object.GetComponent<UIController>();
+                controller.SetParent(transform);
+                controller.gameObject.SetActive(false);
+            }
+        }
+
+        private void Start()
+        {
+            LoadHUD(DataManager.UI.DefaultUIName);
+        }
+
+        public void LoadHUD(string name)
+        {
+            UnloadHUD();
+
+            foreach(var _controller in LoadedUIs)
+            {
+                if(DataManager.UI.GetHUDName(_controller.gameObject) == name)
                 {
-                    //transform.GetChild(i).LookAt(followTarget);
+                    ActiveUI = _controller;
+                    break;
                 }
             }
+
+            ActiveUI.gameObject.SetActive(true);
+            ActiveUI.SetParent(null);
         }
 
-        public void UpdateModule(PackedValue data, UIModule module)
+        public void UnloadHUD()
         {
-            if(module == null)
+            if(ActiveUI != null)
             {
-                return;
+                ActiveUI.SetParent(transform);
+                ActiveUI.gameObject.SetActive(false);
+                ActiveUI = null;
             }
-
-            module.AssignPackedData(data);
-            module.OnModuleEnable();
         }
     }
 }

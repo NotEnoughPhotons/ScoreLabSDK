@@ -1,0 +1,6 @@
+{
+	"EventType": "MULT_TEST2",
+	"Name": "TEST",
+	"Multiplier": 1.25,
+	"DecayTime": 10.0
+}
