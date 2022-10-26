@@ -16,9 +16,18 @@ namespace NEP.ScoreLab.UI
         {
             _module = GetComponent<UIModule>();
             Animator = GetComponent<Animator>();
+        }
 
+        private void OnEnable()
+        {
             API.UI.OnModuleEnabled += OnModuleEnabled;
             API.UI.OnModuleDecayed += OnModuleDecayed;
+        }
+
+        private void OnDisable()
+        {
+            API.UI.OnModuleEnabled -= OnModuleEnabled;
+            API.UI.OnModuleDecayed -= OnModuleDecayed;
         }
 
         private void PlayAnimation(string name)

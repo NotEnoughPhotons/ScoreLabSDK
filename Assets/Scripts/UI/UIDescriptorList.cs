@@ -25,7 +25,7 @@ namespace NEP.ScoreLab.UI
 
         private void OnEnable()
         {
-            API.UI.OnModuleDecayed += (item) => ActiveModules.Remove(item);
+            API.UI.OnModulePostDecayed += (item) => ActiveModules.Remove(item);
 
             API.Score.OnScoreAdded += SetModuleActive;
             API.Multiplier.OnMultiplierAdded += SetModuleActive;
@@ -33,6 +33,8 @@ namespace NEP.ScoreLab.UI
 
         private void OnDisable()
         {
+            API.UI.OnModulePostDecayed -= (item) => ActiveModules.Remove(item);
+
             API.Score.OnScoreAdded -= SetModuleActive;
             API.Multiplier.OnMultiplierAdded -= SetModuleActive;
         }
