@@ -1,7 +1,11 @@
 ManifestFileVersion: 0
-CRC: 3200065960
+CRC: 3884761430
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: coda.hud
       Dependencies: {}
+    Info_1:
+      Name: cruelty squad.hud
+      Dependencies:
+        Dependency_0: coda.hud
