@@ -71,7 +71,7 @@ namespace NEP.ScoreLab.UI
                 }
                 else
                 {
-                    if(module.PackedValue.eventType == value.eventType)
+                    if(module.PackedValue.eventType == value.eventType && value.Stackable)
                     {
                         module.OnModuleEnable();
                         module.SetDecayTime(value.DecayTime);

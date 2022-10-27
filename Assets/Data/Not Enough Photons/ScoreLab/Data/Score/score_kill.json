@@ -2,5 +2,6 @@
 	"EventType": "SCORE_KILL",
 	"Name": "KILL",
 	"Score": 100,
-	"DecayTime": 5.0
+	"DecayTime": 5.0,
+	"Stackable": true
 }

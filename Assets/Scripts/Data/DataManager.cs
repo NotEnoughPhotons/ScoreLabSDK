@@ -60,6 +60,45 @@ namespace NEP.ScoreLab.Data
                 return ValueTable[eventType];
             }
 
+            public static T Get<T>(string eventType) where T : PackedValue
+            {
+                System.Type type = typeof(T);
+
+                if(type == typeof(PackedScore))
+                {
+                    PackedScore reference = (PackedScore)Get(eventType);
+
+                    PackedScore score = new PackedScore()
+                    {
+                        eventType = reference.eventType,
+                        DecayTime = reference.DecayTime,
+                        Stackable = reference.Stackable,
+                        Name = reference.Name,
+                        Score = reference.Score
+                    };
+
+                    return score as T;
+                }
+                else if(type == typeof(PackedMultiplier))
+                {
+                    PackedMultiplier reference = (PackedMultiplier)Get(eventType);
+
+                    PackedMultiplier mult = new PackedMultiplier()
+                    {
+                        eventType = reference.eventType,
+                        DecayTime = reference.DecayTime,
+                        Stackable = reference.Stackable,
+                        Name = reference.Name,
+                        Multiplier = reference.Multiplier,
+                        Condition = reference.Condition
+                    };
+
+                    return mult as T;
+                }
+
+                return (T)Get(eventType);
+            }
+
             private static JSONScore[] GetScores()
             {
                 _scoreFiles = LoadAllFiles(Path_ScoreData, ".json");
@@ -94,13 +133,30 @@ namespace NEP.ScoreLab.Data
 
                 foreach(var score in Scores)
                 {
-                    var data = new PackedScore(score.EventType, score.Name, score.Score, score.DecayTime);
+                    var data = new PackedScore()
+                    {
+                        eventType = score.EventType,
+                        DecayTime = score.DecayTime,
+                        Stackable = score.Stackable,
+                        Name = score.Name,
+                        Score = score.Score
+                    };
+                    
                     ValueTable.Add(score.EventType, data);
                 }
 
                 foreach(var multiplier in Multipliers)
                 {
-                    var data = new PackedMultiplier(multiplier.EventType, multiplier.DecayTime, multiplier.Name, multiplier.Multiplier, multiplier.Condition);
+                    var data = new PackedMultiplier()
+                    {
+                        eventType = multiplier.EventType,
+                        DecayTime = multiplier.DecayTime,
+                        Stackable = multiplier.Stackable,
+                        Name = multiplier.Name,
+                        Multiplier = multiplier.Multiplier,
+                        Condition = multiplier.Condition
+                    };
+
                     ValueTable.Add(multiplier.EventType, data);
                 }
             }

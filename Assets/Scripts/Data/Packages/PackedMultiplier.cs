@@ -8,6 +8,11 @@ namespace NEP.ScoreLab.Data
     [Serializable]
     public class PackedMultiplier : PackedValue
     {
+        public PackedMultiplier()
+        {
+            
+        }
+
         public PackedMultiplier(string eventType, float decayTime, string name, float multiplier, string condition)
         {
             this.eventType = eventType;
@@ -16,7 +21,7 @@ namespace NEP.ScoreLab.Data
             AccumulatedMultiplier = Multiplier;
             DecayTime = decayTime;
             Condition = condition;
-            Condition = condition;
+
             this.condition = API.GameConditions.GetCondition(Condition);
 
             if (DecayTime != 0f)
@@ -28,23 +33,29 @@ namespace NEP.ScoreLab.Data
         public override PackedType PackedValueType => PackedType.Multiplier;
         public float Multiplier;
         public float AccumulatedMultiplier;
-        public float Elapsed { get => _tDecay; }
+        public float Elapsed { get => base._tDecay; }
         public string Condition;
-        public Func<bool> condition { get; }
+        public Func<bool> condition { get; private set; }
 
         private bool _timed;
         private bool _timeBegin;
 
         public override void OnValueCreated()
         {
-            _tDecay = DecayTime;
+            if (DecayTime != 0f)
+            {
+                _timed = true;
+            }
 
+            condition = API.GameConditions.GetCondition(Condition);
+            AccumulatedMultiplier = Multiplier;
+            _tDecay = DecayTime;
             API.Multiplier.OnMultiplierAdded?.Invoke(this);
         }
 
         public override void OnValueRemoved()
         {
-            AccumulatedMultiplier = Multiplier;
+            
             _timeBegin = false;
 
             API.Multiplier.OnMultiplierRemoved?.Invoke(this);

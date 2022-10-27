@@ -20,6 +20,8 @@ namespace NEP.ScoreLab.Data
 
         public string eventType;
 
+        public bool Stackable;
+
         public float DecayTime;
         public float PostDecayTime;
 
@@ -28,6 +30,11 @@ namespace NEP.ScoreLab.Data
 
         public virtual void OnUpdate() { }
         public virtual void OnUpdateDecay() { }
+
+        public void SetDecayTime(float decayTime)
+        {
+            _tDecay = decayTime;
+        }
 
         public virtual bool IsActive { get; }
 

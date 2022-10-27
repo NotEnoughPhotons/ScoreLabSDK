@@ -36,6 +36,8 @@ namespace NEP.ScoreLab.Core
 
         private float _baseMultiplier = 1f;
 
+        private int _idx;
+
         public void Initialize()
         {
             if(Instance == null)
@@ -54,10 +56,30 @@ namespace NEP.ScoreLab.Core
             }
         }
 
+        public void UpdateValue(PackedValue value)
+        {
+            if(value == null)
+            {
+                return;
+            }
+
+            value.OnUpdate();
+        }
+
         public void Add(string eventType)
         {
-            var value = DataManager.PackedValues.Get(eventType);
-            Add(value);
+            var packedValue = DataManager.PackedValues.Get(eventType);
+
+            if(packedValue.PackedValueType == PackedValue.PackedType.Score)
+            {
+                var value = DataManager.PackedValues.Get<PackedScore>(eventType);
+                Add(value);
+            }
+            else
+            {
+                var value = DataManager.PackedValues.Get<PackedMultiplier>(eventType);
+                Add(value);
+            }
         }
 
         public void Add(PackedValue value)
@@ -65,12 +87,16 @@ namespace NEP.ScoreLab.Core
             if (value.PackedValueType == PackedValue.PackedType.Score)
             {
                 PackedScore score = value as PackedScore;
+
                 AddScore(score.Score);
 
-                if (ActiveValues.Contains(value))
+                if (CheckDuplicate(value) && value.Stackable)
                 {
-                    score.AccumulatedScore += score.Score;
-                    API.Score.OnScoreAccumulated?.Invoke(score);
+                    var clone = (PackedScore)ActiveValues.Find((match) => match.eventType == value.eventType);
+
+                    clone.SetDecayTime(clone.DecayTime);
+                    clone.AccumulatedScore += clone.Score;
+                    API.Score.OnScoreAccumulated?.Invoke(clone);
                 }
                 else
                 {
@@ -82,11 +108,15 @@ namespace NEP.ScoreLab.Core
             else if (value.PackedValueType == PackedValue.PackedType.Multiplier)
             {
                 PackedMultiplier mult = value as PackedMultiplier;
+
                 AddMultiplier(mult.Multiplier);
 
-                if (ActiveValues.Contains(value))
+                if (CheckDuplicate(value) && value.Stackable)
                 {
-                    mult.AccumulatedMultiplier += mult.Multiplier;
+                    var clone = (PackedMultiplier)ActiveValues.Find((match) => match.eventType == value.eventType);
+
+                    clone.SetDecayTime(clone.DecayTime);
+                    clone.AccumulatedMultiplier += mult.Multiplier;
                     API.Multiplier.OnMultiplierAccumulated?.Invoke(mult);
                 }
                 else

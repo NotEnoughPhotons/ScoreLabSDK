@@ -2,5 +2,6 @@
 	"EventType": "MULT_KILL",
 	"Name": "KILL",
 	"Multiplier": 2.20,
-	"DecayTime": 10.0
+	"DecayTime": 10.0,
+	"Stackable": true
 }
