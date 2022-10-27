@@ -28,6 +28,7 @@ namespace NEP.ScoreLab.UI
             API.UI.OnModulePostDecayed += (item) => ActiveModules.Remove(item);
 
             API.Score.OnScoreAdded += SetModuleActive;
+            API.Score.OnScoreAccumulated += SetModuleActive;
             API.Multiplier.OnMultiplierAdded += SetModuleActive;
         }
 
@@ -73,10 +74,21 @@ namespace NEP.ScoreLab.UI
                 {
                     if(module.PackedValue.eventType == value.eventType && value.Stackable)
                     {
-                        module.OnModuleEnable();
-                        module.SetDecayTime(value.DecayTime);
-                        module.SetPostDecayTime(0.5f);
-                        break;
+                        if (value.Stackable && value.Tiers != null)
+                        {
+                            module.AssignPackedData(value);
+                            module.OnModuleEnable();
+                            module.SetDecayTime(value.DecayTime);
+                            module.SetPostDecayTime(0.5f);
+                            break;
+                        }
+                        else if (value.Stackable)
+                        {
+                            module.OnModuleEnable();
+                            module.SetDecayTime(value.DecayTime);
+                            module.SetPostDecayTime(0.5f);
+                            break;
+                        }
                     }
                 }
             }

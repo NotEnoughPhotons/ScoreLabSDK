@@ -19,11 +19,20 @@ namespace NEP.ScoreLab.Data
         public virtual PackedType PackedValueType => PackedType.Base;
 
         public string eventType;
+        public string TierEventType;
 
         public bool Stackable;
 
         public float DecayTime;
         public float PostDecayTime;
+
+        public PackedValue[] Tiers;
+        public PackedValue CurrentTier;
+
+        public virtual bool IsActive { get; }
+
+        [UnityEngine.SerializeField] protected float _tDecay;
+        [UnityEngine.SerializeField] private int _tierIndex = 0;
 
         public virtual void OnValueCreated() { }
         public virtual void OnValueRemoved() { }
@@ -36,9 +45,28 @@ namespace NEP.ScoreLab.Data
             _tDecay = decayTime;
         }
 
-        public virtual bool IsActive { get; }
+        public void NextTier()
+        {
+            if(Tiers == null)
+            {
+                return;
+            }
 
-        [UnityEngine.SerializeField] protected float _tDecay;
+            if (_tierIndex >= Tiers.Length)
+            {
+                _tierIndex = Tiers.Length;
+                CurrentTier = Tiers[Tiers.Length - 1];
+            }
+            else
+            {
+                CurrentTier = Tiers[_tierIndex++];
+            }
+        }
+
+        public void ResetTier()
+        {
+            _tierIndex = 0;
+        }
     }
 }
 

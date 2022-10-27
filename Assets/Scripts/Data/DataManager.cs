@@ -74,7 +74,8 @@ namespace NEP.ScoreLab.Data
                         DecayTime = reference.DecayTime,
                         Stackable = reference.Stackable,
                         Name = reference.Name,
-                        Score = reference.Score
+                        Score = reference.Score,
+                        Tiers = reference.Tiers
                     };
 
                     return score as T;
@@ -90,7 +91,8 @@ namespace NEP.ScoreLab.Data
                         Stackable = reference.Stackable,
                         Name = reference.Name,
                         Multiplier = reference.Multiplier,
-                        Condition = reference.Condition
+                        Condition = reference.Condition,
+                        Tiers = reference.Tiers
                     };
 
                     return mult as T;
@@ -139,25 +141,77 @@ namespace NEP.ScoreLab.Data
                         DecayTime = score.DecayTime,
                         Stackable = score.Stackable,
                         Name = score.Name,
-                        Score = score.Score
+                        Score = score.Score,
                     };
+
+                    if(score.Tiers != null)
+                    {
+                        if(score.Tiers.Length > 0)
+                        {
+                            List<PackedScore> tiers = new List<PackedScore>();
+
+                            foreach(var tier in score.Tiers)
+                            {
+                                var tierData = new PackedScore()
+                                {
+                                    eventType = score.EventType,
+                                    TierEventType = tier.TierEventType,
+                                    DecayTime = tier.DecayTime,
+                                    Stackable = tier.Stackable,
+                                    Name = tier.Name,
+                                    Score = tier.Score
+                                };
+
+                                tiers.Add(tierData);
+                            }
+
+                            data.Tiers = tiers.ToArray();
+                        }
+                    }
                     
                     ValueTable.Add(score.EventType, data);
                 }
 
-                foreach(var multiplier in Multipliers)
+                foreach (var mult in Multipliers)
                 {
                     var data = new PackedMultiplier()
                     {
-                        eventType = multiplier.EventType,
-                        DecayTime = multiplier.DecayTime,
-                        Stackable = multiplier.Stackable,
-                        Name = multiplier.Name,
-                        Multiplier = multiplier.Multiplier,
-                        Condition = multiplier.Condition
+                        eventType = mult.EventType,
+                        DecayTime = mult.DecayTime,
+                        Stackable = mult.Stackable,
+                        Name = mult.Name,
+                        Multiplier = mult.Multiplier,
+                        Condition = mult.Condition
                     };
 
-                    ValueTable.Add(multiplier.EventType, data);
+                    if (mult.Tiers != null)
+                    {
+                        if (mult.Tiers.Length > 0)
+                        {
+                            List<PackedMultiplier> tiers = new List<PackedMultiplier>();
+
+                            foreach (var tier in mult.Tiers)
+                            {
+
+                                var tierData = new PackedMultiplier()
+                                {
+                                    eventType = mult.EventType,
+                                    TierEventType = tier.TierEventType,
+                                    DecayTime = tier.DecayTime,
+                                    Stackable = tier.Stackable,
+                                    Name = tier.Name,
+                                    Multiplier = tier.Multiplier,
+                                    Condition = tier.Condition
+                                };
+
+                                tiers.Add(tierData);
+                            }
+
+                            data.Tiers = tiers.ToArray();
+                        }
+                    }
+
+                    ValueTable.Add(mult.EventType, data);
                 }
             }
 

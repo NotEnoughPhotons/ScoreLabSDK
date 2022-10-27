@@ -8,27 +8,7 @@ namespace NEP.ScoreLab.Data
     [Serializable]
     public class PackedMultiplier : PackedValue
     {
-        public PackedMultiplier()
-        {
-            
-        }
-
-        public PackedMultiplier(string eventType, float decayTime, string name, float multiplier, string condition)
-        {
-            this.eventType = eventType;
-            Name = name;
-            Multiplier = multiplier;
-            AccumulatedMultiplier = Multiplier;
-            DecayTime = decayTime;
-            Condition = condition;
-
-            this.condition = API.GameConditions.GetCondition(Condition);
-
-            if (DecayTime != 0f)
-            {
-                _timed = true;
-            }
-        }
+        public PackedMultiplier() { }
 
         public override PackedType PackedValueType => PackedType.Multiplier;
         public float Multiplier;

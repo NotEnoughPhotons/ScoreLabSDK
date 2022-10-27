@@ -3,5 +3,36 @@
 	"Name": "KILL",
 	"Multiplier": 2.20,
 	"DecayTime": 10.0,
-	"Stackable": true
+	"Stackable": true,
+	"Tiers":
+	[
+		{
+			"TierEventType": "MULT_KILLING_SPREE",
+			"Name": "Killing Spree!",
+			"Multiplier": 1.25,
+			"DecayTime": 5.0,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "MULT_KILLING_FRENZY",
+			"Name": "Killing Frenzy!",
+			"Multiplier": 1.50,
+			"DecayTime": 4.5,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "MULT_RUNNING_RIOT",
+			"Name": "Running Riot!",
+			"Multiplier": 1.75,
+			"DecayTime": 4.0,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "MULT_RAMPAGE",
+			"Name": "Rampage!",
+			"Multiplier": 2.00,
+			"DecayTime": 3.5,
+			"Stackable": true
+		}
+	]
 }

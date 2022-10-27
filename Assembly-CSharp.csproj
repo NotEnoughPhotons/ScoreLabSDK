@@ -68,7 +68,6 @@
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIModuleAnimator.cs" />
     <Compile Include="Assets\Scripts\AssetBundleGen.cs" />
-    <Compile Include="Assets\Scripts\Data\Packages\PackedValueComparer.cs" />
     <Compile Include="Assets\Scripts\Data\Packages\PackedValue.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIMultiplierModule.cs" />
     <Compile Include="Assets\Scripts\Data\Packages\EventType.cs" />

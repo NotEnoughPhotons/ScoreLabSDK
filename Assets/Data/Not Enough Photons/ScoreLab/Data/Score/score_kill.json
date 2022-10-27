@@ -1,7 +1,38 @@
 {
 	"EventType": "SCORE_KILL",
-	"Name": "KILL",
+	"Name": "Target Eliminated",
 	"Score": 100,
 	"DecayTime": 5.0,
-	"Stackable": true
+	"Stackable": true,
+	"Tiers":
+	[
+		{
+			"TierEventType": "SCORE_KILLING_SPREE",
+			"Name": "Killing Spree!",
+			"Score": 125,
+			"DecayTime": 5.0,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "SCORE_KILLING_FRENZY",
+			"Name": "Killing Frenzy!",
+			"Score": 150,
+			"DecayTime": 4.5,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "SCORE_RUNNING_RIOT",
+			"Name": "Running Riot!",
+			"Score": 175,
+			"DecayTime": 4.0,
+			"Stackable": true
+		},
+		{
+			"TierEventType": "SCORE_RAMPAGE",
+			"Name": "Rampage!",
+			"Score": 200,
+			"DecayTime": 3.5,
+			"Stackable": true
+		}
+	]
 }

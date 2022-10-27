@@ -7,19 +7,7 @@ namespace NEP.ScoreLab.Data
     [Serializable]
     public class PackedScore : PackedValue
     {
-        public PackedScore()
-        {
-            _tDecay = DecayTime;
-        }
-
-        public PackedScore(string eventType, string name, int score, float decayTime = 10f)
-        {
-            this.eventType = eventType;
-            Name = name;
-            Score = score;
-            DecayTime = decayTime;
-            AccumulatedScore = this.Score;
-        }
+        public PackedScore() { }
 
         public override PackedType PackedValueType => PackedType.Score;
         public int Score;
