@@ -30,15 +30,12 @@ namespace NEP.ScoreLab.Data
             condition = API.GameConditions.GetCondition(Condition);
             AccumulatedMultiplier = Multiplier;
             _tDecay = DecayTime;
-            API.Multiplier.OnMultiplierAdded?.Invoke(this);
         }
 
         public override void OnValueRemoved()
         {
-            
             _timeBegin = false;
-
-            API.Multiplier.OnMultiplierRemoved?.Invoke(this);
+            ResetTier();
         }
 
         public override void OnUpdate()

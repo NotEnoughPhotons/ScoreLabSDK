@@ -17,12 +17,11 @@ namespace NEP.ScoreLab.Data
         {
             _tDecay = DecayTime;
             AccumulatedScore = Score;
-            API.Score.OnScoreAdded?.Invoke(this);
         }
 
         public override void OnValueRemoved()
         {
-            API.Score.OnScoreRemoved?.Invoke(this);
+            ResetTier();
         }
 
         public override void OnUpdate()

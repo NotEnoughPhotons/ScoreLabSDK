@@ -27,8 +27,17 @@ namespace NEP.ScoreLab.UI
             }
             else if (ModuleType == UIModuleType.Descriptor)
             {
-                SetText(_title, _packedScore.Name);
-                SetText(_value, _packedScore.AccumulatedScore.ToString());
+                if (PackedValue.Stackable)
+                {
+                    SetText(_title, _packedScore.Name);
+                    SetText(_value, _packedScore.AccumulatedScore.ToString());
+                }
+
+                if(PackedValue.Tiers != null)
+                {
+                    SetText(_title, _packedScore.Name);
+                    SetText(_value, _packedScore.Score.ToString());
+                }
             }
         }
 

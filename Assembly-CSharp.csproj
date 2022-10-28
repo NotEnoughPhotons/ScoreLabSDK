@@ -68,15 +68,15 @@
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIModuleAnimator.cs" />
     <Compile Include="Assets\Scripts\AssetBundleGen.cs" />
+    <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\Packages\PackedValue.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIMultiplierModule.cs" />
     <Compile Include="Assets\Scripts\Data\Packages\EventType.cs" />
     <Compile Include="Assets\Scripts\Core\ScoreTracker.cs" />
+    <Compile Include="Assets\Scripts\Audio\PooledAudio.cs" />
     <Compile Include="Assets\Scripts\UI\UIDescriptorList.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIScoreModule.cs" />
     <Compile Include="Assets\Scripts\Data\JSON\JSONScore.cs" />
-    <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\Audio\PooledAudio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -100,46 +100,39 @@ namespace NEP.ScoreLab.Data
                 return ValueTable[eventType];
             }
 
-            public static T Get<T>(string eventType) where T : PackedValue
+            public static PackedScore GetScore(string eventType)
             {
-                System.Type type = typeof(T);
-
-                if(type == typeof(PackedScore))
+                PackedScore value = (PackedScore)Get(eventType);
+                PackedScore score = new PackedScore()
                 {
-                    PackedScore reference = (PackedScore)Get(eventType);
+                    eventType = value.eventType,
+                    Stackable = value.Stackable,
+                    EventAudio = value.EventAudio,
+                    Name = value.Name,
+                    Score = value.Score,
+                    DecayTime = value.DecayTime,
+                    Tiers = value.Tiers
+                };
 
-                    PackedScore score = new PackedScore()
-                    {
-                        eventType = reference.eventType,
-                        DecayTime = reference.DecayTime,
-                        Stackable = reference.Stackable,
-                        EventAudio = reference.EventAudio,
-                        Name = reference.Name,
-                        Score = reference.Score,
-                        Tiers = reference.Tiers
-                    };
+                return score;
+            }
 
-                    return score as T;
-                }
-                else if(type == typeof(PackedMultiplier))
+            public static PackedMultiplier GetMultiplier(string eventType)
+            {
+                PackedMultiplier value = (PackedMultiplier)Get(eventType);
+                PackedMultiplier mult = new PackedMultiplier()
                 {
-                    PackedMultiplier reference = (PackedMultiplier)Get(eventType);
+                    eventType = value.eventType,
+                    Stackable = value.Stackable,
+                    EventAudio = value.EventAudio,
+                    Name = value.Name,
+                    Multiplier = value.Multiplier,
+                    DecayTime = value.DecayTime,
+                    Condition = value.Condition,
+                    Tiers = value.Tiers
+                };
 
-                    PackedMultiplier mult = new PackedMultiplier()
-                    {
-                        eventType = reference.eventType,
-                        DecayTime = reference.DecayTime,
-                        Stackable = reference.Stackable,
-                        Name = reference.Name,
-                        Multiplier = reference.Multiplier,
-                        Condition = reference.Condition,
-                        Tiers = reference.Tiers
-                    };
-
-                    return mult as T;
-                }
-
-                return (T)Get(eventType);
+                return mult;
             }
 
             private static JSONScore[] GetScores()
@@ -207,7 +200,6 @@ namespace NEP.ScoreLab.Data
                                 {
                                     AudioClip clip = Audio.GetClip(tier.EventAudio);
                                     tierData.EventAudio = clip;
-                                    Debug.Log(clip.name);
                                 }
 
                                 tiers.Add(tierData);

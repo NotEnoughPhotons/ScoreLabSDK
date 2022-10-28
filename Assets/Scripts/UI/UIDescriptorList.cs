@@ -29,7 +29,11 @@ namespace NEP.ScoreLab.UI
 
             API.Score.OnScoreAdded += SetModuleActive;
             API.Score.OnScoreAccumulated += SetModuleActive;
+            API.Score.OnScoreTierReached += SetModuleActive;
+
             API.Multiplier.OnMultiplierAdded += SetModuleActive;
+            API.Multiplier.OnMultiplierAccumulated += SetModuleActive;
+            API.Multiplier.OnMultiplierTierReached += SetModuleActive;
         }
 
         private void OnDisable()
@@ -37,7 +41,12 @@ namespace NEP.ScoreLab.UI
             API.UI.OnModulePostDecayed -= (item) => ActiveModules.Remove(item);
 
             API.Score.OnScoreAdded -= SetModuleActive;
+            API.Score.OnScoreAccumulated -= SetModuleActive;
+            API.Score.OnScoreTierReached -= SetModuleActive;
+
             API.Multiplier.OnMultiplierAdded -= SetModuleActive;
+            API.Multiplier.OnMultiplierAccumulated -= SetModuleActive;
+            API.Multiplier.OnMultiplierTierReached -= SetModuleActive;
         }
 
         public void SetPackedType(int packedType)
@@ -61,36 +70,43 @@ namespace NEP.ScoreLab.UI
             {
                 if (!ActiveModules.Contains(module))
                 {
-                    module.AssignPackedData(value);
-
-                    module.SetDecayTime(value.DecayTime);
-                    module.SetPostDecayTime(0.5f);
-                    module.gameObject.SetActive(true);
-
-                    ActiveModules.Add(module);
+                    InitializeInactiveModule(value, module);
                     break;
                 }
                 else
                 {
-                    if(module.PackedValue.eventType == value.eventType && value.Stackable)
-                    {
-                        if (value.Stackable && value.Tiers != null)
-                        {
-                            module.AssignPackedData(value);
-                            module.OnModuleEnable();
-                            module.SetDecayTime(value.DecayTime);
-                            module.SetPostDecayTime(0.5f);
-                            break;
-                        }
-                        else if (value.Stackable)
-                        {
-                            module.OnModuleEnable();
-                            module.SetDecayTime(value.DecayTime);
-                            module.SetPostDecayTime(0.5f);
-                            break;
-                        }
-                    }
+                    InitializeActiveModule(value, module);
+                    break;
                 }
+            }
+        }
+
+        public void InitializeInactiveModule(PackedValue value, UIModule module)
+        {
+            module.AssignPackedData(value);
+
+            module.SetDecayTime(value.DecayTime);
+            module.SetPostDecayTime(0.5f);
+            module.gameObject.SetActive(true);
+
+            ActiveModules.Add(module);
+        }
+
+        public void InitializeActiveModule(PackedValue value, UIModule module)
+        {
+            if (value.Stackable)
+            {
+                module.OnModuleEnable();
+                module.SetDecayTime(value.DecayTime);
+                module.SetPostDecayTime(0.5f);
+            }
+
+            if (value.Tiers != null)
+            {
+                module.AssignPackedData(value);
+                module.OnModuleEnable();
+                module.SetDecayTime(value.DecayTime);
+                module.SetPostDecayTime(0.5f);
             }
         }
     }

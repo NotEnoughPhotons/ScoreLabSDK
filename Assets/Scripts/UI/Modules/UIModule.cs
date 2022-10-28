@@ -38,7 +38,7 @@ namespace NEP.ScoreLab.UI
         protected float _decayTime { get; private set; }
         protected float _postDecayTime { get; private set; }
 
-        protected float _tDecay { get; private set; }
+        [SerializeField] protected float _tDecay;
         protected float _tPostDecay { get; private set; }
 
         private string Path_Root => name;

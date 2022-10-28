@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 using NEP.ScoreLab.Data;
@@ -56,102 +57,18 @@ namespace NEP.ScoreLab.Core
 
         public void Add(string eventType)
         {
-            var packedValue = DataManager.PackedValues.Get(eventType);
-
-            if(packedValue.PackedValueType == PackedValue.PackedType.Score)
-            {
-                var value = DataManager.PackedValues.Get<PackedScore>(eventType);
-                Add(value);
-            }
-            else if(packedValue.PackedValueType == PackedValue.PackedType.Multiplier)
-            {
-                var value = DataManager.PackedValues.Get<PackedMultiplier>(eventType);
-                Add(value);
-            }
+            Add(DataManager.PackedValues.Get(eventType));
         }
 
         public void Add(PackedValue value)
         {
             if (value.PackedValueType == PackedValue.PackedType.Score)
             {
-                PackedScore score = value as PackedScore;
-
-                if (CheckDuplicate(score))
-                {
-                    var duplicate = GetClone<PackedScore>(score);
-
-                    if (score.Stackable && score.Tiers != null)
-                    {
-                        duplicate.NextTier();
-                        PackedScore tier = (PackedScore)duplicate.CurrentTier;
-
-                        score.Name = tier.Name;
-                        score.Score = tier.Score;
-                        score.DecayTime = tier.DecayTime;
-
-                        AddScore(score.Score);
-                        duplicate.SetDecayTime(score.DecayTime);
-                        OnScoreValueAccumulated(duplicate);
-                    }
-                    else if (score.Stackable)
-                    {
-                        AddScore(score.Score);
-                        OnScoreValueAccumulated(duplicate);
-                    }
-                    else
-                    {
-                        AddScore(score.Score);
-                        ActiveValues.Add(score);
-                    }
-                }
-                else
-                {
-                    AddScore(score.Score);
-                    ActiveValues.Add(score);
-                }
-
-                score.OnValueCreated();
+                SetPackedScore(DataManager.PackedValues.GetScore(value.eventType));
             }
             else if (value.PackedValueType == PackedValue.PackedType.Multiplier)
             {
-                PackedMultiplier mult = value as PackedMultiplier;
-
-                if (CheckDuplicate(mult))
-                {
-                    var duplicate = GetClone<PackedMultiplier>(mult);
-
-                    if (mult.Stackable && mult.Tiers != null)
-                    {
-                        duplicate.NextTier();
-                        PackedMultiplier tier = (PackedMultiplier)duplicate.CurrentTier;
-
-                        mult.Name = tier.Name;
-                        mult.Multiplier = tier.Multiplier;
-                        mult.DecayTime = tier.DecayTime;
-                        mult.Condition = tier.Condition;
-
-                        AddMultiplier(mult.Multiplier);
-                        duplicate.SetDecayTime(mult.DecayTime);
-                        OnMultiplierValueAccumulated(mult);
-                    }
-                    else if (mult.Stackable)
-                    {
-                        AddMultiplier(mult.Multiplier);
-                        OnMultiplierValueAccumulated(duplicate);
-                    }
-                    else
-                    {
-                        AddMultiplier(mult.Multiplier);
-                        ActiveValues.Add(mult);
-                    }
-                }
-                else
-                {
-                    AddMultiplier(mult.Multiplier);
-                    ActiveValues.Add(mult);
-                }
-
-                mult.OnValueCreated();
+                SetPackedMultiplier(DataManager.PackedValues.GetMultiplier(value.eventType));
             }
         }
 
@@ -162,6 +79,8 @@ namespace NEP.ScoreLab.Core
                 ActiveValues.Remove(value);
 
                 value.OnValueRemoved();
+
+                API.Score.OnScoreRemoved?.Invoke((PackedScore)value);
             }
             else if (value.PackedValueType == PackedValue.PackedType.Multiplier)
             {
@@ -170,6 +89,8 @@ namespace NEP.ScoreLab.Core
                 RemoveMultiplier(mult.AccumulatedMultiplier);
 
                 value.OnValueRemoved();
+
+                API.Multiplier.OnMultiplierRemoved?.Invoke((PackedMultiplier)value);
             }
         }
 
@@ -208,18 +129,151 @@ namespace NEP.ScoreLab.Core
             return false;
         }
 
-        private void OnScoreValueAccumulated(PackedScore value)
+        private void SetPackedScore(PackedScore score)
         {
-            value.SetDecayTime(value.DecayTime);
-            value.AccumulatedScore += value.Score;
-            API.Score.OnScoreAccumulated?.Invoke(value);
+            if(score == null)
+            {
+                return;
+            }
+
+            if (!CheckDuplicate(score))
+            {
+                InitializeValue(score);
+                AddScore(score.Score);
+                ActiveValues.Add(score);
+
+                API.Score.OnScoreAdded?.Invoke(score);
+            }
+            else
+            {
+                if(score.Tiers != null)
+                {
+                    PackedScore tier = score.NextTier() as PackedScore;
+                    PackedScore copy = CopyFromScoreTier(score, tier);
+
+                    API.Score.OnScoreTierReached?.Invoke(copy);
+                }
+                else if (score.Stackable)
+                {
+                    AddScore(score.Score);
+                    score.SetDecayTime(score.DecayTime);
+                    score.AccumulatedScore += score.Score;
+
+                    API.Score.OnScoreAccumulated?.Invoke(score);
+                }
+                else
+                {
+                    PackedScore copy = CopyFromScore(score);
+                    InitializeValue(copy);
+                    AddScore(copy.Score);
+                    ActiveValues.Add(copy);
+
+                    API.Score.OnScoreAdded?.Invoke(copy);
+                }
+            }
         }
 
-        private void OnMultiplierValueAccumulated(PackedMultiplier value)
+        private void SetPackedMultiplier(PackedMultiplier multiplier)
         {
+            if (multiplier == null)
+            {
+                return;
+            }
+
+            if (!CheckDuplicate(multiplier))
+            {
+                InitializeValue(multiplier);
+                AddMultiplier(multiplier.Multiplier);
+                ActiveValues.Add(multiplier);
+
+                API.Multiplier.OnMultiplierAdded?.Invoke(multiplier);
+            }
+            else
+            {
+                if (multiplier.Tiers != null)
+                {
+                    PackedMultiplier tier = multiplier.NextTier() as PackedMultiplier;
+                    PackedMultiplier copy = CopyFromMultTier(multiplier, tier);
+
+                    API.Multiplier.OnMultiplierTierReached?.Invoke(copy);
+                }
+                else if (multiplier.Stackable)
+                {
+                    AddMultiplier(multiplier.Multiplier);
+                    multiplier.SetDecayTime(multiplier.DecayTime);
+                    multiplier.AccumulatedMultiplier += multiplier.Multiplier;
+
+                    API.Multiplier.OnMultiplierAccumulated?.Invoke(multiplier);
+                }
+                else
+                {
+                    PackedMultiplier copy = CopyFromMult(multiplier);
+                    InitializeValue(copy);
+                    AddMultiplier(copy.Multiplier);
+                    ActiveValues.Add(copy);
+
+                    API.Multiplier.OnMultiplierAdded?.Invoke(copy);
+                }
+            }
+        }
+
+        private PackedScore CopyFromScoreTier(PackedScore original, PackedScore tier)
+        {
+            original.eventType = tier.eventType;
+            original.Name = tier.Name;
+            original.Score = tier.Score;
+            original.DecayTime = tier.DecayTime;
+            original.SetDecayTime(original.DecayTime);
+            original.EventAudio = tier.EventAudio;
+
+            return original;
+        }
+
+        private PackedMultiplier CopyFromMultTier(PackedMultiplier original, PackedMultiplier tier)
+        {
+            original.eventType = tier.eventType;
+            original.Name = tier.Name;
+            original.Multiplier = tier.Multiplier;
+            original.SetDecayTime(tier.DecayTime);
+            original.EventAudio = tier.EventAudio;
+            original.Condition = tier.Condition;
+
+            return original;
+        }
+
+        private PackedScore CopyFromScore(PackedScore original)
+        {
+            PackedScore score = new PackedScore()
+            {
+                eventType = original.eventType,
+                Name = original.Name,
+                Score = original.Score,
+                EventAudio = original.EventAudio,
+                DecayTime = original.DecayTime
+            };
+
+            return score;
+        }
+
+        private PackedMultiplier CopyFromMult(PackedMultiplier original)
+        {
+            PackedMultiplier score = new PackedMultiplier()
+            {
+                eventType = original.eventType,
+                Name = original.Name,
+                Multiplier = original.Multiplier,
+                EventAudio = original.EventAudio,
+                DecayTime = original.DecayTime,
+                Condition = original.Condition
+            };
+
+            return score;
+        }
+
+        private void InitializeValue(PackedValue value)
+        {
+            value.OnValueCreated();
             value.SetDecayTime(value.DecayTime);
-            value.AccumulatedMultiplier += value.Multiplier;
-            API.Multiplier.OnMultiplierAccumulated?.Invoke(value);
         }
 
         private T GetClone<T>(PackedValue value) where T : PackedValue

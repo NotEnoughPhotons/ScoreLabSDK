@@ -47,25 +47,25 @@ namespace NEP.ScoreLab.Data
             _tDecay = decayTime;
         }
 
-        public void NextTier()
+        public PackedValue NextTier()
         {
             if(Tiers == null)
             {
-                return;
+                return null;
             }
 
             if (_tierIndex >= Tiers.Length)
             {
                 _tierIndex = Tiers.Length;
-                CurrentTier = Tiers[Tiers.Length - 1];
+                return CurrentTier = Tiers[Tiers.Length - 1];
             }
             else
             {
-                CurrentTier = Tiers[_tierIndex++];
+                return CurrentTier = Tiers[_tierIndex++];
             }
         }
 
-        public void ResetTier()
+        protected void ResetTier()
         {
             _tierIndex = 0;
         }
