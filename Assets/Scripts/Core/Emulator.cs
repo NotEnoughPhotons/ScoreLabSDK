@@ -32,6 +32,8 @@ namespace NEP.ScoreLab.Core
             Data.DataManager.Init();
             new ScoreTracker();
             TestFunc = new Func<bool>(() => _testCondition);
+
+            DataManager.UI.SpawnDefaultUI();
         }
 
         private void Update()

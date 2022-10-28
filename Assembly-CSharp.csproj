@@ -75,6 +75,8 @@
     <Compile Include="Assets\Scripts\UI\UIDescriptorList.cs" />
     <Compile Include="Assets\Scripts\UI\Modules\UIScoreModule.cs" />
     <Compile Include="Assets\Scripts\Data\JSON\JSONScore.cs" />
+    <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Audio\PooledAudio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

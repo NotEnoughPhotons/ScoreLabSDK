@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 715467618
+CRC: 771449256
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c6467fcd56ce2a64afd1d9ffa071d046
+    Hash: efee08638a7291d0cf2b0b39b81124d9
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9fe6e216ad13b9bb9dca2d050dd317f7
+    Hash: 68c7789fd9ed67a7c0a671c037f75475
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,6 +18,8 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 74
+  Script: {instanceID: 0}
+- Class: 83
   Script: {instanceID: 0}
 - Class: 91
   Script: {instanceID: 0}
@@ -111,13 +113,21 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/Custom UIs/Coda/SFX/score_kill_tier07.wav
 - Assets/Shaders/UnlitZTestAlways.shader
 - Assets/Custom UIs/Coda/Fonts/CODE BOLD.OTF
+- Assets/Custom UIs/Coda/SFX/score_kill_tier05.wav
+- Assets/Custom UIs/Coda/SFX/score_kill_tier06.wav
 - Assets/Shaders/GUITextShader.shader
 - Assets/Custom UIs/Coda/Animations/score_descriptor_show.anim
+- Assets/Custom UIs/Coda/SFX/score_kill_tier04.wav
 - Assets/Custom UIs/Coda/Animations/mult_descriptor_hide.anim
 - Assets/Custom UIs/Coda/Animations/mult_descriptor_show.anim
+- Assets/Custom UIs/Coda/SFX/score_kill_tier01.wav
 - Assets/Custom UIs/Coda/Animations/score_descriptor_hide.anim
-- Assets/Custom UIs/Coda/Fonts/CODE LIGHT.OTF
+- Assets/Custom UIs/Coda/SFX/score_kill_tier08.wav
 - Assets/Custom UIs/Coda/[SLHUD] - Coda.prefab
+- Assets/Custom UIs/Coda/SFX/score_kill_tier03.wav
+- Assets/Custom UIs/Coda/Fonts/CODE LIGHT.OTF
+- Assets/Custom UIs/Coda/SFX/score_kill_tier02.wav
 Dependencies: []

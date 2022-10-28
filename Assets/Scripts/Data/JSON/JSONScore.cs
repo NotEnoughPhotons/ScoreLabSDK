@@ -7,6 +7,7 @@ namespace NEP.ScoreLab.Data
 
         public float DecayTime;
         public bool Stackable;
+        public string EventAudio;
 
         public string Name;
         public int Score;

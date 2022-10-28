@@ -21,6 +21,8 @@ namespace NEP.ScoreLab.Data
         public string eventType;
         public string TierEventType;
 
+        public UnityEngine.AudioClip EventAudio;
+
         public bool Stackable;
 
         public float DecayTime;

@@ -10,6 +10,46 @@ namespace NEP.ScoreLab.Data
 {
     public static class DataManager
     {
+        public static class Audio
+        {
+            public static List<AudioClip> Clips { get; private set; }
+            
+            public static void Init()
+            {
+                Clips = new List<AudioClip>();
+                GetAudioClips();
+            }
+
+            public static void GetAudioClips()
+            {
+                foreach(var bundleAsset in Bundle.Bundles)
+                {
+                    var loadedObjects = bundleAsset.LoadAllAssets();
+
+                    foreach(var loadedAsset in loadedObjects)
+                    {
+                        if (loadedAsset is AudioClip clip)
+                        {
+                            Clips.Add(clip);
+                        }
+                    }
+                }
+            }
+
+            public static AudioClip GetClip(string nameQuery)
+            {
+                foreach(var clip in Clips)
+                {
+                    if(clip.name == nameQuery)
+                    {
+                        return clip;
+                    }
+                }
+
+                return null;
+            }
+        }
+        
         public static class Bundle
         {
             public static List<AssetBundle> Bundles { get; private set; }
@@ -73,6 +113,7 @@ namespace NEP.ScoreLab.Data
                         eventType = reference.eventType,
                         DecayTime = reference.DecayTime,
                         Stackable = reference.Stackable,
+                        EventAudio = reference.EventAudio,
                         Name = reference.Name,
                         Score = reference.Score,
                         Tiers = reference.Tiers
@@ -161,6 +202,13 @@ namespace NEP.ScoreLab.Data
                                     Name = tier.Name,
                                     Score = tier.Score
                                 };
+
+                                if (tier.EventAudio != null)
+                                {
+                                    AudioClip clip = Audio.GetClip(tier.EventAudio);
+                                    tierData.EventAudio = clip;
+                                    Debug.Log(clip.name);
+                                }
 
                                 tiers.Add(tierData);
                             }
@@ -387,6 +435,7 @@ namespace NEP.ScoreLab.Data
             InitializeDirectories();
 
             Bundle.Init();
+            Audio.Init();
             UI.Init();
             PackedValues.Init();
             //HighScore.Init();

@@ -91,7 +91,7 @@ namespace NEP.ScoreLab.Core
 
                         AddScore(score.Score);
                         duplicate.SetDecayTime(score.DecayTime);
-                        OnScoreValueAccumulated(score);
+                        OnScoreValueAccumulated(duplicate);
                     }
                     else if (score.Stackable)
                     {

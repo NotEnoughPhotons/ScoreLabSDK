@@ -10,6 +10,7 @@
 			"TierEventType": "SCORE_KILLING_SPREE",
 			"Name": "Killing Spree!",
 			"Score": 125,
+			"EventAudio": "score_kill_tier01",
 			"DecayTime": 5.0,
 			"Stackable": true
 		},
@@ -17,6 +18,7 @@
 			"TierEventType": "SCORE_KILLING_FRENZY",
 			"Name": "Killing Frenzy!",
 			"Score": 150,
+			"EventAudio": "score_kill_tier02",
 			"DecayTime": 4.5,
 			"Stackable": true
 		},
@@ -24,6 +26,7 @@
 			"TierEventType": "SCORE_RUNNING_RIOT",
 			"Name": "Running Riot!",
 			"Score": 175,
+			"EventAudio": "score_kill_tier03",
 			"DecayTime": 4.0,
 			"Stackable": true
 		},
@@ -31,6 +34,7 @@
 			"TierEventType": "SCORE_RAMPAGE",
 			"Name": "Rampage!",
 			"Score": 200,
+			"EventAudio": "score_kill_tier04",
 			"DecayTime": 3.5,
 			"Stackable": true
 		}
