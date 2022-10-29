@@ -96,6 +96,7 @@ namespace NEP.ScoreLab.UI
         {
             if (value.Stackable)
             {
+                module.AssignPackedData(value);
                 module.OnModuleEnable();
                 module.SetDecayTime(value.DecayTime);
                 module.SetPostDecayTime(0.5f);

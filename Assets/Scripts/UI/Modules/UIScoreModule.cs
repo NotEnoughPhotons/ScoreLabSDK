@@ -30,7 +30,20 @@ namespace NEP.ScoreLab.UI
                 if (PackedValue.Stackable)
                 {
                     SetText(_title, _packedScore.Name);
-                    SetText(_value, _packedScore.AccumulatedScore.ToString());
+
+                    if (PackedValue.TierEventType != null)
+                    {
+                        SetText(_value, _packedScore.Score.ToString());
+                    }
+                    else
+                    {
+                        SetText(_value, _packedScore.AccumulatedScore.ToString());
+                    }
+                }
+                else
+                {
+                    SetText(_title, _packedScore.Name.ToString());
+                    SetText(_value, _packedScore.Score.ToString());
                 }
 
                 if(PackedValue.Tiers != null)

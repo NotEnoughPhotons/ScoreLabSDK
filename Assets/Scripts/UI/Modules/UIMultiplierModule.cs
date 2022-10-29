@@ -32,11 +32,28 @@ namespace NEP.ScoreLab.UI
             }
             else if (ModuleType == UIModuleType.Descriptor)
             {
-                SetText(_title, _packedMultiplier.Name);
-                SetText(_value, $"{_packedMultiplier.AccumulatedMultiplier}x");
+                if (PackedValue.Stackable)
+                {
+                    SetText(_title, _packedMultiplier.Name);
+
+                    if (PackedValue.TierEventType != null)
+                    {
+                        SetText(_value, _packedMultiplier.Multiplier.ToString());
+                    }
+                    else
+                    {
+                        SetText(_value, _packedMultiplier.AccumulatedMultiplier.ToString());
+                    }
+                }
+
+                if (PackedValue.Tiers != null)
+                {
+                    SetText(_title, _packedMultiplier.Name);
+                    SetText(_value, _packedMultiplier.Multiplier.ToString());
+                }
             }
 
-            if(_timeBar != null)
+            if (_timeBar != null)
             {
                 if(_packedMultiplier.Condition != null)
                 {

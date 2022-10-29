@@ -566,6 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &5028086566906858639
 Animator:
   serializedVersion: 4
@@ -654,6 +655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &2613566159189496810
 Animator:
   serializedVersion: 4
@@ -1226,6 +1228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &14853333675381757
 Animator:
   serializedVersion: 4
@@ -2024,6 +2027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &4879931627795734532
 Animator:
   serializedVersion: 4
@@ -2323,6 +2327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &8249030325649079977
 Animator:
   serializedVersion: 4
@@ -2896,6 +2901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 0
+  _tDecay: 0
 --- !u!1 &4155343007742466111
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,6 +3668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 0
+  _tDecay: 0
 --- !u!1 &4155343009174929503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4369,6 +4376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &4342010528234030213
 Animator:
   serializedVersion: 4
@@ -4728,6 +4736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &368706471790953951
 Animator:
   serializedVersion: 4
@@ -4942,6 +4951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &2166921967931196085
 Animator:
   serializedVersion: 4
@@ -5378,6 +5388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &5043122682630110572
 Animator:
   serializedVersion: 4
@@ -5987,6 +5998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &4490226187639066446
 Animator:
   serializedVersion: 4
@@ -6847,6 +6859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &251035128159583296
 Animator:
   serializedVersion: 4
@@ -7070,6 +7083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
+  _tDecay: 0
 --- !u!95 &3711354007572351393
 Animator:
   serializedVersion: 4

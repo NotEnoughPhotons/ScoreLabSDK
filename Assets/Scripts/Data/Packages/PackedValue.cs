@@ -29,7 +29,24 @@ namespace NEP.ScoreLab.Data
         public float PostDecayTime;
 
         public PackedValue[] Tiers;
-        public PackedValue CurrentTier;
+
+        public PackedValue CurrentTier
+        {
+            get
+            {
+                if(_tierIndex == Tiers.Length)
+                {
+                    _tierIndex = Tiers.Length;
+                    return Tiers[_tierIndex - 1];
+                }
+                else
+                {
+                    return Tiers[_tierIndex++];
+                }
+            }
+        }
+
+        public int TierIndex { get => _tierIndex; }
 
         public virtual bool IsActive { get; }
 
@@ -45,24 +62,6 @@ namespace NEP.ScoreLab.Data
         public void SetDecayTime(float decayTime)
         {
             _tDecay = decayTime;
-        }
-
-        public PackedValue NextTier()
-        {
-            if(Tiers == null)
-            {
-                return null;
-            }
-
-            if (_tierIndex >= Tiers.Length)
-            {
-                _tierIndex = Tiers.Length;
-                return CurrentTier = Tiers[Tiers.Length - 1];
-            }
-            else
-            {
-                return CurrentTier = Tiers[_tierIndex++];
-            }
         }
 
         protected void ResetTier()

@@ -35,7 +35,7 @@ namespace NEP.ScoreLab.UI
 
         private void Start()
         {
-            LoadHUD(DataManager.UI.DefaultUIName);
+            //LoadHUD(DataManager.UI.DefaultUIName);
         }
 
         public void LoadHUD(string name)

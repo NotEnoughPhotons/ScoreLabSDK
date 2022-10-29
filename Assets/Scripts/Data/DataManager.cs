@@ -82,6 +82,7 @@ namespace NEP.ScoreLab.Data
         public static class PackedValues
         {
             public static Dictionary<string, PackedValue> ValueTable { get; private set; }
+
             public static JSONScore[] Scores { get; private set; }
             public static JSONMult[] Multipliers { get; private set; }
 
