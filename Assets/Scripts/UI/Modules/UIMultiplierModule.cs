@@ -34,22 +34,21 @@ namespace NEP.ScoreLab.UI
             {
                 if (PackedValue.Stackable)
                 {
-                    SetText(_title, _packedMultiplier.Name);
-
                     if (PackedValue.TierEventType != null)
                     {
-                        SetText(_value, _packedMultiplier.Multiplier.ToString());
+                        SetText(_title, _packedMultiplier.Name);
+                        SetText(_value, _packedMultiplier.Multiplier);
                     }
                     else
                     {
-                        SetText(_value, _packedMultiplier.AccumulatedMultiplier.ToString());
+                        SetText(_title, _packedMultiplier.Name);
+                        SetText(_value, _packedMultiplier.AccumulatedMultiplier);
                     }
                 }
-
-                if (PackedValue.Tiers != null)
+                else
                 {
                     SetText(_title, _packedMultiplier.Name);
-                    SetText(_value, _packedMultiplier.Multiplier.ToString());
+                    SetText(_value, _packedMultiplier.Multiplier);
                 }
             }
 

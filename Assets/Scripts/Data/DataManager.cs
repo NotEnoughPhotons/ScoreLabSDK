@@ -111,6 +111,7 @@ namespace NEP.ScoreLab.Data
                     EventAudio = value.EventAudio,
                     Name = value.Name,
                     Score = value.Score,
+                    AccumulatedScore = value.Score,
                     DecayTime = value.DecayTime,
                     Tiers = value.Tiers
                 };
@@ -177,6 +178,7 @@ namespace NEP.ScoreLab.Data
                         Stackable = score.Stackable,
                         Name = score.Name,
                         Score = score.Score,
+                        AccumulatedScore = score.Score
                     };
 
                     if(score.Tiers != null)

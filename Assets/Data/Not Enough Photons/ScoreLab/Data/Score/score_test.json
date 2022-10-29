@@ -1,6 +1,6 @@
 {
-	"EventType": "SCORE_KILL",
-	"Name": "Target Eliminated",
+	"EventType": "SCORE_TEST",
+	"Name": "Test Score",
 	"Score": 100,
 	"DecayTime": 5.0,
 	"Tiers":

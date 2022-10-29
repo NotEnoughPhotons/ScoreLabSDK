@@ -5,6 +5,8 @@ using UnityEngine;
 
 using NEP.ScoreLab.Data;
 
+using EventType = NEP.ScoreLab.Data.EventType;
+
 namespace NEP.ScoreLab.Core
 {
     public class Emulator : MonoBehaviour
@@ -56,19 +58,19 @@ namespace NEP.ScoreLab.Core
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ScoreTracker.Instance.Add(Data.EventType.Score.Kill);
+                ScoreTracker.Instance.Add(EventType.Score.Kill);
             }
-            else if (Input.GetKeyDown(KeyCode.M))
+            else if (Input.GetKeyDown(KeyCode.K))
             {
-                ScoreTracker.Instance.Add(Data.EventType.Mult.Test);
+                ScoreTracker.Instance.Add(EventType.Score.Test);
             }
-            else if (Input.GetKeyDown(KeyCode.T))
+            else if (Input.GetKeyDown(KeyCode.U))
             {
-                ScoreTracker.Instance.Add(Data.EventType.Mult.Kill);
+                ScoreTracker.Instance.Add(EventType.Mult.Kill);
             }
-            else if (Input.GetKeyDown(KeyCode.G))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
-                ScoreTracker.Instance.Add(Data.EventType.Mult.Test2);
+                ScoreTracker.Instance.Add(EventType.Mult.Slowdown);
             }
         }
     }

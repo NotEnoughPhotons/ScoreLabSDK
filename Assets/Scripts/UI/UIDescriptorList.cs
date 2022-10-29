@@ -66,48 +66,45 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            foreach (var module in modules)
+            foreach(var module in modules)
             {
-                if (!ActiveModules.Contains(module))
+                if (!module.gameObject.activeInHierarchy)
                 {
-                    InitializeInactiveModule(value, module);
+                    module.AssignPackedData(value);
+                    module.SetDecayTime(value.DecayTime);
+                    module.SetPostDecayTime(0.5f);
+
+                    module.gameObject.SetActive(true);
+
+                    ActiveModules.Add(module);
                     break;
                 }
                 else
                 {
-                    InitializeActiveModule(value, module);
-                    break;
+                    if (ActiveModules.Contains(module))
+                    {
+                        if(module.PackedValue.eventType == value.eventType)
+                        {
+                            if (value.Stackable)
+                            {
+                                module.AssignPackedData(value);
+                                module.OnModuleEnable();
+                                module.SetDecayTime(value.DecayTime);
+                                module.SetPostDecayTime(0.5f);
+                                break;
+                            }
+
+                            if (value.Tiers != null)
+                            {
+                                module.AssignPackedData(value);
+                                module.OnModuleEnable();
+                                module.SetDecayTime(value.DecayTime);
+                                module.SetPostDecayTime(0.5f);
+                                break;
+                            }
+                        }
+                    }
                 }
-            }
-        }
-
-        public void InitializeInactiveModule(PackedValue value, UIModule module)
-        {
-            module.AssignPackedData(value);
-
-            module.SetDecayTime(value.DecayTime);
-            module.SetPostDecayTime(0.5f);
-            module.gameObject.SetActive(true);
-
-            ActiveModules.Add(module);
-        }
-
-        public void InitializeActiveModule(PackedValue value, UIModule module)
-        {
-            if (value.Stackable)
-            {
-                module.AssignPackedData(value);
-                module.OnModuleEnable();
-                module.SetDecayTime(value.DecayTime);
-                module.SetPostDecayTime(0.5f);
-            }
-
-            if (value.Tiers != null)
-            {
-                module.AssignPackedData(value);
-                module.OnModuleEnable();
-                module.SetDecayTime(value.DecayTime);
-                module.SetPostDecayTime(0.5f);
             }
         }
     }

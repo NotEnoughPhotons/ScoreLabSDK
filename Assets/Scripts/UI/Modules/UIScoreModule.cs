@@ -29,27 +29,21 @@ namespace NEP.ScoreLab.UI
             {
                 if (PackedValue.Stackable)
                 {
-                    SetText(_title, _packedScore.Name);
-
-                    if (PackedValue.TierEventType != null)
+                    if(PackedValue.TierEventType != null)
                     {
-                        SetText(_value, _packedScore.Score.ToString());
+                        SetText(_title, _packedScore.Name);
+                        SetText(_value, _packedScore.Score);
                     }
                     else
                     {
-                        SetText(_value, _packedScore.AccumulatedScore.ToString());
+                        SetText(_title, _packedScore.Name);
+                        SetText(_value, _packedScore.AccumulatedScore);
                     }
                 }
                 else
                 {
-                    SetText(_title, _packedScore.Name.ToString());
-                    SetText(_value, _packedScore.Score.ToString());
-                }
-
-                if(PackedValue.Tiers != null)
-                {
                     SetText(_title, _packedScore.Name);
-                    SetText(_value, _packedScore.Score.ToString());
+                    SetText(_value, _packedScore.Score);
                 }
             }
         }

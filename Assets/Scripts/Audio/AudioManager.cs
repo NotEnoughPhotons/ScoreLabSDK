@@ -37,17 +37,23 @@ namespace NEP.ScoreLab.Audio
 
         private void OnEnable()
         {
-            API.Score.OnScoreTierReached += OnValueTierReached;
-            API.Multiplier.OnMultiplierTierReached += OnValueTierReached;
+            API.Score.OnScoreAdded += OnValueReceived;
+            API.Score.OnScoreTierReached += OnValueReceived;
+
+            API.Multiplier.OnMultiplierAdded += OnValueReceived;
+            API.Multiplier.OnMultiplierTierReached += OnValueReceived;
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreTierReached -= OnValueTierReached;
-            API.Multiplier.OnMultiplierTierReached -= OnValueTierReached;
+            API.Score.OnScoreAdded -= OnValueReceived;
+            API.Score.OnScoreTierReached -= OnValueReceived;
+
+            API.Multiplier.OnMultiplierAdded -= OnValueReceived;
+            API.Multiplier.OnMultiplierTierReached -= OnValueReceived;
         }
 
-        private void OnValueTierReached(PackedValue value)
+        private void OnValueReceived(PackedValue value)
         {
             if(value.EventAudio != null)
             {

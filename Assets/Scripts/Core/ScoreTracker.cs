@@ -154,20 +154,18 @@ namespace NEP.ScoreLab.Core
                 _scoreInList.SetDecayTime(_tier.DecayTime);
 
                 AddScore(_tier.Score);
-
-                if (_scoreInList.TierIndex <= _scoreInList.Tiers.Length)
-                {
-                    API.Score.OnScoreTierReached?.Invoke(_tier);
-                    return;
-                }
+                API.Score.OnScoreTierReached?.Invoke(_tier);
             }
             else if (score.Stackable)
             {
+                var _scoreInList = GetClone<PackedScore>(score);
+                
                 AddScore(score.Score);
-                score.SetDecayTime(score.DecayTime);
-                score.AccumulatedScore += score.Score;
 
-                API.Score.OnScoreAccumulated?.Invoke(score);
+                _scoreInList.SetDecayTime(_scoreInList.DecayTime);
+                _scoreInList.AccumulatedScore += _scoreInList.Score;
+
+                API.Score.OnScoreAccumulated?.Invoke(_scoreInList);
             }
             else
             {
@@ -204,27 +202,25 @@ namespace NEP.ScoreLab.Core
 
                 _multInList.SetDecayTime(_tier.DecayTime);
 
-                AddMultiplier(_tier.Multiplier);
-
-                if (_multInList.TierIndex <= _multInList.Tiers.Length)
-                {
-                    API.Multiplier.OnMultiplierTierReached?.Invoke(_tier);
-                    return;
-                }
+                AddMultiplier(multiplier.Multiplier);
+                API.Multiplier.OnMultiplierTierReached?.Invoke(_tier);
             }
             else if (multiplier.Stackable)
             {
-                AddMultiplier(multiplier.Multiplier);
-                multiplier.SetDecayTime(multiplier.DecayTime);
-                multiplier.AccumulatedMultiplier += multiplier.Multiplier;
+                var _multInList = GetClone<PackedMultiplier>(multiplier);
 
-                API.Multiplier.OnMultiplierAccumulated?.Invoke(multiplier);
+                AddMultiplier(multiplier.Multiplier);
+
+                _multInList.SetDecayTime(_multInList.DecayTime);
+                _multInList.AccumulatedMultiplier += _multInList.Multiplier;
+
+                API.Multiplier.OnMultiplierAccumulated?.Invoke(_multInList);
             }
             else
             {
                 PackedMultiplier copy = CopyFromMult(multiplier);
                 InitializeValue(copy);
-                AddMultiplier(copy.Multiplier);
+                AddMultiplier(multiplier.Multiplier);
                 ActiveValues.Add(copy);
 
                 API.Multiplier.OnMultiplierAdded?.Invoke(copy);

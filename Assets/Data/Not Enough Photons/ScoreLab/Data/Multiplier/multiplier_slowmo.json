@@ -1,0 +1,7 @@
+{
+	"EventType": "MULT_SLOWDOWN",
+	"Name": "SLOW-MO 0.75x",
+	"Multiplier": 1.25,
+	"Condition": "IsPlayerInAir",
+	"Stackable": true
+}

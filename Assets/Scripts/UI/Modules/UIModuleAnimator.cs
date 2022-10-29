@@ -36,13 +36,24 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            Animator.Play("Entry");
             Animator.Play(name);
         }
 
         private void OnModuleEnabled(UIModule module)
         {
-            PlayAnimation("descriptor_show");
+            if (_module != module)
+            {
+                return;
+            }
+
+            if (module.ModuleType == UIModule.UIModuleType.Main)
+            {
+                PlayAnimation("main_show");
+            }
+            else
+            {
+                PlayAnimation("descriptor_show");
+            }
         }
 
         private void OnModuleDecayed(UIModule module)

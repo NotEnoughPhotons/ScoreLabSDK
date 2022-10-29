@@ -2,5 +2,6 @@
 	"EventType": "MULT_TEST",
 	"Name": "TEST",
 	"Multiplier": 1.25,
+	"Stackable": true,
 	"Condition": "IsPlayerInAir"
 }
