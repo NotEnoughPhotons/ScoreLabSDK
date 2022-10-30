@@ -112,8 +112,6 @@ namespace NEP.ScoreLab.Data
                     Tiers = value.Tiers
                 };
 
-                Debug.Log(value.TierRequirement);
-
                 return score;
             }
 
