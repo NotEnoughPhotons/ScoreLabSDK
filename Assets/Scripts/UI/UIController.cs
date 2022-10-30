@@ -5,6 +5,7 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
 {
+    [UnityEngine.ExecuteAlways]
     public class UIController : MonoBehaviour
     {
         public UIModule ScoreModule { get; set; }
@@ -12,6 +13,9 @@ namespace NEP.ScoreLab.UI
         public UIModule HighScoreModule { get; set; }
 
         public Transform followTarget;
+
+        public float Distance;
+        public float Lerp;
 
         private Transform _homeParent;
 
@@ -38,19 +42,22 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * 3f, 6f * Time.deltaTime);
+            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * Distance, Lerp * Time.deltaTime);
             Quaternion lookRot = Quaternion.LookRotation(followTarget.forward);
 
             transform.position = move;
             transform.rotation = lookRot;
+        }
 
-            for (int i = 0; i < transform.childCount; i++)
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR || UNITY_EDITOR_64
+            if (!Application.isPlaying)
             {
-                if (transform.GetChild(i) != null)
-                {
-                    //transform.GetChild(i).LookAt(followTarget);
-                }
+                UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
+                UnityEditor.SceneView.RepaintAll();
             }
+#endif
         }
 
         public void SetParent(Transform parent)

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace NEP.ScoreLab.Data
 {
@@ -22,17 +23,11 @@ namespace NEP.ScoreLab.Data
 
             public static void GetAudioClips()
             {
-                foreach(var bundleAsset in Bundle.Bundles)
-                {
-                    var loadedObjects = bundleAsset.LoadAllAssets();
+                string[] files = LoadAllFiles(Path_Audio);
 
-                    foreach(var loadedAsset in loadedObjects)
-                    {
-                        if (loadedAsset is AudioClip clip)
-                        {
-                            Clips.Add(clip);
-                        }
-                    }
+                foreach(string file in files)
+                {
+                    // do stuff
                 }
             }
 
@@ -113,8 +108,11 @@ namespace NEP.ScoreLab.Data
                     Score = value.Score,
                     AccumulatedScore = value.Score,
                     DecayTime = value.DecayTime,
+                    TierRequirement = value.TierRequirement,
                     Tiers = value.Tiers
                 };
+
+                Debug.Log(value.TierRequirement);
 
                 return score;
             }
@@ -131,6 +129,7 @@ namespace NEP.ScoreLab.Data
                     Multiplier = value.Multiplier,
                     DecayTime = value.DecayTime,
                     Condition = value.Condition,
+                    TierRequirement = value.TierRequirement,
                     Tiers = value.Tiers
                 };
 
@@ -178,10 +177,11 @@ namespace NEP.ScoreLab.Data
                         Stackable = score.Stackable,
                         Name = score.Name,
                         Score = score.Score,
-                        AccumulatedScore = score.Score
+                        AccumulatedScore = score.Score,
+                        TierRequirement = score.TierRequirement
                     };
 
-                    if(score.Tiers != null)
+                    if (score.Tiers != null)
                     {
                         if(score.Tiers.Length > 0)
                         {
@@ -196,7 +196,8 @@ namespace NEP.ScoreLab.Data
                                     DecayTime = tier.DecayTime,
                                     Stackable = tier.Stackable,
                                     Name = tier.Name,
-                                    Score = tier.Score
+                                    Score = tier.Score,
+                                    TierRequirement = tier.TierRequirement
                                 };
 
                                 if (tier.EventAudio != null)
@@ -224,7 +225,8 @@ namespace NEP.ScoreLab.Data
                         Stackable = mult.Stackable,
                         Name = mult.Name,
                         Multiplier = mult.Multiplier,
-                        Condition = mult.Condition
+                        Condition = mult.Condition,
+                        TierRequirement = mult.TierRequirement
                     };
 
                     if (mult.Tiers != null)
@@ -235,7 +237,6 @@ namespace NEP.ScoreLab.Data
 
                             foreach (var tier in mult.Tiers)
                             {
-
                                 var tierData = new PackedMultiplier()
                                 {
                                     eventType = mult.EventType,
@@ -244,7 +245,8 @@ namespace NEP.ScoreLab.Data
                                     Stackable = tier.Stackable,
                                     Name = tier.Name,
                                     Multiplier = tier.Multiplier,
-                                    Condition = tier.Condition
+                                    Condition = tier.Condition,
+                                    TierRequirement = tier.TierRequirement
                                 };
 
                                 tiers.Add(tierData);
@@ -416,6 +418,7 @@ namespace NEP.ScoreLab.Data
         static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
         static readonly string Path_Mod = Path_Developer + "ScoreLab/";
         static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
+        static readonly string Path_Audio = Path_Mod + "SFX/";
 
         static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
         static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
@@ -461,6 +464,7 @@ namespace NEP.ScoreLab.Data
         {
             Directory.CreateDirectory(Path_Mod);
             Directory.CreateDirectory(Path_CustomUIs);
+            Directory.CreateDirectory(Path_Audio);
 
             Directory.CreateDirectory(Path_ScoreData);
             Directory.CreateDirectory(Path_MultiplierData);

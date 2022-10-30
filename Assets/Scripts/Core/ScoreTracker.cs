@@ -149,12 +149,21 @@ namespace NEP.ScoreLab.Core
             if (score.Tiers != null)
             {
                 var _scoreInList = GetClone<PackedScore>(score);
+                _scoreInList.NextTier();
+
+                if (_scoreInList.TierRequirementIndex <= _scoreInList.TierRequirement - 1)
+                {
+                    return;
+                }
+
                 var _tier = (PackedScore)_scoreInList.CurrentTier;
+                _scoreInList.TierRequirement = _tier.TierRequirement;
 
                 _scoreInList.SetDecayTime(_tier.DecayTime);
 
                 AddScore(_tier.Score);
                 API.Score.OnScoreTierReached?.Invoke(_tier);
+
             }
             else if (score.Stackable)
             {
@@ -296,7 +305,8 @@ namespace NEP.ScoreLab.Core
                     Name = scoreEvent.Name,
                     Score = scoreEvent.Score,
                     EventAudio = scoreEvent.EventAudio,
-                    Tiers = scoreEvent.Tiers
+                    TierRequirement = scoreEvent.TierRequirement,
+                    Tiers = scoreEvent.Tiers,
                 };
 
                 return score;
@@ -314,6 +324,7 @@ namespace NEP.ScoreLab.Core
                     Multiplier = multEvent.Multiplier,
                     Condition = multEvent.Condition,
                     EventAudio = multEvent.EventAudio,
+                    TierRequirement = multEvent.TierRequirement,
                     Tiers = multEvent.Tiers
                 };
 
