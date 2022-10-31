@@ -21,18 +21,12 @@ namespace NEP.ScoreLab.UI
 
         private void OnEnable()
         {
-            API.Score.OnScoreAdded += (data) => UpdateModule(data, ScoreModule);
-
-            API.Multiplier.OnMultiplierAdded += (data) => UpdateModule(data, MultiplierModule);
-            API.Multiplier.OnMultiplierRemoved += (data) => UpdateModule(data, MultiplierModule);
+            API.Value.OnValueAdded += (data) => UpdateModule(data, ScoreModule);
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreAdded -= (data) => UpdateModule(data, ScoreModule);
-
-            API.Multiplier.OnMultiplierAdded -= (data) => UpdateModule(data, MultiplierModule);
-            API.Multiplier.OnMultiplierRemoved -= (data) => UpdateModule(data, MultiplierModule);
+            API.Value.OnValueAdded -= (data) => UpdateModule(data, ScoreModule);
         }
 
         private void Update()

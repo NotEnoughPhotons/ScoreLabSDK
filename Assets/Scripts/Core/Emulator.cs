@@ -31,7 +31,7 @@ namespace NEP.ScoreLab.Core
 
         private void Awake()
         {
-            Data.DataManager.Init();
+            DataManager.Init();
             new ScoreTracker();
             TestFunc = new Func<bool>(() => _testCondition);
 

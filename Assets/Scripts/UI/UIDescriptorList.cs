@@ -27,26 +27,18 @@ namespace NEP.ScoreLab.UI
         {
             API.UI.OnModulePostDecayed += (item) => ActiveModules.Remove(item);
 
-            API.Score.OnScoreAdded += SetModuleActive;
-            API.Score.OnScoreAccumulated += SetModuleActive;
-            API.Score.OnScoreTierReached += SetModuleActive;
-
-            API.Multiplier.OnMultiplierAdded += SetModuleActive;
-            API.Multiplier.OnMultiplierAccumulated += SetModuleActive;
-            API.Multiplier.OnMultiplierTierReached += SetModuleActive;
+            API.Value.OnValueAdded += SetModuleActive;
+            API.Value.OnValueAccumulated += SetModuleActive;
+            API.Value.OnValueTierReached += SetModuleActive;
         }
 
         private void OnDisable()
         {
             API.UI.OnModulePostDecayed -= (item) => ActiveModules.Remove(item);
 
-            API.Score.OnScoreAdded -= SetModuleActive;
-            API.Score.OnScoreAccumulated -= SetModuleActive;
-            API.Score.OnScoreTierReached -= SetModuleActive;
-
-            API.Multiplier.OnMultiplierAdded -= SetModuleActive;
-            API.Multiplier.OnMultiplierAccumulated -= SetModuleActive;
-            API.Multiplier.OnMultiplierTierReached -= SetModuleActive;
+            API.Value.OnValueAdded -= SetModuleActive;
+            API.Value.OnValueAccumulated -= SetModuleActive;
+            API.Value.OnValueTierReached -= SetModuleActive;
         }
 
         public void SetPackedType(int packedType)
