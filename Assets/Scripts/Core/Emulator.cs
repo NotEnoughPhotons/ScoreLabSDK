@@ -34,20 +34,18 @@ namespace NEP.ScoreLab.Core
             DataManager.Init();
             new ScoreTracker();
             TestFunc = new Func<bool>(() => _testCondition);
-
-            //DataManager.UI.SpawnDefaultUI();
         }
 
         private void Update()
         {
             _testCondition = testCondition;
 
-            testScores = DataManager.PackedValues.Scores;
-            testMultipliers = DataManager.PackedValues.Multipliers;
+            testScores = Data.PackedValues.Scores;
+            testMultipliers = Data.PackedValues.Multipliers;
 
-            bundles = DataManager.Bundle.Bundles;
-            loadedStuff = DataManager.UI.LoadedUIObjects;
-            uiNames = DataManager.UI.UINames;
+            bundles = Data.Bundle.Bundles;
+            loadedStuff = Data.UI.LoadedUIObjects;
+            uiNames = Data.UI.UINames;
 
             ScoreTracker.Instance.Update();
 

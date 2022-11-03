@@ -152,22 +152,12 @@ namespace NEP.ScoreLab.Core
 
             if (score.Tiers != null)
             {
-                var listScore = GetClone<PackedScore>(score);
-                var tier = (PackedScore)listScore.CurrentTier;
-                tier.Parent = listScore;
+                var parent = GetClone<PackedScore>(score);
+                var currentTier = (PackedScore)parent.CurrentTier;
 
-                if (tier.Parent.TierRequirementIndex < tier.Parent.TierRequirement)
-                {
-                    AddScore(tier.Score);
-                }
-                else
-                {
-                    tier.Parent.TierRequirement = tier.TierRequirement;
-                    tier.Parent.SetDecayTime(tier.DecayTime);
-                    API.Value.OnValueTierReached?.Invoke(tier);
-                }
-
-                tier.Parent.NextTier();
+                parent.ToNextTier();
+                parent.TierRequirement = currentTier.TierRequirement;
+                parent.SetDecayTime(currentTier.DecayTime);
             }
             else if (score.Stackable)
             {
@@ -240,30 +230,6 @@ namespace NEP.ScoreLab.Core
             }
         }
 
-        private PackedScore CopyFromScoreTier(PackedScore original, PackedScore tier)
-        {
-            original.eventType = tier.eventType;
-            original.Name = tier.Name;
-            original.Score = tier.Score;
-            original.DecayTime = tier.DecayTime;
-            original.SetDecayTime(original.DecayTime);
-            original.EventAudio = tier.EventAudio;
-
-            return original;
-        }
-
-        private PackedMultiplier CopyFromMultTier(PackedMultiplier original, PackedMultiplier tier)
-        {
-            original.eventType = tier.eventType;
-            original.Name = tier.Name;
-            original.Multiplier = tier.Multiplier;
-            original.SetDecayTime(tier.DecayTime);
-            original.EventAudio = tier.EventAudio;
-            original.Condition = tier.Condition;
-
-            return original;
-        }
-
         private PackedScore CopyFromScore(PackedScore original)
         {
             PackedScore score = new PackedScore()
@@ -295,7 +261,7 @@ namespace NEP.ScoreLab.Core
 
         private PackedValue Create(string eventType)
         {
-            var Event = DataManager.PackedValues.Get(eventType);
+            var Event = PackedValues.Get(eventType);
 
             if(Event.PackedValueType == PackedValue.PackedType.Score)
             {

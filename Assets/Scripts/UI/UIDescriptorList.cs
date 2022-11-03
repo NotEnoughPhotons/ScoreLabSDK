@@ -13,10 +13,10 @@ namespace NEP.ScoreLab.UI
 
         public PackedValue.PackedType packedType { get; set; }
 
-        public GameObject modulePrefab { get; set; }
+        public GameObject ModulePrefab { get; set; }
         public int count = 6;
 
-        public List<UIModule> modules;
+        public List<UIModule> Modules;
 
         private void Awake()
         {
@@ -48,7 +48,7 @@ namespace NEP.ScoreLab.UI
 
         public void SetModuleActive(PackedValue value)
         {
-            if (modules == null || modules.Count == 0)
+            if (Modules == null || Modules.Count == 0)
             {
                 return;
             }
@@ -58,7 +58,7 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            foreach(var module in modules)
+            foreach(var module in Modules)
             {
                 if (!module.gameObject.activeInHierarchy)
                 {
@@ -97,6 +97,21 @@ namespace NEP.ScoreLab.UI
                         }
                     }
                 }
+            }
+        }
+
+        public void PoolObjects()
+        {
+            if(ModulePrefab == null)
+            {
+                return;
+            }
+
+            for(int i = 0; i < count; i++)
+            {
+                var go = GameObject.Instantiate(ModulePrefab, transform);
+                var module = go.GetComponent<UIModule>();
+                Modules.Add(module);
             }
         }
     }

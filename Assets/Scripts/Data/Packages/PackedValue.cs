@@ -46,6 +46,20 @@ namespace NEP.ScoreLab.Data
                 }
             }
         }
+        public PackedValue NextTier
+        {
+            get
+            {
+                if(_tierIndex + 1 >= Tiers.Length)
+                {
+                    return Tiers[_tierIndex];
+                }
+                else
+                {
+                    return Tiers[_tierIndex + 1];
+                }
+            }
+        }
 
         public int TierIndex { get => _tierIndex; }
         public int TierRequirementIndex { get => _tierRequirementIndex; }
@@ -68,17 +82,14 @@ namespace NEP.ScoreLab.Data
             _tDecay = decayTime;
         }
 
-        public void NextTier()
+        public void ToNextTier()
         {
-            if(_tierRequirementIndex + 1 < TierRequirement)
-            {
-                _tierRequirementIndex++;
-            }
-            else if(_tierRequirementIndex + 1 >= TierRequirement)
-            {
-                Core.API.Value.OnValueTierReached?.Invoke(this);
-                _tierRequirementIndex = TierRequirement;
+            _tierRequirementIndex++;
 
+            if(_tierRequirementIndex >= TierRequirement)
+            {
+                _tierRequirementIndex = TierRequirement;
+                Core.API.Value.OnValueTierReached?.Invoke(CurrentTier);
                 if (_tierIndex + 1 < Tiers.Length)
                 {
                     _tierIndex++;
