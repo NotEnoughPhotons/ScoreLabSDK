@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: KILL
+  m_text: Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 229b07d9a8b5a33479f73a5c15dc3f95, type: 2}
   m_sharedMaterial: {fileID: 4964072191886486384, guid: 229b07d9a8b5a33479f73a5c15dc3f95,
@@ -76,8 +76,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 2952790015
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.6862745}
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 65
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -162,7 +162,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4488137830166090643}
   m_LocalRotation: {x: -0, y: -0.13052596, z: -0, w: 0.99144495}
-  m_LocalPosition: {x: 0, y: 0, z: 7.2}
+  m_LocalPosition: {x: 0, y: 0, z: 2.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -17.14, y: -1.9}
+  m_AnchoredPosition: {x: -35.6, y: -8.4}
   m_SizeDelta: {x: 25, y: 3.9363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4488137830166090646
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Value
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 229b07d9a8b5a33479f73a5c15dc3f95, type: 2}
   m_sharedMaterial: {fileID: 4964072191886486384, guid: 229b07d9a8b5a33479f73a5c15dc3f95,
@@ -212,8 +212,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 2952790015
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.6862745}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -230,8 +230,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 8.02
+  m_fontSizeBase: 8.02
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -282,8 +282,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4488137830317002624}
   - component: {fileID: 4488137830317002625}
-  - component: {fileID: 6735218229365300644}
-  - component: {fileID: 5173444643305829071}
+  - component: {fileID: 6316329000503811899}
+  - component: {fileID: 8539726182725966203}
   m_Layer: 5
   m_Name: ScoreDescriptor
   m_TagString: Untagged
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ModuleType: 1
   _tDecay: 0
---- !u!114 &6735218229365300644
+--- !u!114 &6316329000503811899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -339,24 +339,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b25afa386956e4e91236b821462108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 5173444643305829071}
---- !u!95 &5173444643305829071
-Animator:
-  serializedVersion: 4
+  Animator: {fileID: 0}
+  Animation: {fileID: 0}
+--- !u!111 &8539726182725966203
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4488137830317002639}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b5b3a64026a45454680ff69039232217, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 57984f2ba634f5241bc6c3d186497b9b, type: 2}
+  - {fileID: 7400000, guid: c4bcb1a8b1be77941ae3c19723b2795f, type: 2}
+  - {fileID: 7400000, guid: 0fd37d2756ee6c5428c0d16b018774a0, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

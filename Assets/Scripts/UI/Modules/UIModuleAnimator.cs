@@ -8,6 +8,7 @@ namespace NEP.ScoreLab.UI
     public class UIModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
+        public Animation Animation;
 
         private UIModule _module;
 
@@ -15,11 +16,15 @@ namespace NEP.ScoreLab.UI
         {
             _module = GetComponent<UIModule>();
             Animator = GetComponent<Animator>();
+            Animation = GetComponent<Animation>();
+
+            Animation.clip = Animation["show"].clip;
         }
 
         private void OnEnable()
         {
             API.UI.OnModuleEnabled += OnModuleEnabled;
+            API.Value.OnValueTierReached += (data) => OnTierReached();
             API.UI.OnModuleDecayed += OnModuleDecayed;
         }
 
@@ -31,12 +36,19 @@ namespace NEP.ScoreLab.UI
 
         private void PlayAnimation(string name)
         {
-            if(Animator == null)
+            if (Animation[name] == null)
             {
                 return;
             }
 
-            Animator.Play(name);
+            Animation.Play(name, PlayMode.StopAll);
+
+            /*if(Animator == null)
+            {
+                return;
+            }
+
+            Animator.Play(name);*/
         }
 
         private void OnModuleEnabled(UIModule module)
@@ -46,14 +58,12 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            if (module.ModuleType == UIModule.UIModuleType.Main)
-            {
-                PlayAnimation("main_show");
-            }
-            else
-            {
-                PlayAnimation("descriptor_show");
-            }
+            PlayAnimation("show");
+        }
+
+        private void OnTierReached()
+        {
+            PlayAnimation("tier_reached");
         }
 
         private void OnModuleDecayed(UIModule module)
@@ -63,14 +73,7 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            if (module.ModuleType == UIModule.UIModuleType.Main)
-            {
-                PlayAnimation("main_hide");
-            }
-            else
-            {
-                PlayAnimation("descriptor_hide");
-            }
+            PlayAnimation("hide");
         }
     }
 }

@@ -158,6 +158,8 @@ namespace NEP.ScoreLab.Core
                 parent.ToNextTier();
                 parent.TierRequirement = currentTier.TierRequirement;
                 parent.SetDecayTime(currentTier.DecayTime);
+
+                AddScore(currentTier.Score);
             }
             else if (score.Stackable)
             {
