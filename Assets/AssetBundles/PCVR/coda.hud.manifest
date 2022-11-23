@@ -1,0 +1,81 @@
+ManifestFileVersion: 0
+CRC: 3640815941
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8c8483127734c54cacb3b7bd453bd07d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f27db8ab6c8c30b3d9ff51147697f42d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3b3d1aadca972764aa4b28214b0aeae9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2d308e5e7dcd0d94fab1c91cc09facfd, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FaceInfo_Legacy
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FontAssetCreationSettings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.KerningTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Character
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontFeatureTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontWeightPair
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.VertexGradient
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+Assets:
+- Assets/Shaders/UnlitZTestAlways.shader
+- Assets/Custom UIs/Coda/Animations/Score/score_idle.anim
+- Assets/Custom UIs/Coda/Animations/Score/score_tier_reached.anim
+- Assets/Custom UIs/Coda/Fonts/CODE BOLD.OTF
+- Assets/Shaders/GUITextShader.shader
+- Assets/Custom UIs/Coda/Animations/Score/score_show.anim
+- Assets/Custom UIs/Coda/Animations/Multiplier/mult_hide.anim
+- Assets/Custom UIs/Coda/Animations/Multiplier/mult_show.anim
+- Assets/Custom UIs/Coda/Animations/Score/score_hide.anim
+- Assets/Custom UIs/Coda/Fonts/CODE LIGHT.OTF
+- Assets/Custom UIs/Coda/[SLHUD] - Coda.prefab
+Dependencies: []

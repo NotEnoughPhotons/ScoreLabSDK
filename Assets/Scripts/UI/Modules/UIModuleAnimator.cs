@@ -16,9 +16,6 @@ namespace NEP.ScoreLab.UI
         {
             _module = GetComponent<UIModule>();
             Animator = GetComponent<Animator>();
-            Animation = GetComponent<Animation>();
-
-            Animation.clip = Animation["show"].clip;
         }
 
         private void OnEnable()
@@ -31,24 +28,18 @@ namespace NEP.ScoreLab.UI
         private void OnDisable()
         {
             API.UI.OnModuleEnabled -= OnModuleEnabled;
+            API.Value.OnValueTierReached -= (data) => OnTierReached();
             API.UI.OnModuleDecayed -= OnModuleDecayed;
         }
 
         private void PlayAnimation(string name)
         {
-            if (Animation[name] == null)
+            if(Animator == null)
             {
                 return;
             }
 
-            Animation.Play(name, PlayMode.StopAll);
-
-            /*if(Animator == null)
-            {
-                return;
-            }
-
-            Animator.Play(name);*/
+            Animator.Play(name);
         }
 
         private void OnModuleEnabled(UIModule module)

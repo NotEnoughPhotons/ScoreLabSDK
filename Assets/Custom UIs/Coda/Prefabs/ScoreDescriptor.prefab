@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: KILL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 229b07d9a8b5a33479f73a5c15dc3f95, type: 2}
-  m_sharedMaterial: {fileID: 4964072191886486384, guid: 229b07d9a8b5a33479f73a5c15dc3f95,
+  m_fontAsset: {fileID: 11400000, guid: bdafad2b497fe0d4e94322a0a2cbd486, type: 2}
+  m_sharedMaterial: {fileID: 7338768703180738513, guid: bdafad2b497fe0d4e94322a0a2cbd486,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -162,7 +162,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4488137830166090643}
   m_LocalRotation: {x: -0, y: -0.13052596, z: -0, w: 0.99144495}
-  m_LocalPosition: {x: 0, y: 0, z: 7.2}
+  m_LocalPosition: {x: 0, y: 0, z: 2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -17.14, y: -1.9}
+  m_AnchoredPosition: {x: -36.8, y: -6.4}
   m_SizeDelta: {x: 25, y: 3.9363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4488137830166090646
@@ -202,10 +202,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 229b07d9a8b5a33479f73a5c15dc3f95, type: 2}
-  m_sharedMaterial: {fileID: 4964072191886486384, guid: 229b07d9a8b5a33479f73a5c15dc3f95,
+  m_fontAsset: {fileID: 11400000, guid: bdafad2b497fe0d4e94322a0a2cbd486, type: 2}
+  m_sharedMaterial: {fileID: 7338768703180738513, guid: bdafad2b497fe0d4e94322a0a2cbd486,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 4488137830317002624}
   - component: {fileID: 4488137830317002625}
   - component: {fileID: 6735218229365300644}
-  - component: {fileID: 5173444643305829071}
+  - component: {fileID: 2916822782451731582}
   m_Layer: 5
   m_Name: ScoreDescriptor
   m_TagString: Untagged
@@ -339,8 +339,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b25afa386956e4e91236b821462108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 5173444643305829071}
---- !u!95 &5173444643305829071
+  Animator: {fileID: 0}
+  Animation: {fileID: 0}
+--- !u!95 &2916822782451731582
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0

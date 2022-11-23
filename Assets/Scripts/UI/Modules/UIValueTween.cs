@@ -8,7 +8,7 @@ namespace NEP.ScoreLab.UI
     {
         public int Value;
         public int TargetValue;
-        public int Rate = 6;
+        public int Rate = 2;
         public TMPro.TextMeshProUGUI text;
 
         private int _targetValue;
