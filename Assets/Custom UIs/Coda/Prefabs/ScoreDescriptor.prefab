@@ -83,8 +83,8 @@ MonoBehaviour:
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
+    bottomRight: {r: 0.85882354, g: 0.85882354, b: 0.85882354, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 65
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -162,7 +162,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4488137830166090643}
   m_LocalRotation: {x: -0, y: -0.13052596, z: -0, w: 0.99144495}
-  m_LocalPosition: {x: 0, y: 0, z: 2.2}
+  m_LocalPosition: {x: 0, y: 0, z: 2.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -36.8, y: -6.4}
+  m_AnchoredPosition: {x: -35.62, y: -5.46}
   m_SizeDelta: {x: 25, y: 3.9363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4488137830166090646
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: PLACEHOLDER LOL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bdafad2b497fe0d4e94322a0a2cbd486, type: 2}
   m_sharedMaterial: {fileID: 7338768703180738513, guid: bdafad2b497fe0d4e94322a0a2cbd486,
@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 4488137830317002624}
   - component: {fileID: 4488137830317002625}
   - component: {fileID: 6735218229365300644}
-  - component: {fileID: 2916822782451731582}
+  - component: {fileID: 5173444643305829071}
   m_Layer: 5
   m_Name: ScoreDescriptor
   m_TagString: Untagged
@@ -326,7 +326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
-  _tDecay: 0
 --- !u!114 &6735218229365300644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,9 +338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b25afa386956e4e91236b821462108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 0}
-  Animation: {fileID: 0}
---- !u!95 &2916822782451731582
+  Animator: {fileID: 5173444643305829071}
+--- !u!95 &5173444643305829071
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0

@@ -28,7 +28,6 @@ namespace NEP.ScoreLab.Data
         public float DecayTime;
         public float PostDecayTime;
 
-        public PackedValue Parent;
         public PackedValue[] Tiers;
 
         public PackedValue CurrentTier
@@ -43,20 +42,6 @@ namespace NEP.ScoreLab.Data
                 else
                 {
                     return Tiers[_tierIndex];
-                }
-            }
-        }
-        public PackedValue NextTier
-        {
-            get
-            {
-                if(_tierIndex + 1 >= Tiers.Length)
-                {
-                    return Tiers[_tierIndex];
-                }
-                else
-                {
-                    return Tiers[_tierIndex + 1];
                 }
             }
         }
@@ -82,15 +67,17 @@ namespace NEP.ScoreLab.Data
             _tDecay = decayTime;
         }
 
-        public void ToNextTier()
+        public void NextTier()
         {
-            _tierRequirementIndex++;
-
-            if(_tierRequirementIndex >= TierRequirement)
+            if(_tierRequirementIndex < TierRequirement && _tierIndex < Tiers.Length)
+            {
+                _tierRequirementIndex++;
+            }
+            else if(_tierRequirementIndex == TierRequirement)
             {
                 _tierRequirementIndex = TierRequirement;
-                Core.API.Value.OnValueTierReached?.Invoke(CurrentTier);
-                if (_tierIndex + 1 < Tiers.Length)
+
+                if(_tierIndex + 1 < Tiers.Length)
                 {
                     _tierIndex++;
                 }

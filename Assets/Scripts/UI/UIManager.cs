@@ -24,9 +24,9 @@ namespace NEP.ScoreLab.UI
 
             LoadedUIs = new List<UIController>();
 
-            for(int i = 0; i < Data.UI.LoadedUIObjects.Count; i++)
+            for(int i = 0; i < DataManager.UI.LoadedUIObjects.Count; i++)
             {
-                var _object = GameObject.Instantiate(Data.UI.LoadedUIObjects[i]);
+                var _object = GameObject.Instantiate(DataManager.UI.LoadedUIObjects[i]);
                 var controller = _object.GetComponent<UIController>();
                 controller.SetParent(transform);
                 controller.gameObject.SetActive(false);
@@ -44,7 +44,7 @@ namespace NEP.ScoreLab.UI
 
             foreach(var _controller in LoadedUIs)
             {
-                if(Data.UI.GetHUDName(_controller.gameObject) == name)
+                if(DataManager.UI.GetHUDName(_controller.gameObject) == name)
                 {
                     ActiveUI = _controller;
                     break;

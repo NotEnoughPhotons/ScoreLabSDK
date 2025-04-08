@@ -14,7 +14,6 @@ namespace NEP.ScoreLab.Data
 
         public int TierRequirement;
 
-        public PackedMultiplier Parent;
         public JSONMult[] Tiers;
     }
 }

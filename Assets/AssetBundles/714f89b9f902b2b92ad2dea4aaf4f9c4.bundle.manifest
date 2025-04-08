@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 767435553
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 932a7343f703856b854c5020e378fab4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4629f36946c08b982cdc1b470e41a000
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: c8dee6e90fb12c2b7cf1301d97ee90d8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: SLZ.Marrow
+  ClassName: SLZ.Marrow.HandPose/PoseData
+- AssemblyName: SLZ.Marrow
+  ClassName: SLZ.Marrow.HandPose/PoseDataGroup
+- AssemblyName: SLZ.Marrow
+  ClassName: SLZ.Marrow.Utilities.SimpleTransform
+Assets:
+- Assets/Marrow-ExtendedSDK-MAINTAINED-main/Data/HandPose/RifleMag.asset
+Dependencies: []

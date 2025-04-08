@@ -449,7 +449,7 @@ GameObject:
   - component: {fileID: 4488137830317002624}
   - component: {fileID: 3650005938131865594}
   - component: {fileID: 5490940833306925651}
-  - component: {fileID: 34804260855228940}
+  - component: {fileID: 616801411886274082}
   m_Layer: 5
   m_Name: MultiplierDescriptor
   m_TagString: Untagged
@@ -493,7 +493,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModuleType: 1
-  _tDecay: 0
 --- !u!114 &5490940833306925651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,9 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16b25afa386956e4e91236b821462108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 0}
-  Animation: {fileID: 0}
---- !u!95 &34804260855228940
+  Animator: {fileID: 616801411886274082}
+--- !u!95 &616801411886274082
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0

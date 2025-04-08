@@ -31,21 +31,23 @@ namespace NEP.ScoreLab.Core
 
         private void Awake()
         {
-            DataManager.Init();
+            Data.DataManager.Init();
             new ScoreTracker();
             TestFunc = new Func<bool>(() => _testCondition);
+
+            //DataManager.UI.SpawnDefaultUI();
         }
 
         private void Update()
         {
             _testCondition = testCondition;
 
-            testScores = Data.PackedValues.Scores;
-            testMultipliers = Data.PackedValues.Multipliers;
+            testScores = DataManager.PackedValues.Scores;
+            testMultipliers = DataManager.PackedValues.Multipliers;
 
-            bundles = Data.Bundle.Bundles;
-            loadedStuff = Data.UI.LoadedUIObjects;
-            uiNames = Data.UI.UINames;
+            bundles = DataManager.Bundle.Bundles;
+            loadedStuff = DataManager.UI.LoadedUIObjects;
+            uiNames = DataManager.UI.UINames;
 
             ScoreTracker.Instance.Update();
 

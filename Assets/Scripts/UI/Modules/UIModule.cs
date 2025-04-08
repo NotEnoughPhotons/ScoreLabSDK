@@ -46,8 +46,6 @@ namespace NEP.ScoreLab.UI
         protected virtual string Path_ValueText { get => "Value"; }
         protected virtual string Path_TimeBar { get => "TimeBar"; }
 
-        protected UIValueTween _valueTween;
-
         private bool _reachedDecay = false;
         private bool _reachedPostDecay = false;
 
@@ -175,8 +173,6 @@ namespace NEP.ScoreLab.UI
             _title = titleTran?.GetComponent<TextMeshProUGUI>();
             _value = valueTran?.GetComponent<TextMeshProUGUI>();
             _timeBar = timeBarTran?.GetComponent<Slider>();
-
-            _valueTween = valueTran.GetComponent<UIValueTween>();
         }
 
         private void OnEnable() => OnModuleEnable();

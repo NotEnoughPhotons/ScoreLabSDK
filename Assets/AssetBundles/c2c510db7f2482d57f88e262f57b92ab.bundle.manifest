@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 2025943051
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 583c826294f6cad14f0a6d5b29e9de02
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f4d58da2e394c3ac790f4c422276af4f
+HashAppended: 0
+ClassTypes:
+- Class: 134
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Marrow-ExtendedSDK-MAINTAINED-main/Data/PhysicsMaterials/Active/Gun.physicMaterial
+Dependencies: []

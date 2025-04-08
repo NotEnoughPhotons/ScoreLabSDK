@@ -19,23 +19,20 @@ namespace NEP.ScoreLab.UI
 
         private Transform _homeParent;
 
-        private void Start()
-        {
-            ScoreModule = transform.Find("Main_Score").GetComponent<UIModule>();
-        }
-
         private void OnEnable()
         {
-            API.Value.OnValueAdded += (data) => UpdateModule(data, ScoreModule);
-            API.Value.OnValueTierReached += (data) => UpdateModule(data, ScoreModule);
-            API.Value.OnValueAccumulated += (data) => UpdateModule(data, ScoreModule);
+            API.Score.OnScoreAdded += (data) => UpdateModule(data, ScoreModule);
+
+            API.Multiplier.OnMultiplierAdded += (data) => UpdateModule(data, MultiplierModule);
+            API.Multiplier.OnMultiplierRemoved += (data) => UpdateModule(data, MultiplierModule);
         }
 
         private void OnDisable()
         {
-            API.Value.OnValueAdded -= (data) => UpdateModule(data, ScoreModule);
-            API.Value.OnValueTierReached -= (data) => UpdateModule(data, ScoreModule);
-            API.Value.OnValueAccumulated -= (data) => UpdateModule(data, ScoreModule);
+            API.Score.OnScoreAdded -= (data) => UpdateModule(data, ScoreModule);
+
+            API.Multiplier.OnMultiplierAdded -= (data) => UpdateModule(data, MultiplierModule);
+            API.Multiplier.OnMultiplierRemoved -= (data) => UpdateModule(data, MultiplierModule);
         }
 
         private void Update()

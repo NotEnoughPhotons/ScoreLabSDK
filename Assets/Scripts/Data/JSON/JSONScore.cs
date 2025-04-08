@@ -14,7 +14,6 @@ namespace NEP.ScoreLab.Data
 
         public int TierRequirement;
 
-        public PackedScore Parent;
         public JSONScore[] Tiers;
     }
 }

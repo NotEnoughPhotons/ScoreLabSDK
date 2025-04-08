@@ -8,7 +8,6 @@ namespace NEP.ScoreLab.UI
     public class UIModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
-        public Animation Animation;
 
         private UIModule _module;
 
@@ -21,14 +20,12 @@ namespace NEP.ScoreLab.UI
         private void OnEnable()
         {
             API.UI.OnModuleEnabled += OnModuleEnabled;
-            API.Value.OnValueTierReached += (data) => OnTierReached();
             API.UI.OnModuleDecayed += OnModuleDecayed;
         }
 
         private void OnDisable()
         {
             API.UI.OnModuleEnabled -= OnModuleEnabled;
-            API.Value.OnValueTierReached -= (data) => OnTierReached();
             API.UI.OnModuleDecayed -= OnModuleDecayed;
         }
 
@@ -49,12 +46,14 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            PlayAnimation("show");
-        }
-
-        private void OnTierReached()
-        {
-            PlayAnimation("tier_reached");
+            if (module.ModuleType == UIModule.UIModuleType.Main)
+            {
+                PlayAnimation("main_show");
+            }
+            else
+            {
+                PlayAnimation("descriptor_show");
+            }
         }
 
         private void OnModuleDecayed(UIModule module)
@@ -64,7 +63,14 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            PlayAnimation("hide");
+            if (module.ModuleType == UIModule.UIModuleType.Main)
+            {
+                PlayAnimation("main_hide");
+            }
+            else
+            {
+                PlayAnimation("descriptor_hide");
+            }
         }
     }
 }

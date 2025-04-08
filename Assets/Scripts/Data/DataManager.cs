@@ -9,422 +9,422 @@ using UnityEngine.Networking;
 
 namespace NEP.ScoreLab.Data
 {
-    public static class Audio
+    public static class DataManager
     {
-        public static List<AudioClip> Clips { get; private set; }
-
-        public static void Init()
+        public static class Audio
         {
-            Clips = new List<AudioClip>();
-            GetAudioClips();
-        }
-
-        public static void GetAudioClips()
-        {
-            string[] files = DataManager.LoadAllFiles(DataManager.Path_Audio);
-
-            foreach (string file in files)
+            public static List<AudioClip> Clips { get; private set; }
+            
+            public static void Init()
             {
-                // do stuff
+                Clips = new List<AudioClip>();
+                GetAudioClips();
             }
-        }
 
-        public static AudioClip GetClip(string nameQuery)
-        {
-            foreach (var clip in Clips)
+            public static void GetAudioClips()
             {
-                if (clip.name == nameQuery)
+                string[] files = LoadAllFiles(Path_Audio);
+
+                foreach(string file in files)
                 {
-                    return clip;
+                    // do stuff
                 }
             }
 
-            return null;
-        }
-    }
-
-    public static class Bundle
-    {
-        public static List<AssetBundle> Bundles { get; private set; }
-
-        public static void Init()
-        {
-            Bundles = new List<AssetBundle>();
-
-            DataManager.InitializeDirectories();
-            LoadBundles(DataManager.Path_CustomUIs);
-        }
-
-        public static void LoadBundles(string path)
-        {
-            string[] files = DataManager.LoadAllFiles(path);
-
-            foreach (var file in files)
+            public static AudioClip GetClip(string nameQuery)
             {
-                if (!file.EndsWith(".hud"))
+                foreach(var clip in Clips)
+                {
+                    if(clip.name == nameQuery)
+                    {
+                        return clip;
+                    }
+                }
+
+                return null;
+            }
+        }
+        
+        public static class Bundle
+        {
+            public static List<AssetBundle> Bundles { get; private set; }
+
+            public static void Init()
+            {
+                Bundles = new List<AssetBundle>();
+
+                InitializeDirectories();
+                LoadBundles(Path_CustomUIs);
+            }
+
+            public static void LoadBundles(string path)
+            {
+                string[] files = LoadAllFiles(path);
+
+                foreach (var file in files)
+                {
+                    if (!file.EndsWith(".hud"))
+                    {
+                        return;
+                    }
+
+                    AssetBundle bundle = AssetBundle.LoadFromFile(file);
+                    Bundles.Add(bundle);
+                }
+            }
+        }
+
+        public static class PackedValues
+        {
+            public static Dictionary<string, PackedValue> ValueTable { get; private set; }
+
+            public static JSONScore[] Scores { get; private set; }
+            public static JSONMult[] Multipliers { get; private set; }
+
+            static string[] _scoreFiles;
+            static string[] _multiplierFiles;
+
+            public static void Init()
+            {
+                Scores = GetScores();
+                Multipliers = GetMultipliers();
+                GetValues();
+            }
+
+            public static PackedValue Get(string eventType)
+            {
+                return ValueTable[eventType];
+            }
+
+            public static PackedScore GetScore(string eventType)
+            {
+                PackedScore value = (PackedScore)Get(eventType);
+                PackedScore score = new PackedScore()
+                {
+                    eventType = value.eventType,
+                    Stackable = value.Stackable,
+                    EventAudio = value.EventAudio,
+                    Name = value.Name,
+                    Score = value.Score,
+                    AccumulatedScore = value.Score,
+                    DecayTime = value.DecayTime,
+                    TierRequirement = value.TierRequirement,
+                    Tiers = value.Tiers
+                };
+
+                return score;
+            }
+
+            public static PackedMultiplier GetMultiplier(string eventType)
+            {
+                PackedMultiplier value = (PackedMultiplier)Get(eventType);
+                PackedMultiplier mult = new PackedMultiplier()
+                {
+                    eventType = value.eventType,
+                    Stackable = value.Stackable,
+                    EventAudio = value.EventAudio,
+                    Name = value.Name,
+                    Multiplier = value.Multiplier,
+                    DecayTime = value.DecayTime,
+                    Condition = value.Condition,
+                    TierRequirement = value.TierRequirement,
+                    Tiers = value.Tiers
+                };
+
+                return mult;
+            }
+
+            private static JSONScore[] GetScores()
+            {
+                _scoreFiles = LoadAllFiles(Path_ScoreData, ".json");
+                List<JSONScore> scores = new List<JSONScore>();
+
+                foreach (var file in _scoreFiles)
+                {
+                    var data = ReadScoreData(file);
+                    scores.Add(data);
+                }
+
+                return scores.ToArray();
+            }
+
+            private static JSONMult[] GetMultipliers()
+            {
+                _multiplierFiles = LoadAllFiles(Path_MultiplierData, ".json");
+                List<JSONMult> multipliers = new List<JSONMult>();
+
+                foreach (var file in _multiplierFiles)
+                {
+                    var data = ReadMultiplierData(file);
+                    multipliers.Add(data);
+                }
+
+                return multipliers.ToArray();
+            }
+
+            private static void GetValues()
+            {
+                ValueTable = new Dictionary<string, PackedValue>();
+
+                foreach(var score in Scores)
+                {
+                    var data = new PackedScore()
+                    {
+                        eventType = score.EventType,
+                        DecayTime = score.DecayTime,
+                        Stackable = score.Stackable,
+                        Name = score.Name,
+                        Score = score.Score,
+                        AccumulatedScore = score.Score,
+                        TierRequirement = score.TierRequirement
+                    };
+
+                    if (score.Tiers != null)
+                    {
+                        if(score.Tiers.Length > 0)
+                        {
+                            List<PackedScore> tiers = new List<PackedScore>();
+
+                            foreach(var tier in score.Tiers)
+                            {
+                                var tierData = new PackedScore()
+                                {
+                                    eventType = score.EventType,
+                                    TierEventType = tier.TierEventType,
+                                    DecayTime = tier.DecayTime,
+                                    Stackable = tier.Stackable,
+                                    Name = tier.Name,
+                                    Score = tier.Score,
+                                    TierRequirement = tier.TierRequirement
+                                };
+
+                                if (tier.EventAudio != null)
+                                {
+                                    AudioClip clip = Audio.GetClip(tier.EventAudio);
+                                    tierData.EventAudio = clip;
+                                }
+
+                                tiers.Add(tierData);
+                            }
+
+                            data.Tiers = tiers.ToArray();
+                        }
+                    }
+                    
+                    ValueTable.Add(score.EventType, data);
+                }
+
+                foreach (var mult in Multipliers)
+                {
+                    var data = new PackedMultiplier()
+                    {
+                        eventType = mult.EventType,
+                        DecayTime = mult.DecayTime,
+                        Stackable = mult.Stackable,
+                        Name = mult.Name,
+                        Multiplier = mult.Multiplier,
+                        Condition = mult.Condition,
+                        TierRequirement = mult.TierRequirement
+                    };
+
+                    if (mult.Tiers != null)
+                    {
+                        if (mult.Tiers.Length > 0)
+                        {
+                            List<PackedMultiplier> tiers = new List<PackedMultiplier>();
+
+                            foreach (var tier in mult.Tiers)
+                            {
+                                var tierData = new PackedMultiplier()
+                                {
+                                    eventType = mult.EventType,
+                                    TierEventType = tier.TierEventType,
+                                    DecayTime = tier.DecayTime,
+                                    Stackable = tier.Stackable,
+                                    Name = tier.Name,
+                                    Multiplier = tier.Multiplier,
+                                    Condition = tier.Condition,
+                                    TierRequirement = tier.TierRequirement
+                                };
+
+                                tiers.Add(tierData);
+                            }
+
+                            data.Tiers = tiers.ToArray();
+                        }
+                    }
+
+                    ValueTable.Add(mult.EventType, data);
+                }
+            }
+
+            private static JSONScore ReadScoreData(string file)
+            {
+                var data = File.ReadAllText(file);
+                return JsonConvert.DeserializeObject<JSONScore>(data);
+            }
+
+            private static JSONMult ReadMultiplierData(string file)
+            {
+                var data = File.ReadAllText(file);
+                return JsonConvert.DeserializeObject<JSONMult>(data);
+            }
+        }
+
+        public static class HighScore
+        {
+            public static Dictionary<string, int> BestTable;
+
+            public static void Init()
+            {
+                BestTable = new Dictionary<string, int>();
+                BestTable = ReadFromFile();
+            }
+
+            public static void WriteBest(PackedHighScore highScore)
+            {
+                string sceneName = highScore.Name;
+                int bestScore = highScore.bestScore;
+
+                BestTable.Add(sceneName, bestScore);
+            }
+
+            public static Dictionary<string, int> ReadFromFile()
+            {
+                string directory = File_HighScores;
+
+                if (!File.Exists(Path_HighScoreData))
+                {
+                    Debug.LogWarning("High score file doesn't exist! Creating one.");
+                    File.Create(Path_HighScoreData);
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject(directory) as Dictionary<string, int>;
+            }
+
+            public static void WriteToFile()
+            {
+                string directory = File_HighScores;
+
+                if (!File.Exists(directory))
+                {
+                    Debug.LogWarning("High score file doesn't exist! Creating one.");
+                    File.Create(directory);
+                    return;
+                }
+
+                var data = JsonConvert.SerializeObject(BestTable);
+                File.WriteAllText(directory, data);
+            }
+        }
+
+        public static class UI
+        {
+            public static void Init()
+            {
+                LoadedUIObjects = new List<GameObject>();
+                UINames = new List<string>();
+
+                LoadCustomUIs(Bundle.Bundles);
+                LoadUINames();
+
+                //SpawnDefaultUI();
+            }
+
+            public static List<GameObject> LoadedUIObjects { get; private set; }
+            public static List<string> UINames { get; private set; }
+            public static readonly string DefaultUIName = "Coda";
+
+            private static readonly string Prefix_Hud = "[SLHUD] - ";
+
+            public static GameObject GetObjectFromList(GameObject[] list, string query)
+            {
+                foreach (var obj in list)
+                {
+                    if (obj.name == query)
+                    {
+                        return obj;
+                    }
+                }
+
+                return null;
+            }
+
+            public static void LoadCustomUIs(List<AssetBundle> bundles)
+            {
+                if (bundles == null)
                 {
                     return;
                 }
 
-                AssetBundle bundle = AssetBundle.LoadFromFile(file);
-                Bundles.Add(bundle);
-            }
-        }
-    }
-
-    public static class PackedValues
-    {
-        public static Dictionary<string, PackedValue> ValueTable { get; private set; }
-
-        public static JSONScore[] Scores { get; private set; }
-        public static JSONMult[] Multipliers { get; private set; }
-
-        static string[] _scoreFiles;
-        static string[] _multiplierFiles;
-
-        public static void Init()
-        {
-            Scores = GetScores();
-            Multipliers = GetMultipliers();
-            GetValues();
-        }
-
-        public static PackedValue Get(string eventType)
-        {
-            return ValueTable[eventType];
-        }
-
-        public static PackedScore GetScore(string eventType)
-        {
-            PackedScore value = (PackedScore)Get(eventType);
-            PackedScore score = new PackedScore()
-            {
-                eventType = value.eventType,
-                Stackable = value.Stackable,
-                EventAudio = value.EventAudio,
-                Name = value.Name,
-                Score = value.Score,
-                AccumulatedScore = value.Score,
-                DecayTime = value.DecayTime,
-                TierRequirement = value.TierRequirement,
-                Tiers = value.Tiers
-            };
-
-            return score;
-        }
-
-        public static PackedMultiplier GetMultiplier(string eventType)
-        {
-            PackedMultiplier value = (PackedMultiplier)Get(eventType);
-            PackedMultiplier mult = new PackedMultiplier()
-            {
-                eventType = value.eventType,
-                Stackable = value.Stackable,
-                EventAudio = value.EventAudio,
-                Name = value.Name,
-                Multiplier = value.Multiplier,
-                DecayTime = value.DecayTime,
-                Condition = value.Condition,
-                TierRequirement = value.TierRequirement,
-                Tiers = value.Tiers
-            };
-
-            return mult;
-        }
-
-        private static JSONScore[] GetScores()
-        {
-            _scoreFiles = DataManager.LoadAllFiles(DataManager.Path_ScoreData, ".json");
-            List<JSONScore> scores = new List<JSONScore>();
-
-            foreach (var file in _scoreFiles)
-            {
-                var data = ReadScoreData(file);
-                scores.Add(data);
-            }
-
-            return scores.ToArray();
-        }
-
-        private static JSONMult[] GetMultipliers()
-        {
-            _multiplierFiles = DataManager.LoadAllFiles(DataManager.Path_MultiplierData, ".json");
-            List<JSONMult> multipliers = new List<JSONMult>();
-
-            foreach (var file in _multiplierFiles)
-            {
-                var data = ReadMultiplierData(file);
-                multipliers.Add(data);
-            }
-
-            return multipliers.ToArray();
-        }
-
-        private static void GetValues()
-        {
-            ValueTable = new Dictionary<string, PackedValue>();
-
-            foreach (var score in Scores)
-            {
-                var data = new PackedScore()
+                foreach (var bundle in bundles)
                 {
-                    eventType = score.EventType,
-                    DecayTime = score.DecayTime,
-                    Stackable = score.Stackable,
-                    Name = score.Name,
-                    Score = score.Score,
-                    AccumulatedScore = score.Score,
-                    TierRequirement = score.TierRequirement
-                };
+                    var loadedObjects = bundle.LoadAllAssets();
 
-                if (score.Tiers != null)
-                {
-                    if (score.Tiers.Length > 0)
+                    foreach (var bundleObject in loadedObjects)
                     {
-                        List<PackedScore> tiers = new List<PackedScore>();
-
-                        foreach (var tier in score.Tiers)
+                        if (bundleObject is GameObject go)
                         {
-                            var tierData = new PackedScore()
-                            {
-                                eventType = score.EventType,
-                                TierEventType = tier.TierEventType,
-                                DecayTime = tier.DecayTime,
-                                Stackable = tier.Stackable,
-                                Name = tier.Name,
-                                Score = tier.Score,
-                                TierRequirement = tier.TierRequirement
-                            };
-
-                            if (tier.EventAudio != null)
-                            {
-                                AudioClip clip = Audio.GetClip(tier.EventAudio);
-                                tierData.EventAudio = clip;
-                            }
-
-                            tiers.Add(tierData);
+                            bundleObject.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                            LoadedUIObjects.Add(go);
                         }
-
-                        data.Tiers = tiers.ToArray();
                     }
                 }
-
-                ValueTable.Add(score.EventType, data);
             }
 
-            foreach (var mult in Multipliers)
+            public static void LoadUINames()
             {
-                var data = new PackedMultiplier()
+                foreach (var uiObject in LoadedUIObjects)
                 {
-                    eventType = mult.EventType,
-                    DecayTime = mult.DecayTime,
-                    Stackable = mult.Stackable,
-                    Name = mult.Name,
-                    Multiplier = mult.Multiplier,
-                    Condition = mult.Condition,
-                    TierRequirement = mult.TierRequirement
-                };
-
-                if (mult.Tiers != null)
-                {
-                    if (mult.Tiers.Length > 0)
+                    if (uiObject.name.StartsWith("[SLHUD]"))
                     {
-                        List<PackedMultiplier> tiers = new List<PackedMultiplier>();
-
-                        foreach (var tier in mult.Tiers)
-                        {
-                            var tierData = new PackedMultiplier()
-                            {
-                                eventType = mult.EventType,
-                                TierEventType = tier.TierEventType,
-                                DecayTime = tier.DecayTime,
-                                Stackable = tier.Stackable,
-                                Name = tier.Name,
-                                Multiplier = tier.Multiplier,
-                                Condition = tier.Condition,
-                                TierRequirement = tier.TierRequirement
-                            };
-
-                            tiers.Add(tierData);
-                        }
-
-                        data.Tiers = tiers.ToArray();
+                        UINames.Add(uiObject.name.Substring(Prefix_Hud.Length));
                     }
                 }
-
-                ValueTable.Add(mult.EventType, data);
-            }
-        }
-
-        private static JSONScore ReadScoreData(string file)
-        {
-            var data = File.ReadAllText(file);
-            return JsonConvert.DeserializeObject<JSONScore>(data);
-        }
-
-        private static JSONMult ReadMultiplierData(string file)
-        {
-            var data = File.ReadAllText(file);
-            return JsonConvert.DeserializeObject<JSONMult>(data);
-        }
-    }
-
-    public static class HighScore
-    {
-        public static Dictionary<string, int> BestTable;
-
-        public static void Init()
-        {
-            BestTable = new Dictionary<string, int>();
-            BestTable = ReadFromFile();
-        }
-
-        public static void WriteBest(PackedHighScore highScore)
-        {
-            string sceneName = highScore.Name;
-            int bestScore = highScore.bestScore;
-
-            BestTable.Add(sceneName, bestScore);
-        }
-
-        public static Dictionary<string, int> ReadFromFile()
-        {
-            string directory = DataManager.File_HighScores;
-
-            if (!File.Exists(DataManager.Path_HighScoreData))
-            {
-                Debug.LogWarning("High score file doesn't exist! Creating one.");
-                File.Create(DataManager.Path_HighScoreData);
-                return null;
             }
 
-            return JsonConvert.DeserializeObject(directory) as Dictionary<string, int>;
-        }
-
-        public static void WriteToFile()
-        {
-            string directory = DataManager.File_HighScores;
-
-            if (!File.Exists(directory))
+            public static void SpawnDefaultUI()
             {
-                Debug.LogWarning("High score file doesn't exist! Creating one.");
-                File.Create(directory);
-                return;
+                SpawnUI(DefaultUIName);
             }
 
-            var data = JsonConvert.SerializeObject(BestTable);
-            File.WriteAllText(directory, data);
-        }
-    }
-
-    public static class UI
-    {
-        public static void Init()
-        {
-            LoadedUIObjects = new List<GameObject>();
-            UINames = new List<string>();
-
-            LoadCustomUIs(Bundle.Bundles);
-            LoadUINames();
-
-            //SpawnDefaultUI();
-        }
-
-        public static List<GameObject> LoadedUIObjects { get; private set; }
-        public static List<string> UINames { get; private set; }
-        public static readonly string DefaultUIName = "Coda";
-
-        private static readonly string Prefix_Hud = "[SLHUD] - ";
-
-        public static GameObject GetObjectFromList(GameObject[] list, string query)
-        {
-            foreach (var obj in list)
+            public static void SpawnUI(string name)
             {
-                if (obj.name == query)
+                foreach (var obj in LoadedUIObjects)
                 {
-                    return obj;
-                }
-            }
-
-            return null;
-        }
-
-        public static void LoadCustomUIs(List<AssetBundle> bundles)
-        {
-            if (bundles == null)
-            {
-                return;
-            }
-
-            foreach (var bundle in bundles)
-            {
-                var loadedObjects = bundle.LoadAllAssets();
-
-                foreach (var bundleObject in loadedObjects)
-                {
-                    if (bundleObject is GameObject go)
+                    if (GetHUDName(obj) == name)
                     {
-                        bundleObject.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                        LoadedUIObjects.Add(go);
+                        SpawnUI(obj);
                     }
                 }
             }
-        }
 
-        public static void LoadUINames()
-        {
-            foreach (var uiObject in LoadedUIObjects)
+            public static void SpawnUI(GameObject uiObject)
             {
-                if (uiObject.name.StartsWith("[SLHUD]"))
-                {
-                    UINames.Add(uiObject.name.Substring(Prefix_Hud.Length));
-                }
+                GameObject createdUI = GameObject.Instantiate(uiObject);
+                createdUI.hideFlags = HideFlags.DontUnloadUnusedAsset;
+            }
+
+            public static string GetHUDName(GameObject obj)
+            {
+                return obj.name.Substring(Prefix_Hud.Length);
             }
         }
 
-        public static void SpawnDefaultUI()
-        {
-            SpawnUI(DefaultUIName);
-        }
+        static readonly string Path_UserData = Application.dataPath + "/Data/";
+        static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
+        static readonly string Path_Mod = Path_Developer + "ScoreLab/";
+        static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
+        static readonly string Path_Audio = Path_Mod + "SFX/";
 
-        public static void SpawnUI(string name)
-        {
-            foreach (var obj in LoadedUIObjects)
-            {
-                if (GetHUDName(obj) == name)
-                {
-                    SpawnUI(obj);
-                }
-            }
-        }
+        static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
+        static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
+        static readonly string Path_HighScoreData = Path_Mod + "Data/High Score/";
 
-        public static void SpawnUI(GameObject uiObject)
-        {
-            GameObject createdUI = GameObject.Instantiate(uiObject);
-            createdUI.hideFlags = HideFlags.DontUnloadUnusedAsset;
-        }
-
-        public static string GetHUDName(GameObject obj)
-        {
-            return obj.name.Substring(Prefix_Hud.Length);
-        }
-    }
-
-    public static class DataManager
-    {
-        internal static readonly string Path_UserData = Application.dataPath + "/Data/";
-        internal static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
-        internal static readonly string Path_Mod = Path_Developer + "ScoreLab/";
-        internal static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
-        internal static readonly string Path_Audio = Path_Mod + "SFX/";
-
-        internal static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
-        internal static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
-        internal static readonly string Path_HighScoreData = Path_Mod + "Data/High Score/";
-
-        internal static readonly string File_HighScores = Path_HighScoreData + "high_score_table.json";
-        internal static readonly string File_HUDSettings = Path_Mod + "sl_hud_settings.json";
-        internal static readonly string File_CurrentHUD = Path_Mod + "sl_current_hud.txt";
+        static readonly string File_HighScores = Path_HighScoreData + "high_score_table.json";
+        static readonly string File_HUDSettings = Path_Mod + "sl_hud_settings.json";
+        static readonly string File_CurrentHUD = Path_Mod + "sl_current_hud.txt";
 
         public static void Init()
         {
@@ -458,7 +458,7 @@ namespace NEP.ScoreLab.Data
             return filteredFiles.ToArray();
         }
 
-        public static void InitializeDirectories()
+        private static void InitializeDirectories()
         {
             Directory.CreateDirectory(Path_Mod);
             Directory.CreateDirectory(Path_CustomUIs);

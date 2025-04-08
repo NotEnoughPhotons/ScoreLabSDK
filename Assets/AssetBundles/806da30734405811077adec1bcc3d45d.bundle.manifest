@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 2603242208
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5e17be27a753def6fe4d4c6d00bbad51
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f4d58da2e394c3ac790f4c422276af4f
+HashAppended: 0
+ClassTypes:
+- Class: 134
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Marrow-ExtendedSDK-MAINTAINED-main/Data/PhysicsMaterials/Active/GunInHand.physicMaterial
+Dependencies: []

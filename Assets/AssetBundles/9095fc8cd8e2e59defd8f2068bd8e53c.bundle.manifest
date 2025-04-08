@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 750482632
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 18961e20756369e43136ef0b0af49270
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4629f36946c08b982cdc1b470e41a000
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: c8dee6e90fb12c2b7cf1301d97ee90d8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Marrow-ExtendedSDK-MAINTAINED-main/Data/HandPose/PinchGrip.asset
+Dependencies: []

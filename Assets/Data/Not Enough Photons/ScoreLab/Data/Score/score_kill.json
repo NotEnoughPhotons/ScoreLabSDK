@@ -4,7 +4,6 @@
 	"Score": 100,
 	"DecayTime": 5.0,
 	"TierRequirement": 2,
-	"Stackable": true,
 	"Tiers":
 	[
 		{

@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 1763276986
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e3d7e1f952dd7bc63220de1b8c5f3c37
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f4d58da2e394c3ac790f4c422276af4f
+HashAppended: 0
+ClassTypes:
+- Class: 134
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Marrow-ExtendedSDK-MAINTAINED-main/Data/PhysicsMaterials/Player/FeetLifted.physicMaterial
+Dependencies: []
