@@ -1,4 +1,6 @@
-﻿namespace NEP.ScoreLab.Data
+﻿using UnityEngine;
+
+namespace NEP.ScoreLab.Data
 {
     [System.Serializable]
     public class JSONHUDManifest
@@ -7,5 +9,6 @@
         public string Author;
         public string Description;
         public string[] Tags;
+        public string GUID;
     }
 }
