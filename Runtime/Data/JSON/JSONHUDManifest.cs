@@ -6,6 +6,6 @@
         public string Name;
         public string Author;
         public string Description;
-        public string Tags;
+        public string[] Tags;
     }
 }
