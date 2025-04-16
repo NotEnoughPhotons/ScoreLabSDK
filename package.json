@@ -1,0 +1,10 @@
+{
+    "name": "nep.scorelab.sdk",
+    "version": "1.0.0",
+    "displayName": "ScoreLab SDK",
+    "description": "A software development kit to help you make custom HUDs for ScoreLab.",
+    "unity": "2021.3.16",
+    "author" {
+        "name": "adamdev"
+    }
+}
