@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System;
 using System.IO;
+using NEP.ScoreLab.Data;
 using NEP.ScoreLab.UI;
 using UnityEngine;
 using UnityEditor;
@@ -14,10 +15,10 @@ namespace NEP.ScoreLab.Editor
 			PCVR,
 			Quest
 		}
-
-		private string m_exportLocation;
+		
 		private TargetPlatform m_targetPlatform;
 		private GameObject m_targetPrefab;
+		private HUDManifestObject m_targetManifestObject;
 	
 		[MenuItem("Not Enough Photons/ScoreLab/Build", false, 10)]
 		public static void ShowWindow()
@@ -43,24 +44,38 @@ namespace NEP.ScoreLab.Editor
 				return;
 			}
 			
+			m_targetManifestObject = (HUDManifestObject)EditorGUILayout.ObjectField("Manifest:", m_targetManifestObject, typeof(HUDManifestObject), false);
+
+			if (!m_targetManifestObject)
+			{
+				EditorGUILayout.HelpBox("A HUD manifest is required! Create one by right-clicking in the Explorer and going to Not Enough Photons/ScoreLab/HUD Manifest!", MessageType.Error);
+				return;
+			}
+			
 			if (GUILayout.Button("Build"))
 			{
-				if (!m_targetPrefab)
-				{
-					throw new NullReferenceException("Missing prefab!");
-				}
+				string hudName = m_targetManifestObject.manifest.Name;
+				string exportLocation = Path.Combine(Application.dataPath, "Built HUDs");
 
 				AssetBundleBuild[] bundles = new AssetBundleBuild[1];
-				bundles[0].assetBundleName = m_targetPrefab.name + ".hud";
-				string[] assets = new string[1];
-				assets[0] = AssetDatabase.GetAssetPath(m_targetPrefab);
-				bundles[0].assetNames = assets;
-			
-				string buildPath = Path.Combine(m_exportLocation, m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
+				bundles[0].assetBundleName = hudName.ToLower() + ".hud";
+				bundles[0].assetNames = new string[]
+				{
+					AssetDatabase.GetAssetPath(m_targetPrefab)
+				};
+				
+				string buildPath = Path.Combine(exportLocation, m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
 				BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR ? BuildTarget.StandaloneWindows64 : BuildTarget.Android;
-			
+
 				Directory.CreateDirectory(buildPath);
-				BuildPipeline.BuildAssetBundles(buildPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+				var bundleManifest = BuildPipeline.BuildAssetBundles(buildPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+				
+				string manifestWritePath = Path.Combine(exportLocation, $"{hudName.ToLower()}.hud_manifest");
+				StreamWriter sw = new StreamWriter(manifestWritePath);
+				m_targetManifestObject.SetGUID(bundleManifest.GetAssetBundleHash(bundleManifest.GetAllAssetBundles()[0]).ToString());
+				sw.Write(m_targetManifestObject.ToJSON());
+				sw.Dispose();
+				sw.Close();
 			}
 		}
 	}
