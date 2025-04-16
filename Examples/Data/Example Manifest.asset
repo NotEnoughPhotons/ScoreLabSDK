@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Example Manifest
   m_EditorClassIdentifier: 
   manifest:
-    Name: 
-    Author: 
-    Description: 
-    Tags: 
+    Name: My HUD
+    Author: adamdev
+    Description: This is my HUD for ScoreLab!
+    Tags:
+    - Modern
+    - Testing
+    - Experimental

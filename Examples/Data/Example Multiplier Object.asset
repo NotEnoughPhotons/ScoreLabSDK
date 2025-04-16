@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Example Multiplier Object
   m_EditorClassIdentifier: 
   multiplier:
-    Name: 
-    Multiplier: 0
-    Stackable: 0
-    DecayTime: 0
-    EventType: 
+    Name: Example Multiplier
+    Multiplier: 1.25
+    Stackable: 1
+    DecayTime: 2
+    EventType: MULT_KILL
     TierEventType: 
-    Condition: 
+    Condition: IsPlayerSeated
     TierRequirement: 0
     Tiers: []

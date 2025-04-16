@@ -13,12 +13,30 @@ MonoBehaviour:
   m_Name: Example Score Object
   m_EditorClassIdentifier: 
   score:
-    Name: 
-    Score: 0
+    Name: Example Score
+    Score: 100
     EventAudio: {fileID: 0}
     Stackable: 0
     DecayTime: 0
     EventType: 
-    TierEventType: 
+    TierEventType: SCORE_KILL
     TierRequirement: 0
-    Tiers: []
+    Tiers:
+    - Name: Tier 1
+      Score: 25
+      EventAudio: {fileID: 0}
+      Stackable: 0
+      DecayTime: 0
+      EventType: 
+      TierEventType: 
+      TierRequirement: 1
+      Tiers: []
+    - Name: Tier 2
+      Score: 25
+      EventAudio: {fileID: 0}
+      Stackable: 0
+      DecayTime: 0
+      EventType: 
+      TierEventType: 
+      TierRequirement: 2
+      Tiers: []
