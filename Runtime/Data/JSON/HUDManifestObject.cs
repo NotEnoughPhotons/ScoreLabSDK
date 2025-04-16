@@ -1,9 +1,6 @@
 #if UNITY_EDITOR
 using System.IO;
-using System.Security.Policy;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace NEP.ScoreLab.Data
