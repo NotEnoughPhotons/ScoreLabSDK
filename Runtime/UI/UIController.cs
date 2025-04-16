@@ -6,6 +6,7 @@ using NEP.ScoreLab.Data;
 namespace NEP.ScoreLab.UI
 {
     [UnityEngine.ExecuteAlways]
+    [AddComponentMenu("ScoreLab/UI Controller")]
     public class UIController : MonoBehaviour
     {
         public UIModule ScoreModule { get; set; }

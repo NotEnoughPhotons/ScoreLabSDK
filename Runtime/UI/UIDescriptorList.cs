@@ -7,6 +7,7 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
 {
+    [AddComponentMenu("ScoreLab/UI Descriptor List")]
     public class UIDescriptorList : MonoBehaviour
     {
         public List<UIModule> ActiveModules;

@@ -8,6 +8,7 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.UI
 {
+    [AddComponentMenu("ScoreLab/Modules/Multiplier Module")]
     public class UIMultiplierModule : UIModule
     {
         private PackedMultiplier _packedMultiplier { get => (PackedMultiplier)_packedValue; }

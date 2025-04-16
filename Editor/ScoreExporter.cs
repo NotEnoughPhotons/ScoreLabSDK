@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -9,46 +10,47 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.Editor
 {
-    public class MultiplierEditor : EditorWindow
+    public class ScoreExporter : EditorWindow
     {
-        private MultObject m_multObject;
+        private ScoreObject m_scoreObject;
         private string fileName;
         
-        [MenuItem("Not Enough Photons/ScoreLab/Multiplier Editor")]
+        [MenuItem("Not Enough Photons/ScoreLab/Score Editor", false)]
         public static void ShowWindow()
         {
-            GetWindow(typeof(MultiplierEditor));
+            EditorWindow window = GetWindow(typeof(ScoreExporter));
+            window.titleContent = new GUIContent("Score Editor");
         }
 
         private void OnGUI()
         {
             GUILayout.Label("Fields");
             fileName = EditorGUILayout.TextField("File Name", fileName);
-            m_multObject = EditorGUILayout.ObjectField(m_multObject, typeof(MultObject), false) as MultObject;
+            m_scoreObject = EditorGUILayout.ObjectField(m_scoreObject, typeof(ScoreObject), false) as ScoreObject;
 
-            if (m_multObject)
+            if (m_scoreObject)
             {
                 if (GUILayout.Button("Export"))
                 {
-                    string path = $"Data/Not Enough Photons/ScoreLab/Data/Multiplier/{fileName}.json";
+                    string path = $"Data/Not Enough Photons/ScoreLab/Data/Score/{fileName}.json";
                     using (StreamWriter sw = new StreamWriter(Path.Combine(Application.dataPath, path)))
                     {
                         using (JsonWriter writer = new JsonTextWriter(sw))
                         {
-                            JSONMult mult = m_multObject.multiplier;
+                            JSONScore score = m_scoreObject.score;
                             writer.Formatting = Formatting.Indented;
                             
                             writer.WriteStartObject();
-                            WriteJSONMult(writer, mult);
+                            WriteJSONScore(writer, score);
 
-                            if (mult.Tiers != null && mult.Tiers.Length > 0)
+                            if (score.Tiers != null && score.Tiers.Length > 0)
                             {
                                 writer.WritePropertyName("Tiers");
                                 writer.WriteStartArray();
-                                foreach (var tier in mult.Tiers)
+                                foreach (var tier in score.Tiers)
                                 {
                                     writer.WriteStartObject();
-                                    WriteJSONMult(writer, tier);
+                                    WriteJSONScore(writer, tier);
                                     writer.WriteEndObject();
                                 }
                                 writer.WriteEndArray();
@@ -61,42 +63,39 @@ namespace NEP.ScoreLab.Editor
             }
         }
 
-        private void WriteJSONMult(JsonWriter writer, JSONMult mult)
+        private void WriteJSONScore(JsonWriter writer, JSONScore score)
         {
-            if (mult.Name != string.Empty)
+            if (score.Name != string.Empty)
             {
                 writer.WritePropertyName("Name");
-                writer.WriteValue(mult.Name);
+                writer.WriteValue(score.Name);
             }
             
-            writer.WritePropertyName("Multiplier");
-            writer.WriteValue(mult.Multiplier);
+            writer.WritePropertyName("Score");
+            writer.WriteValue(score.Score);
             
+            writer.WritePropertyName("EventAudio");
+            writer.WriteValue(score.EventAudio != null ? score.EventAudio.name : null);
             writer.WritePropertyName("Stackable");
-            writer.WriteValue(mult.Stackable);
+            writer.WriteValue(score.Stackable);
             writer.WritePropertyName("DecayTime");
-            writer.WriteValue(mult.DecayTime);
+            writer.WriteValue(score.DecayTime);
 
-            if (mult.EventType != string.Empty)
+            if (score.EventType != string.Empty)
             {
                 writer.WritePropertyName("EventType");
-                writer.WriteValue(mult.EventType);
+                writer.WriteValue(score.EventType);
             }
 
-            if (mult.Condition != string.Empty)
-            {
-                writer.WritePropertyName("Condition");
-                writer.WriteValue(mult.Condition);
-            }
-            
-            if (mult.TierEventType != string.Empty)
+            if (score.TierEventType != string.Empty)
             {
                 writer.WritePropertyName("TierEventType");
-                writer.WriteValue(mult.TierEventType);
+                writer.WriteValue(score.TierEventType);
             }
             
             writer.WritePropertyName("TierRequirement");
-            writer.WriteValue(mult.TierRequirement);
+            writer.WriteValue(score.TierRequirement);
         }
     }
 }
+#endif

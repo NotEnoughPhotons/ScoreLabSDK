@@ -8,6 +8,7 @@ using TMPro;
 
 namespace NEP.ScoreLab.UI
 {
+    [AddComponentMenu("ScoreLab/Modules/Score Module")]
     public class UIScoreModule : UIModule
     {
         private PackedScore _packedScore { get => (PackedScore)_packedValue; }

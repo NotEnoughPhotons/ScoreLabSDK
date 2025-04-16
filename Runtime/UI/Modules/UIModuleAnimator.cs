@@ -5,6 +5,7 @@ using NEP.ScoreLab.Core;
 
 namespace NEP.ScoreLab.UI
 {
+    [AddComponentMenu("ScoreLab/UI Module Animator")]
     public class UIModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
