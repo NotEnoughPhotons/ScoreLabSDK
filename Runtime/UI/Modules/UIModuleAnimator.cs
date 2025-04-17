@@ -6,6 +6,7 @@ using NEP.ScoreLab.Core;
 namespace NEP.ScoreLab.UI
 {
     [AddComponentMenu("ScoreLab/UI Module Animator")]
+    [RequireComponent(typeof(Animator))]
     public class UIModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
@@ -37,7 +38,7 @@ namespace NEP.ScoreLab.UI
                 return;
             }
 
-            Animator.Play(name);
+            Animator.Play(name, -1, 0f);
         }
 
         private void OnModuleEnabled(UIModule module)

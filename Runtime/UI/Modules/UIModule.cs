@@ -27,6 +27,7 @@ namespace NEP.ScoreLab.UI
         public virtual bool CanDecay { get => transform.Find("-Persist") == null; }
         public float DecayTime { get => _decayTime; }
         public float PostDecayTime { get => _postDecayTime; }
+        public bool MarkedForDecay { get => _markedForDecay; }
 
         protected TextMeshProUGUI _title { get; private set; }
         protected TextMeshProUGUI _value { get; private set; }
@@ -48,11 +49,17 @@ namespace NEP.ScoreLab.UI
 
         private bool _reachedDecay = false;
         private bool _reachedPostDecay = false;
+        private bool _markedForDecay = false;
 
         public virtual void OnModuleEnable() { API.UI.OnModuleEnabled?.Invoke(this); }
 
         public virtual void OnModuleDisable() { API.UI.OnModuleDisabled?.Invoke(this); }
 
+#if UNITY_EDITOR
+        public virtual void OnModuleEditorEnable() { API.UI.OnModuleEnabled?.Invoke(this); }
+
+        public virtual void OnModuleEditorDisable() { API.UI.OnModuleDisabled?.Invoke(this); }
+#endif
         public virtual void OnUpdate() { }
 
         public void AssignPackedData(PackedValue packedValue)

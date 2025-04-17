@@ -13,6 +13,28 @@ namespace NEP.ScoreLab.UI
     {
         private PackedScore _packedScore { get => (PackedScore)_packedValue; }
 
+#if UNITY_EDITOR
+        public override void OnModuleEditorEnable()
+        {
+            base.OnModuleEditorEnable();
+
+            if (_packedValue == null)
+            {
+                return;
+            }
+
+            if (ModuleType == UIModuleType.Main)
+            {
+                SetText(_value, Random.Range(0, 100));
+            }
+            else if (ModuleType == UIModuleType.Descriptor)
+            {
+                SetText(_title, "Placeholder!");
+                SetText(_value, Random.Range(0, 100));
+            }
+        }
+#endif
+
         public override void OnModuleEnable()
         {
             base.OnModuleEnable();

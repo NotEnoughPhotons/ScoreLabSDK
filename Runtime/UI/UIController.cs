@@ -61,6 +61,17 @@ namespace NEP.ScoreLab.UI
 #endif
         }
 
+#if UNITY_EDITOR
+        internal void CreateDummy(UIModule module)
+        {
+            if (!module)
+            {
+                return;
+            }
+
+            module.OnModuleEditorEnable();
+        }
+#endif
         public void SetParent(Transform parent)
         {
             transform.SetParent(parent);

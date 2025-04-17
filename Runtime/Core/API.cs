@@ -71,6 +71,13 @@ namespace NEP.ScoreLab.Core
             public static Action<UIModule> OnModuleDecayed;
             public static Action<UIModule> OnModulePostDecayed;
         }
+
+#if UNITY_EDITOR
+        public static class Editor
+        {
+            public static Action OnEditorModuleShow;
+        }
+#endif
     }
 }
 
