@@ -67,22 +67,19 @@ namespace NEP.ScoreLab.Editor
 				string buildPath = Path.Combine(exportLocation, m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
 				BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR ? BuildTarget.StandaloneWindows64 : BuildTarget.Android;
 
-				Directory.CreateDirectory(buildPath);
-				var bundleManifest = BuildPipeline.BuildAssetBundles(buildPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
-
 				string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
-				string moveSource = Path.Combine(buildPath, $"{hudName}.hud");
-				string moveDestination = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud");
 				
 				Directory.CreateDirectory(exportedPath);
+				var bundleManifest = BuildPipeline.BuildAssetBundles(exportedPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
 
-				if (!File.Exists(moveDestination))
+				foreach (var file in Directory.EnumerateFiles(exportedPath))
 				{
-					File.Move(moveSource, moveDestination);
-				}
-				else
-				{
-					File.Copy(moveSource, moveDestination);
+					if (file.EndsWith(".hud"))
+					{
+						continue;
+					}
+					
+					File.Delete(file);
 				}
 				
 				string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
