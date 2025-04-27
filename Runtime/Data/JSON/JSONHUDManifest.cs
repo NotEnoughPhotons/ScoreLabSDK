@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+using System.IO;
+
+using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NEP.ScoreLab.Data
 {
@@ -11,5 +15,32 @@ namespace NEP.ScoreLab.Data
         public string[] Tags;
         public string GUID;
         public Texture2D Logo;
+
+        public bool FromJSON(string pathToJson)
+        {
+            using (StreamReader sr = new StreamReader(pathToJson))
+            {
+                using (JsonTextReader jsonReader = new JsonTextReader(sr))
+                {
+                    JObject data = JToken.ReadFrom(jsonReader) as JObject;
+
+                    if (data == null)
+                    {
+                        return false;
+                    }
+                    
+                    Name = data["name"].Value<string>();
+                    Author = data["author"].Value<string>();
+                    Description = data["description"].Value<string>();
+                }
+            }
+
+            return true;
+        }
+
+        public void SetHUDLogo(Texture2D texture)
+        {
+            Logo = texture;
+        }
     }
 }
