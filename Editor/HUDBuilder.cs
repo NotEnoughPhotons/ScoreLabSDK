@@ -71,13 +71,19 @@ namespace NEP.ScoreLab.Editor
 				var bundleManifest = BuildPipeline.BuildAssetBundles(buildPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
 
 				string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
-
-				Debug.Log(exportedPath);
-				Debug.Log(Path.Combine(buildPath, $"{hudName.ToLower()}.hud"));
+				string moveSource = Path.Combine(buildPath, $"{hudName}.hud");
+				string moveDestination = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud");
 				
 				Directory.CreateDirectory(exportedPath);
-				
-				File.Move(Path.Combine(buildPath, $"{hudName}.hud"), Path.Combine(exportedPath, $"{hudName.ToLower()}.hud"));
+
+				if (!File.Exists(moveDestination))
+				{
+					File.Move(moveSource, moveDestination);
+				}
+				else
+				{
+					File.Copy(moveSource, moveDestination);
+				}
 				
 				string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
 				StreamWriter sw = new StreamWriter(manifestWritePath);
