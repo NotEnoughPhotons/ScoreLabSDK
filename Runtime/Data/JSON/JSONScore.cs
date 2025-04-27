@@ -1,20 +1,23 @@
+using UnityEngine;
+
 namespace NEP.ScoreLab.Data
 {
-    [System.Serializable]
     public struct JSONScore
     {
-        public string Name;
-        public int Score;
-        
-        public UnityEngine.AudioClip EventAudio;
-        
-        public bool Stackable;
-        
-        public float DecayTime;
-        
         public string EventType;
         public string TierEventType;
-        
+
+        public float DecayTime;
+        public bool Stackable;
+        #if UNITY_EDITOR
+        public AudioClip EventAudio;
+        #else
+        public string EventAudio;
+        #endif
+
+        public string Name;
+        public int Score;
+
         public int TierRequirement;
 
         public JSONScore[] Tiers;

@@ -1,17 +1,23 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-
-using TMPro;
-
-using NEP.ScoreLab.Core;
+﻿using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.HUD
 {
-    [AddComponentMenu("ScoreLab/Modules/Multiplier Module")]
     public class MultiplierModule : Module
     {
         private PackedMultiplier _packedMultiplier { get => (PackedMultiplier)_packedValue; }
+
+        private void Awake()
+        {
+            if (name == "MultiplierDescriptor")
+            {
+                ModuleType = UIModuleType.Descriptor;
+            }
+            else if (name == "Main_Multiplier")
+            {
+                ModuleType = UIModuleType.Main;
+            }
+        }
 
         public override void OnModuleEnable()
         {
@@ -22,14 +28,14 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            if(_packedMultiplier == null)
+            if (_packedMultiplier == null)
             {
                 return;
             }
 
             if (ModuleType == UIModuleType.Main)
             {
-                SetText(_value, ScoreTracker.Instance.Multiplier.ToString());
+                SetText(_value, $"{ScoreTracker.Instance.Multiplier.ToString()}x");
             }
             else if (ModuleType == UIModuleType.Descriptor)
             {
@@ -38,31 +44,32 @@ namespace NEP.ScoreLab.HUD
                     if (PackedValue.TierEventType != null)
                     {
                         SetText(_title, _packedMultiplier.Name);
-                        SetText(_value, _packedMultiplier.Multiplier);
+                        SetText(_value, $"{_packedMultiplier.Multiplier.ToString()}x");
                     }
                     else
                     {
                         SetText(_title, _packedMultiplier.Name);
-                        SetText(_value, _packedMultiplier.AccumulatedMultiplier);
+                        SetText(_value, $"{_packedMultiplier.AccumulatedMultiplier.ToString()}x");
                     }
                 }
                 else
                 {
                     SetText(_title, _packedMultiplier.Name);
-                    SetText(_value, _packedMultiplier.Multiplier);
+                    SetText(_value, $"{_packedMultiplier.Multiplier.ToString()}x");
                 }
             }
 
             if (_timeBar != null)
             {
-                if(_packedMultiplier.Condition != null)
+                if (_packedMultiplier.Condition != null)
                 {
                     _timeBar.gameObject.SetActive(false);
                 }
                 else
                 {
                     _timeBar.gameObject.SetActive(true);
-                    SetMaxValueToBar(_timeBar, _packedMultiplier.Elapsed);
+                    SetMaxValueToBar(_timeBar, _packedMultiplier.DecayTime);
+                    SetBarValue(_timeBar, _packedMultiplier.DecayTime);
                 }
             }
         }
@@ -74,9 +81,9 @@ namespace NEP.ScoreLab.HUD
 
         public override void OnUpdate()
         {
-            if(_packedMultiplier != null)
+            if (_packedMultiplier != null)
             {
-                if(_packedMultiplier.condition != null)
+                if (_packedMultiplier.condition != null)
                 {
                     if (!_packedMultiplier.condition())
                     {
@@ -93,7 +100,7 @@ namespace NEP.ScoreLab.HUD
                 UpdateDecay();
             }
 
-            if(_timeBar != null)
+            if (_timeBar != null)
             {
                 SetBarValue(_timeBar, _tDecay);
             }

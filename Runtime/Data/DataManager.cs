@@ -1,11 +1,9 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace NEP.ScoreLab.Data
 {
@@ -14,7 +12,7 @@ namespace NEP.ScoreLab.Data
         public static class Audio
         {
             public static List<AudioClip> Clips { get; private set; }
-            
+
             public static void Init()
             {
                 Clips = new List<AudioClip>();
@@ -23,19 +21,19 @@ namespace NEP.ScoreLab.Data
 
             public static void GetAudioClips()
             {
-                string[] files = LoadAllFiles(Path_Audio);
+                string[] files = LoadAllFiles(Path_SFX);
 
-                foreach(string file in files)
+                foreach (string file in files)
                 {
-                    // do stuff
+                    // Clips.Add(AudioImportLib.API.LoadAudioClip(file, true));
                 }
             }
 
             public static AudioClip GetClip(string nameQuery)
             {
-                foreach(var clip in Clips)
+                foreach (var clip in Clips)
                 {
-                    if(clip.name == nameQuery)
+                    if (clip.name == nameQuery)
                     {
                         return clip;
                     }
@@ -44,7 +42,7 @@ namespace NEP.ScoreLab.Data
                 return null;
             }
         }
-        
+
         public static class Bundle
         {
             public static List<AssetBundle> Bundles { get; private set; }
@@ -77,7 +75,6 @@ namespace NEP.ScoreLab.Data
         public static class PackedValues
         {
             public static Dictionary<string, PackedValue> ValueTable { get; private set; }
-
             public static JSONScore[] Scores { get; private set; }
             public static JSONMult[] Multipliers { get; private set; }
 
@@ -166,7 +163,7 @@ namespace NEP.ScoreLab.Data
             {
                 ValueTable = new Dictionary<string, PackedValue>();
 
-                foreach(var score in Scores)
+                foreach (var score in Scores)
                 {
                     var data = new PackedScore()
                     {
@@ -181,11 +178,11 @@ namespace NEP.ScoreLab.Data
 
                     if (score.Tiers != null)
                     {
-                        if(score.Tiers.Length > 0)
+                        if (score.Tiers.Length > 0)
                         {
                             List<PackedScore> tiers = new List<PackedScore>();
 
-                            foreach(var tier in score.Tiers)
+                            foreach (var tier in score.Tiers)
                             {
                                 var tierData = new PackedScore()
                                 {
@@ -200,8 +197,13 @@ namespace NEP.ScoreLab.Data
 
                                 if (tier.EventAudio != null)
                                 {
+                                    #if UNITY_EDITOR
                                     AudioClip clip = tier.EventAudio;
                                     tierData.EventAudio = clip;
+#else
+                                    AudioClip clip = Audio.GetClip(tier.EventAudio);
+                                    tierData.EventAudio = clip;
+#endif
                                 }
 
                                 tiers.Add(tierData);
@@ -210,7 +212,7 @@ namespace NEP.ScoreLab.Data
                             data.Tiers = tiers.ToArray();
                         }
                     }
-                    
+
                     ValueTable.Add(score.EventType, data);
                 }
 
@@ -323,17 +325,17 @@ namespace NEP.ScoreLab.Data
         {
             public static void Init()
             {
-                LoadedUIObjects = new List<GameObject>();
-                UINames = new List<string>();
+                LoadedHUDs = new List<GameObject>();
+                HUDNames = new List<string>();
 
-                LoadCustomUIs(Bundle.Bundles);
+                LoadHUDs(Bundle.Bundles);
                 LoadUINames();
 
                 //SpawnDefaultUI();
             }
 
-            public static List<GameObject> LoadedUIObjects { get; private set; }
-            public static List<string> UINames { get; private set; }
+            public static List<GameObject> LoadedHUDs { get; private set; }
+            public static List<string> HUDNames { get; private set; }
             public static readonly string DefaultUIName = "Coda";
 
             private static readonly string Prefix_Hud = "[SLHUD] - ";
@@ -351,7 +353,7 @@ namespace NEP.ScoreLab.Data
                 return null;
             }
 
-            public static void LoadCustomUIs(List<AssetBundle> bundles)
+            public static void LoadHUDs(List<AssetBundle> bundles)
             {
                 if (bundles == null)
                 {
@@ -364,10 +366,12 @@ namespace NEP.ScoreLab.Data
 
                     foreach (var bundleObject in loadedObjects)
                     {
-                        if (bundleObject is GameObject go)
+                        if (bundleObject is GameObject)
                         {
-                            bundleObject.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                            LoadedUIObjects.Add(go);
+                            var go = bundleObject as GameObject;
+                            go.hideFlags = HideFlags.DontUnloadUnusedAsset;
+
+                            LoadedHUDs.Add(go);
                         }
                     }
                 }
@@ -375,11 +379,11 @@ namespace NEP.ScoreLab.Data
 
             public static void LoadUINames()
             {
-                foreach (var uiObject in LoadedUIObjects)
+                foreach (var uiObject in LoadedHUDs)
                 {
                     if (uiObject.name.StartsWith("[SLHUD]"))
                     {
-                        UINames.Add(uiObject.name.Substring(Prefix_Hud.Length));
+                        HUDNames.Add(uiObject.name.Substring(Prefix_Hud.Length));
                     }
                 }
             }
@@ -391,7 +395,7 @@ namespace NEP.ScoreLab.Data
 
             public static void SpawnUI(string name)
             {
-                foreach (var obj in LoadedUIObjects)
+                foreach (var obj in LoadedHUDs)
                 {
                     if (GetHUDName(obj) == name)
                     {
@@ -402,8 +406,7 @@ namespace NEP.ScoreLab.Data
 
             public static void SpawnUI(GameObject uiObject)
             {
-                GameObject createdUI = GameObject.Instantiate(uiObject);
-                createdUI.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                GameObject.Instantiate(uiObject);
             }
 
             public static string GetHUDName(GameObject obj)
@@ -412,27 +415,26 @@ namespace NEP.ScoreLab.Data
             }
         }
 
-        static readonly string Path_UserData = Application.dataPath + "/Data/";
-        static readonly string Path_Developer = Path_UserData + "Not Enough Photons/";
-        static readonly string Path_Mod = Path_Developer + "ScoreLab/";
-        static readonly string Path_CustomUIs = Path_Mod + "Custom UIs/";
-        static readonly string Path_Audio = Path_Mod + "SFX/";
+        static readonly string Path_Developer      = Path.Combine(Application.dataPath, "Not Enough Photons");
+        static readonly string Path_Mod            = Path.Combine(Path_Developer, "ScoreLab");
+        static readonly string Path_CustomUIs      = Path.Combine(Path_Mod, "HUDs");
+        static readonly string Path_SFX            = Path.Combine(Path_Mod, "SFX");
 
-        static readonly string Path_ScoreData = Path_Mod + "Data/Score/";
-        static readonly string Path_MultiplierData = Path_Mod + "Data/Multiplier/";
-        static readonly string Path_HighScoreData = Path_Mod + "Data/High Score/";
+        static readonly string Path_ScoreData      = Path.Combine(Path_Mod, "Data/Score");
+        static readonly string Path_MultiplierData = Path.Combine(Path_Mod, "Data/Multiplier");
+        static readonly string Path_HighScoreData  = Path.Combine(Path_Mod, "Data/High Score");
 
-        static readonly string File_HighScores = Path_HighScoreData + "high_score_table.json";
-        static readonly string File_HUDSettings = Path_Mod + "sl_hud_settings.json";
-        static readonly string File_CurrentHUD = Path_Mod + "sl_current_hud.txt";
+        static readonly string File_HighScores     = Path.Combine(Path_HighScoreData, "high_score_table.json");
+        static readonly string File_HUDSettings    = Path.Combine(Path_Mod, "sl_hud_settings.json");
+        static readonly string File_CurrentHUD     = Path.Combine(Path_Mod, "sl_current_hud.txt");
 
         public static void Init()
         {
             InitializeDirectories();
 
-            Bundle.Init();
+            // Bundle.Init();
+            // UI.Init();
             Audio.Init();
-            UI.Init();
             PackedValues.Init();
             //HighScore.Init();
         }
@@ -462,7 +464,7 @@ namespace NEP.ScoreLab.Data
         {
             Directory.CreateDirectory(Path_Mod);
             Directory.CreateDirectory(Path_CustomUIs);
-            Directory.CreateDirectory(Path_Audio);
+            Directory.CreateDirectory(Path_SFX);
 
             Directory.CreateDirectory(Path_ScoreData);
             Directory.CreateDirectory(Path_MultiplierData);

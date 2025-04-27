@@ -1,12 +1,9 @@
 using UnityEngine;
-using UnityEngine.Animations;
 
 using NEP.ScoreLab.Core;
 
 namespace NEP.ScoreLab.HUD
 {
-    [AddComponentMenu("ScoreLab/UI Module Animator")]
-    [RequireComponent(typeof(Animator))]
     public class ModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
@@ -21,23 +18,25 @@ namespace NEP.ScoreLab.HUD
 
         private void OnEnable()
         {
-            API.UI.OnModuleEnabled += OnModuleEnabled;
+            //API.UI.OnModuleEnabled += OnModuleEnabled;
+            API.Value.OnValueTierReached += (data) => OnTierReached();
             API.UI.OnModuleDecayed += OnModuleDecayed;
         }
 
         private void OnDisable()
         {
-            API.UI.OnModuleEnabled -= OnModuleEnabled;
+            //API.UI.OnModuleEnabled -= OnModuleEnabled;
+            API.Value.OnValueTierReached -= (data) => OnTierReached();
             API.UI.OnModuleDecayed -= OnModuleDecayed;
         }
 
         private void PlayAnimation(string name)
         {
-            if(Animator == null)
+            if (Animator == null)
             {
                 return;
             }
-
+            
             Animator.Play(name, -1, 0f);
         }
 
@@ -48,14 +47,19 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            if (module.ModuleType == Module.UIModuleType.Main)
-            {
-                PlayAnimation("main_show");
-            }
-            else
+            if (_module.ModuleType == Module.UIModuleType.Descriptor)
             {
                 PlayAnimation("descriptor_show");
             }
+            else
+            {
+                PlayAnimation("show");
+            }
+        }
+
+        private void OnTierReached()
+        {
+            PlayAnimation("tier_reached");
         }
 
         private void OnModuleDecayed(Module module)
@@ -65,13 +69,13 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            if (module.ModuleType == Module.UIModuleType.Main)
+            if (_module.ModuleType == Module.UIModuleType.Descriptor)
             {
-                PlayAnimation("main_hide");
+                PlayAnimation("descriptor_hide");
             }
             else
             {
-                PlayAnimation("descriptor_hide");
+                PlayAnimation("hide");
             }
         }
     }

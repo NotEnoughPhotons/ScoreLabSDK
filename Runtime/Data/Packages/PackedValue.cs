@@ -1,6 +1,8 @@
+using System;
+
 namespace NEP.ScoreLab.Data
 {
-    [System.Serializable]
+    [Serializable]
     public class PackedValue
     {
         public enum PackedType
@@ -28,20 +30,38 @@ namespace NEP.ScoreLab.Data
         public float DecayTime;
         public float PostDecayTime;
 
+        public PackedValue Parent;
         public PackedValue[] Tiers;
 
         public PackedValue CurrentTier
         {
             get
             {
-                if(_tierIndex == Tiers.Length)
+                if (Tiers == null || Tiers.Length == 0)
+                {
+                    return this;
+                }
+                
+                if (_tierIndex == Tiers.Length)
                 {
                     _tierIndex = Tiers.Length;
                     return Tiers[_tierIndex];
                 }
-                else
+                
+                return Tiers[_tierIndex];
+            }
+        }
+        public PackedValue NextTier
+        {
+            get
+            {
+                if (_tierIndex + 1 >= Tiers.Length)
                 {
                     return Tiers[_tierIndex];
+                }
+                else
+                {
+                    return Tiers[_tierIndex + 1];
                 }
             }
         }
@@ -52,9 +72,9 @@ namespace NEP.ScoreLab.Data
 
         public virtual bool IsActive { get; }
 
-        [UnityEngine.SerializeField] protected float _tDecay;
-        [UnityEngine.SerializeField] private int _tierIndex = 0;
-        [UnityEngine.SerializeField] private int _tierRequirementIndex = 0;
+        protected float _tDecay;
+        private int _tierIndex = 0;
+        private int _tierRequirementIndex = 0;
 
         public virtual void OnValueCreated() { }
         public virtual void OnValueRemoved() { }
@@ -67,17 +87,15 @@ namespace NEP.ScoreLab.Data
             _tDecay = decayTime;
         }
 
-        public void NextTier()
+        public void ToNextTier()
         {
-            if(_tierRequirementIndex < TierRequirement && _tierIndex < Tiers.Length)
-            {
-                _tierRequirementIndex++;
-            }
-            else if(_tierRequirementIndex == TierRequirement)
+            _tierRequirementIndex++;
+
+            if (_tierRequirementIndex >= TierRequirement)
             {
                 _tierRequirementIndex = TierRequirement;
-
-                if(_tierIndex + 1 < Tiers.Length)
+                Core.API.Value.OnValueTierReached?.Invoke(CurrentTier);
+                if (_tierIndex + 1 < Tiers.Length)
                 {
                     _tierIndex++;
                 }

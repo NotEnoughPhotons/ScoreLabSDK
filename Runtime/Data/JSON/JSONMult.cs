@@ -1,18 +1,15 @@
 namespace NEP.ScoreLab.Data
 {
-    [System.Serializable]
     public struct JSONMult
     {
-        public string Name;
-        public float Multiplier;
-
-        public bool Stackable;
-        
-        public float DecayTime;
-
         public string EventType;
         public string TierEventType;
-        
+
+        public float DecayTime;
+        public bool Stackable;
+
+        public string Name;
+        public float Multiplier;
         public string Condition;
 
         public int TierRequirement;

@@ -1,54 +1,41 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
-using TMPro;
-
 namespace NEP.ScoreLab.HUD
 {
-    [AddComponentMenu("ScoreLab/Modules/Score Module")]
     public class ScoreModule : Module
     {
         private PackedScore _packedScore { get => (PackedScore)_packedValue; }
 
-#if UNITY_EDITOR
-        public override void OnModuleEditorEnable()
+        private float _targetValue;
+        private float _currentValue;
+        private float _rate;
+        
+        private void Awake()
         {
-            base.OnModuleEditorEnable();
-
-            if (_packedValue == null)
+            if (name == "ScoreDescriptor")
             {
-                return;
-            }
-
-            if (ModuleType == UIModuleType.Main)
-            {
-                SetText(_value, Random.Range(0, 100));
-            }
-            else if (ModuleType == UIModuleType.Descriptor)
-            {
-                SetText(_title, "Placeholder!");
-                SetText(_value, Random.Range(0, 100));
+                ModuleType = UIModuleType.Descriptor;
             }
         }
-#endif
 
         public override void OnModuleEnable()
         {
             base.OnModuleEnable();
 
-            if(_packedValue == null)
+            if (ModuleType == UIModuleType.Main)
+            {
+                SetText(_value, ScoreTracker.Instance.Score);
+            }
+            
+            if (_packedValue == null)
             {
                 return;
             }
-
-            if(ModuleType == UIModuleType.Main)
-            {
-                SetText(_value, ScoreTracker.Instance.Score.ToString());
-            }
-            else if (ModuleType == UIModuleType.Descriptor)
+            
+            if (ModuleType == UIModuleType.Descriptor)
             {
                 if (PackedValue.Stackable)
                 {
@@ -79,6 +66,24 @@ namespace NEP.ScoreLab.HUD
         public override void OnUpdate()
         {
             UpdateDecay();
+
+            if (ModuleType == UIModuleType.Main)
+            { 
+                SetTweenValue(ScoreTracker.Instance.Score);
+                _currentValue = Mathf.MoveTowards(_currentValue, _targetValue, _rate * Time.unscaledDeltaTime);
+                if (Mathf.Approximately(_currentValue, _targetValue))
+                {
+                    _currentValue = _targetValue;
+                }
+                
+                SetText(_value, _currentValue.ToString("N0"));
+            }
+        }
+
+        private void SetTweenValue(int value)
+        {
+            _targetValue = value;
+            _rate = Mathf.Abs(_targetValue - _currentValue) / 1.0f;
         }
     }
 }

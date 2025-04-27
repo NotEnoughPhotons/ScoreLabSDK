@@ -13,7 +13,7 @@ namespace NEP.ScoreLab.Data
         public override PackedType PackedValueType => PackedType.Multiplier;
         public float Multiplier;
         public float AccumulatedMultiplier;
-        public float Elapsed { get => base._tDecay; }
+        public float Elapsed { get => _tDecay; }
         public string Condition;
         public Func<bool> condition { get; private set; }
 
@@ -27,7 +27,6 @@ namespace NEP.ScoreLab.Data
                 _timed = true;
             }
 
-            condition = API.GameConditions.GetCondition(Condition);
             AccumulatedMultiplier = Multiplier;
             _tDecay = DecayTime;
         }
@@ -53,8 +52,6 @@ namespace NEP.ScoreLab.Data
 
         public override void OnUpdateDecay()
         {
-            base.OnUpdateDecay();
-
             if (_timed)
             {
                 if (!_timeBegin)

@@ -5,8 +5,6 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.HUD
 {
-    [UnityEngine.ExecuteAlways]
-    [AddComponentMenu("ScoreLab/HUD")]
     public class HUD : MonoBehaviour
     {
         public Module ScoreModule { get; set; }
@@ -15,77 +13,93 @@ namespace NEP.ScoreLab.HUD
 
         public Transform followTarget;
 
-        public float Distance;
-        public float Lerp;
+        private void Awake()
+        {
+            if(transform.Find("Main_Score") != null)
+            {
+                ScoreModule = transform.Find("Main_Score").GetComponent<ScoreModule>();
+            }
 
-        private Transform _homeParent;
+            if (transform.Find("Main_Multiplier"))
+            {
+                MultiplierModule = transform.Find("Main_Multiplier").GetComponent<MultiplierModule>();
+            }
+        }
 
         private void OnEnable()
         {
-            API.Score.OnScoreAdded += (data) => UpdateModule(data, ScoreModule);
+            UpdateModule(null);
+            UpdateModule(null);
 
-            API.Multiplier.OnMultiplierAdded += (data) => UpdateModule(data, MultiplierModule);
-            API.Multiplier.OnMultiplierRemoved += (data) => UpdateModule(data, MultiplierModule);
+            API.Value.OnValueAdded += UpdateModule;
+            API.Value.OnValueTierReached += UpdateModule;
+            API.Value.OnValueAccumulated += UpdateModule;
+            API.Value.OnValueRemoved += UpdateModule;
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreAdded -= (data) => UpdateModule(data, ScoreModule);
-
-            API.Multiplier.OnMultiplierAdded -= (data) => UpdateModule(data, MultiplierModule);
-            API.Multiplier.OnMultiplierRemoved -= (data) => UpdateModule(data, MultiplierModule);
+            API.Value.OnValueAdded -= UpdateModule;
+            API.Value.OnValueTierReached -= UpdateModule;
+            API.Value.OnValueAccumulated -= UpdateModule;
+            API.Value.OnValueRemoved -= UpdateModule;
         }
 
-        private void Update()
+        private void Start()
         {
-            if(followTarget == null)
+
+        }
+        
+        // For being attached to a physical point on the body
+        private void FixedUpdate()
+        {
+            if (followTarget == null)
             {
                 return;
             }
 
-            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * Distance, Lerp * Time.deltaTime);
+            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * Settings.DistanceToCamera, Settings.MovementSmoothness * Time.deltaTime);
             Quaternion lookRot = Quaternion.LookRotation(followTarget.forward);
 
             transform.position = move;
             transform.rotation = lookRot;
-        }
 
-        private void OnDrawGizmos()
-        {
-#if UNITY_EDITOR || UNITY_EDITOR_64
-            if (!Application.isPlaying)
+            for (int i = 0; i < transform.childCount; i++)
             {
-                UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
-                UnityEditor.SceneView.RepaintAll();
+                if (transform.GetChild(i) != null)
+                {
+                    //transform.GetChild(i).LookAt(followTarget);
+                }
             }
-#endif
         }
 
-#if UNITY_EDITOR
-        internal void CreateDummy(Module module)
-        {
-            if (!module)
-            {
-                return;
-            }
-
-            module.OnModuleEditorEnable();
-        }
-#endif
         public void SetParent(Transform parent)
         {
             transform.SetParent(parent);
         }
 
-        public void UpdateModule(PackedValue data, Module module)
+        public void SetScoreModule(Module module)
         {
-            if(module == null)
-            {
-                return;
-            }
+            this.ScoreModule = module;
+        }
 
-            module.AssignPackedData(data);
-            module.OnModuleEnable();
+        public void SetMultiplierModule(Module module)
+        {
+            this.MultiplierModule = module;
+        }
+
+        public void UpdateModule(PackedValue data)
+        {
+            if (data is PackedScore)
+            {
+                ScoreModule.AssignPackedData(data);
+                ScoreModule.OnModuleEnable();
+            }
+            else if (data is PackedMultiplier)
+            {
+                MultiplierModule.AssignPackedData(data);
+                MultiplierModule.OnModuleEnable();
+            }
         }
     }
 }

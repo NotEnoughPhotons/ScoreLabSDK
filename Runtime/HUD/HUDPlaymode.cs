@@ -22,7 +22,7 @@ namespace NEP.ScoreLab.HUD
             #if UNITY_EDITOR
             if (Input.GetKeyDown(_createScoreCode))
             {
-                Core.API.Editor.OnEditorModuleShow?.Invoke();
+                // Core.API.Editor.OnEditorModuleShow?.Invoke();
             }
 
             if (Input.GetKeyDown(_createMultiplierCode))

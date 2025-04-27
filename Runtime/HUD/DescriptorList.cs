@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,55 +6,44 @@ using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.HUD
 {
-    [AddComponentMenu("ScoreLab/UI Descriptor List")]
     public class DescriptorList : MonoBehaviour
     {
         public List<Module> ActiveModules;
 
         public PackedValue.PackedType packedType { get; set; }
-
-        public GameObject modulePrefab { get; set; }
+        public GameObject ModulePrefab { get; set; }
         public int count = 6;
 
-        public List<Module> modules;
+        public List<Module> Modules;
 
         private void Awake()
         {
+            Modules = new List<Module>();
             ActiveModules = new List<Module>();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform child = transform.GetChild(i);
+                Modules.Add(child.GetComponent<Module>());
+            }
         }
 
         private void OnEnable()
         {
             API.UI.OnModulePostDecayed += (item) => ActiveModules.Remove(item);
 
-#if UNITY_EDITOR
-            API.Editor.OnEditorModuleShow += SetEditorModuleActive;
-#else
-            API.Score.OnScoreAdded += SetModuleActive;
-            API.Score.OnScoreAccumulated += SetModuleActive;
-            API.Score.OnScoreTierReached += SetModuleActive;
-
-            API.Multiplier.OnMultiplierAdded += SetModuleActive;
-            API.Multiplier.OnMultiplierAccumulated += SetModuleActive;
-            API.Multiplier.OnMultiplierTierReached += SetModuleActive;
-#endif
+            API.Value.OnValueAdded += SetModuleActive;
+            API.Value.OnValueAccumulated += SetModuleActive;
+            API.Value.OnValueTierReached += SetModuleActive;
         }
 
         private void OnDisable()
         {
             API.UI.OnModulePostDecayed -= (item) => ActiveModules.Remove(item);
 
-#if UNITY_EDITOR
-            API.Editor.OnEditorModuleShow -= SetEditorModuleActive;
-#else
-            API.Score.OnScoreAdded -= SetModuleActive;
-            API.Score.OnScoreAccumulated -= SetModuleActive;
-            API.Score.OnScoreTierReached -= SetModuleActive;
-
-            API.Multiplier.OnMultiplierAdded -= SetModuleActive;
-            API.Multiplier.OnMultiplierAccumulated -= SetModuleActive;
-            API.Multiplier.OnMultiplierTierReached -= SetModuleActive;
-#endif
+            API.Value.OnValueAdded -= SetModuleActive;
+            API.Value.OnValueAccumulated -= SetModuleActive;
+            API.Value.OnValueTierReached -= SetModuleActive;
         }
 
         public void SetPackedType(int packedType)
@@ -63,43 +51,9 @@ namespace NEP.ScoreLab.HUD
             this.packedType = (PackedValue.PackedType)packedType;
         }
 
-#if UNITY_EDITOR
-        internal void SetEditorModuleActive()
-        {
-            if (modules == null || modules.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var module in modules)
-            {
-                if (!module.gameObject.activeInHierarchy)
-                {
-                    module.OnModuleEditorEnable();
-                    module.SetDecayTime(Random.Range(1f, 1.5f));
-                    module.SetPostDecayTime(0.5f);
-
-                    module.gameObject.SetActive(true);
-
-                    ActiveModules.Add(module);
-                    break;
-                }
-                else
-                {
-                    if (ActiveModules.Contains(module))
-                    {
-                        module.OnModuleEditorEnable();
-                        module.SetDecayTime(Random.Range(1f, 1.5f));
-                        module.SetPostDecayTime(0.5f);
-                    }
-                }
-            }
-        }
-#endif
-
         public void SetModuleActive(PackedValue value)
         {
-            if (modules == null || modules.Count == 0)
+            if (Modules == null || Modules.Count == 0)
             {
                 return;
             }
@@ -109,7 +63,7 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            foreach(var module in modules)
+            foreach (var module in Modules)
             {
                 if (!module.gameObject.activeInHierarchy)
                 {
@@ -126,7 +80,7 @@ namespace NEP.ScoreLab.HUD
                 {
                     if (ActiveModules.Contains(module))
                     {
-                        if(module.PackedValue.eventType == value.eventType)
+                        if (module.PackedValue.eventType == value.eventType)
                         {
                             if (value.Stackable)
                             {
@@ -148,6 +102,22 @@ namespace NEP.ScoreLab.HUD
                         }
                     }
                 }
+            }
+        }
+
+        public void PoolObjects()
+        {
+            if (ModulePrefab == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                var go = GameObject.Instantiate(ModulePrefab, transform);
+                var module = go.GetComponent<Module>();
+                module.ModuleType = Module.UIModuleType.Descriptor;
+                Modules.Add(module);
             }
         }
     }

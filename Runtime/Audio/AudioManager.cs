@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
+
+using System.Collections.Generic;
 
 namespace NEP.ScoreLab.Audio
 {
@@ -37,24 +37,23 @@ namespace NEP.ScoreLab.Audio
 
         private void OnEnable()
         {
-            API.Score.OnScoreAdded += OnValueReceived;
-            API.Score.OnScoreTierReached += OnValueReceived;
-
-            API.Multiplier.OnMultiplierAdded += OnValueReceived;
-            API.Multiplier.OnMultiplierTierReached += OnValueReceived;
+            API.Value.OnValueAdded += OnValueReceived;
+            API.Value.OnValueTierReached += OnValueReceived;
         }
 
         private void OnDisable()
         {
-            API.Score.OnScoreAdded -= OnValueReceived;
-            API.Score.OnScoreTierReached -= OnValueReceived;
-
-            API.Multiplier.OnMultiplierAdded -= OnValueReceived;
-            API.Multiplier.OnMultiplierTierReached -= OnValueReceived;
+            API.Value.OnValueAdded -= OnValueReceived;
+            API.Value.OnValueTierReached -= OnValueReceived;
         }
 
         private void OnValueReceived(PackedValue value)
         {
+            if (!Settings.UseAnnouncer)
+            {
+                return;
+            }
+            
             if(value.EventAudio != null)
             {
                 Play(value.EventAudio);
@@ -63,14 +62,7 @@ namespace NEP.ScoreLab.Audio
 
         public void Play(AudioClip clip)
         {
-            GameObject inactiveSource = GetFirstInactive();
-            AudioSource source = inactiveSource.GetComponent<AudioSource>();
 
-            if(source != null)
-            {
-                source.clip = clip;
-                inactiveSource.SetActive(true);
-            }
         }
 
         private GameObject GetFirstInactive()

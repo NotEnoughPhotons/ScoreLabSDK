@@ -27,7 +27,6 @@ namespace NEP.ScoreLab.HUD
         public virtual bool CanDecay { get => transform.Find("-Persist") == null; }
         public float DecayTime { get => _decayTime; }
         public float PostDecayTime { get => _postDecayTime; }
-        public bool MarkedForDecay { get => _markedForDecay; }
 
         protected TextMeshProUGUI _title { get; private set; }
         protected TextMeshProUGUI _value { get; private set; }
@@ -39,34 +38,33 @@ namespace NEP.ScoreLab.HUD
         protected float _decayTime { get; private set; }
         protected float _postDecayTime { get; private set; }
 
-        [SerializeField] protected float _tDecay;
+        protected float _tDecay { get; private set; }
         protected float _tPostDecay { get; private set; }
 
         private string Path_Root => name;
         protected virtual string Path_TitleText { get => "Title"; }
         protected virtual string Path_ValueText { get => "Value"; }
         protected virtual string Path_TimeBar { get => "TimeBar"; }
-
+        
         private bool _reachedDecay = false;
         private bool _reachedPostDecay = false;
-        private bool _markedForDecay = false;
 
         public virtual void OnModuleEnable() { API.UI.OnModuleEnabled?.Invoke(this); }
 
         public virtual void OnModuleDisable() { API.UI.OnModuleDisabled?.Invoke(this); }
 
-#if UNITY_EDITOR
-        public virtual void OnModuleEditorEnable() { API.UI.OnModuleEnabled?.Invoke(this); }
-
-        public virtual void OnModuleEditorDisable() { API.UI.OnModuleDisabled?.Invoke(this); }
-#endif
         public virtual void OnUpdate() { }
 
         public void AssignPackedData(PackedValue packedValue)
         {
+            if(packedValue == null)
+            {
+                return;
+            }
+
             _packedValue = packedValue;
 
-            if(_packedValue.DecayTime != 0f)
+            if (_packedValue.DecayTime != 0f)
             {
                 SetDecayTime(_packedValue.DecayTime);
             }
@@ -86,7 +84,7 @@ namespace NEP.ScoreLab.HUD
 
         protected void SetText(TextMeshProUGUI text, string value)
         {
-            if(text == null)
+            if (text == null)
             {
                 return;
             }
@@ -121,7 +119,7 @@ namespace NEP.ScoreLab.HUD
 
         protected void SetMaxValueToBar(Slider timeBar, float value)
         {
-            if(timeBar == null)
+            if (timeBar == null)
             {
                 return;
             }
@@ -136,7 +134,7 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            if(_tDecay < 0f)
+            if (_tDecay < 0f)
             {
                 if (!_reachedDecay)
                 {
@@ -171,7 +169,7 @@ namespace NEP.ScoreLab.HUD
             _tDecay -= Time.deltaTime;
         }
 
-        private void Awake()
+        private void Start()
         {
             Transform titleTran = transform.Find(Path_TitleText);
             Transform valueTran = transform.Find(Path_ValueText);
