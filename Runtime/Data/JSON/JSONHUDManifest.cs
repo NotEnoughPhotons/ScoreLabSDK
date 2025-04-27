@@ -10,5 +10,6 @@ namespace NEP.ScoreLab.Data
         public string Description;
         public string[] Tags;
         public string GUID;
+        public Texture2D Logo;
     }
 }

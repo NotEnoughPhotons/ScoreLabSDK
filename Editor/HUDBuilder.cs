@@ -57,10 +57,11 @@ namespace NEP.ScoreLab.Editor
 				string exportLocation = Path.Combine(Application.dataPath, "Built HUDs");
 
 				AssetBundleBuild[] bundles = new AssetBundleBuild[1];
-				bundles[0].assetBundleName = hudName.ToLower() + ".hud";
+				bundles[0].assetBundleName = hudName + ".hud";
 				bundles[0].assetNames = new string[]
 				{
-					AssetDatabase.GetAssetPath(m_targetPrefab)
+					AssetDatabase.GetAssetPath(m_targetPrefab),
+					AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo)
 				};
 				
 				string buildPath = Path.Combine(exportLocation, m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
@@ -68,8 +69,17 @@ namespace NEP.ScoreLab.Editor
 
 				Directory.CreateDirectory(buildPath);
 				var bundleManifest = BuildPipeline.BuildAssetBundles(buildPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+
+				string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
+
+				Debug.Log(exportedPath);
+				Debug.Log(Path.Combine(buildPath, $"{hudName.ToLower()}.hud"));
 				
-				string manifestWritePath = Path.Combine(exportLocation, $"{hudName.ToLower()}.hud_manifest");
+				Directory.CreateDirectory(exportedPath);
+				
+				File.Move(Path.Combine(buildPath, $"{hudName}.hud"), Path.Combine(exportedPath, $"{hudName.ToLower()}.hud"));
+				
+				string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
 				StreamWriter sw = new StreamWriter(manifestWritePath);
 				m_targetManifestObject.SetGUID(bundleManifest.GetAssetBundleHash(bundleManifest.GetAllAssetBundles()[0]).ToString());
 				sw.Write(m_targetManifestObject.ToJSON());
