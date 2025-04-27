@@ -6,10 +6,10 @@ using NEP.ScoreLab.Data;
 
 using TMPro;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
     [AddComponentMenu("ScoreLab/Modules/Score Module")]
-    public class UIScoreModule : UIModule
+    public class ScoreModule : Module
     {
         private PackedScore _packedScore { get => (PackedScore)_packedValue; }
 

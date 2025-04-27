@@ -6,10 +6,10 @@ using TMPro;
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
     [AddComponentMenu("ScoreLab/Modules/Multiplier Module")]
-    public class UIMultiplierModule : UIModule
+    public class MultiplierModule : Module
     {
         private PackedMultiplier _packedMultiplier { get => (PackedMultiplier)_packedValue; }
 

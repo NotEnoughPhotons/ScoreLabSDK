@@ -3,15 +3,15 @@ using UnityEngine;
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
     [UnityEngine.ExecuteAlways]
-    [AddComponentMenu("ScoreLab/UI Controller")]
-    public class UIController : MonoBehaviour
+    [AddComponentMenu("ScoreLab/HUD")]
+    public class HUD : MonoBehaviour
     {
-        public UIModule ScoreModule { get; set; }
-        public UIModule MultiplierModule { get; set; }
-        public UIModule HighScoreModule { get; set; }
+        public Module ScoreModule { get; set; }
+        public Module MultiplierModule { get; set; }
+        public Module HighScoreModule { get; set; }
 
         public Transform followTarget;
 
@@ -62,7 +62,7 @@ namespace NEP.ScoreLab.UI
         }
 
 #if UNITY_EDITOR
-        internal void CreateDummy(UIModule module)
+        internal void CreateDummy(Module module)
         {
             if (!module)
             {
@@ -77,7 +77,7 @@ namespace NEP.ScoreLab.UI
             transform.SetParent(parent);
         }
 
-        public void UpdateModule(PackedValue data, UIModule module)
+        public void UpdateModule(PackedValue data, Module module)
         {
             if(module == null)
             {

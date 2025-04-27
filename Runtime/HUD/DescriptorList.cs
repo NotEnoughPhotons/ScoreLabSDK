@@ -5,23 +5,23 @@ using UnityEngine;
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
     [AddComponentMenu("ScoreLab/UI Descriptor List")]
-    public class UIDescriptorList : MonoBehaviour
+    public class DescriptorList : MonoBehaviour
     {
-        public List<UIModule> ActiveModules;
+        public List<Module> ActiveModules;
 
         public PackedValue.PackedType packedType { get; set; }
 
         public GameObject modulePrefab { get; set; }
         public int count = 6;
 
-        public List<UIModule> modules;
+        public List<Module> modules;
 
         private void Awake()
         {
-            ActiveModules = new List<UIModule>();
+            ActiveModules = new List<Module>();
         }
 
         private void OnEnable()

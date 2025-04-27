@@ -8,9 +8,9 @@ using TMPro;
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
-    public class UIModule : MonoBehaviour
+    public class Module : MonoBehaviour
     {
         public enum UIModuleType
         {

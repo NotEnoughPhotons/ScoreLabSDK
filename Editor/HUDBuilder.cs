@@ -1,8 +1,7 @@
 ﻿#if UNITY_EDITOR
-using System;
 using System.IO;
 using NEP.ScoreLab.Data;
-using NEP.ScoreLab.UI;
+using NEP.ScoreLab.HUD;
 using UnityEngine;
 using UnityEditor;
 
@@ -38,7 +37,7 @@ namespace NEP.ScoreLab.Editor
 				return;
 			}
 
-			if (!m_targetPrefab.GetComponent<UIController>())
+			if (!m_targetPrefab.GetComponent<ScoreLab.HUD.HUD>())
 			{
 				EditorGUILayout.HelpBox("A ScoreLab prefab is required to have a UIController component!", MessageType.Error);
 				return;

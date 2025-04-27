@@ -3,19 +3,19 @@ using UnityEngine.Animations;
 
 using NEP.ScoreLab.Core;
 
-namespace NEP.ScoreLab.UI
+namespace NEP.ScoreLab.HUD
 {
     [AddComponentMenu("ScoreLab/UI Module Animator")]
     [RequireComponent(typeof(Animator))]
-    public class UIModuleAnimator : MonoBehaviour
+    public class ModuleAnimator : MonoBehaviour
     {
         public Animator Animator;
 
-        private UIModule _module;
+        private Module _module;
 
         private void Awake()
         {
-            _module = GetComponent<UIModule>();
+            _module = GetComponent<Module>();
             Animator = GetComponent<Animator>();
         }
 
@@ -41,14 +41,14 @@ namespace NEP.ScoreLab.UI
             Animator.Play(name, -1, 0f);
         }
 
-        private void OnModuleEnabled(UIModule module)
+        private void OnModuleEnabled(Module module)
         {
             if (_module != module)
             {
                 return;
             }
 
-            if (module.ModuleType == UIModule.UIModuleType.Main)
+            if (module.ModuleType == Module.UIModuleType.Main)
             {
                 PlayAnimation("main_show");
             }
@@ -58,14 +58,14 @@ namespace NEP.ScoreLab.UI
             }
         }
 
-        private void OnModuleDecayed(UIModule module)
+        private void OnModuleDecayed(Module module)
         {
             if (_module != module)
             {
                 return;
             }
 
-            if (module.ModuleType == UIModule.UIModuleType.Main)
+            if (module.ModuleType == Module.UIModuleType.Main)
             {
                 PlayAnimation("main_hide");
             }
