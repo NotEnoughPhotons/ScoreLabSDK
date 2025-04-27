@@ -4,7 +4,6 @@ using UnityEngine;
 
 using NEP.ScoreLab.Core;
 using NEP.ScoreLab.Data;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 
 namespace NEP.ScoreLab.UI
 {
