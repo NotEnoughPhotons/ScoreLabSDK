@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace NEP.ScoreLab.Data
+{
+    [System.Serializable]
+    public struct JSONAudioParams
+    {
+#if UNITY_EDITOR
+        public AudioClip sound;
+#else
+        public string sound;
+#endif
+        
+        #if UNITY_EDITOR
+        [Range(0f, 1f)]
+        #endif
+        public float volume;
+        
+        #if UNITY_EDITOR
+        [Range(0f, 10f)]
+        #endif
+        public float pitch;
+    }
+}

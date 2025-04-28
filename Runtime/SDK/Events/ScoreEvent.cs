@@ -4,8 +4,6 @@ using UnityEngine;
 
 #endif
 
-using NEP.ScoreLab.Core;
-
 namespace NEP.ScoreLab.SDK.Events
 {
     public class ScoreEvent : MonoBehaviour

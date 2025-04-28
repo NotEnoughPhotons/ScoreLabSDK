@@ -9,11 +9,7 @@ namespace NEP.ScoreLab.Data
 
         public float DecayTime;
         public bool Stackable;
-        #if UNITY_EDITOR
-        public AudioClip EventAudio;
-        #else
-        public string EventAudio;
-        #endif
+        public JSONAudioParams EventAudio;
 
         public string Name;
         public int Score;

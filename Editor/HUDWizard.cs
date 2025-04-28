@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace NEP.ScoreLab.Editor
             
             Directory.CreateDirectory(Path.Combine(hudFolder, "Animations"));
             Directory.CreateDirectory(Path.Combine(hudFolder, "Data"));
+            Directory.CreateDirectory(Path.Combine(hudFolder, "Fonts"));
             Directory.CreateDirectory(Path.Combine(hudFolder, "Sounds"));
             Directory.CreateDirectory(Path.Combine(hudFolder, "Prefabs"));
             Directory.CreateDirectory(Path.Combine(hudFolder, "Textures"));
@@ -75,3 +77,4 @@ namespace NEP.ScoreLab.Editor
         }
     }
 }
+#endif

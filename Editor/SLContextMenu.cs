@@ -10,17 +10,39 @@ namespace NEP.ScoreLab.Editor
         public static void SetupHUD()
         {
             Transform selection = Selection.activeTransform;
-            selection.gameObject.AddComponent<HUD.HUD>();
-            Canvas canvas = selection.gameObject.AddComponent<Canvas>();
-            RectTransform rectTransform = canvas.transform as RectTransform;
+            
+            HUD.HUD hud = selection.GetComponent<HUD.HUD>();
+            Canvas canvas = null;
+            RectTransform rectTransform = null;
 
+            if (hud)
+            {
+                canvas = hud.GetComponent<Canvas>();
+                rectTransform = canvas.GetComponent<RectTransform>();
+                
+                rectTransform.sizeDelta = Vector2.one;
+                canvas.renderMode = RenderMode.WorldSpace;
+                canvas.transform.position = Vector3.zero;
+                canvas.transform.localPosition = Vector3.zero;
+                canvas.transform.localScale = Vector3.one;
+                canvas.transform.rotation = Quaternion.identity;
+                
+                CreateMainScore();
+                CreateMainMultiplier();
+                return;
+            }
+            
+            hud = selection.gameObject.AddComponent<HUD.HUD>();
+            canvas = selection.gameObject.AddComponent<Canvas>();
+            rectTransform = canvas.transform as RectTransform;
+            
             rectTransform.sizeDelta = Vector2.one;
             canvas.renderMode = RenderMode.WorldSpace;
             canvas.transform.position = Vector3.zero;
             canvas.transform.localPosition = Vector3.zero;
             canvas.transform.localScale = Vector3.one;
             canvas.transform.rotation = Quaternion.identity;
-            
+                        
             CreateMainScore();
             CreateMainMultiplier();
         }
@@ -29,9 +51,24 @@ namespace NEP.ScoreLab.Editor
         public static void CreateMainScore()
         {
             Transform parent = Selection.activeTransform;
+
+            Transform copy = parent.Find("MainScore");
+            
+            if (copy)
+            {
+                if (!copy.GetComponent<ScoreModule>())
+                {
+                    copy.gameObject.AddComponent<ScoreModule>();
+                }
+                
+                return;
+            }
+            
             GameObject obj = new GameObject();
-            obj.name = "Main_Score";
+            obj.name = "MainScore";
             obj.AddComponent<ScoreModule>();
+            RectTransform rectTransform = obj.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = Vector2.one;
             obj.transform.SetParent(parent);
         }
         
@@ -49,6 +86,8 @@ namespace NEP.ScoreLab.Editor
             GameObject obj = new GameObject();
             obj.name = "ScoreDescriptor";
             obj.AddComponent<ScoreModule>();
+            RectTransform rectTransform = obj.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = Vector2.one;
             obj.transform.SetParent(parent);
         }
         
@@ -56,9 +95,24 @@ namespace NEP.ScoreLab.Editor
         public static void CreateMainMultiplier()
         {
             Transform parent = Selection.activeTransform;
+            
+            Transform copy = parent.Find("MainMultiplier");
+            
+            if (copy)
+            {
+                if (!copy.GetComponent<MultiplierModule>())
+                {
+                    copy.gameObject.AddComponent<MultiplierModule>();
+                }
+                
+                return;
+            }
+            
             GameObject obj = new GameObject();
-            obj.name = "Main_Multiplier";
-            obj.AddComponent<ScoreModule>();
+            obj.name = "MainMultiplier";
+            obj.AddComponent<MultiplierModule>();
+            RectTransform rectTransform = obj.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = Vector2.one;
             obj.transform.SetParent(parent);
         }
         
@@ -76,6 +130,8 @@ namespace NEP.ScoreLab.Editor
             GameObject obj = new GameObject();
             obj.name = "MultiplierDescriptor";
             obj.AddComponent<MultiplierModule>();
+            RectTransform rectTransform = obj.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = Vector2.one;
             obj.transform.SetParent(parent);
         }
     }

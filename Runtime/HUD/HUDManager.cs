@@ -20,33 +20,17 @@ namespace NEP.ScoreLab.HUD
 
         private void Start()
         {
-            LoadHUD("Tabloid");
+
         }
 
         public void LoadHUD(string name)
         {
-            UnloadHUD();
-            foreach (var _controller in LoadedHUDs)
-            {
-                if (DataManager.UI.GetHUDName(_controller.gameObject) == name)
-                {
-                    ActiveHUD = _controller;
-                    break;
-                }
-            }
 
-            ActiveHUD.gameObject.SetActive(true);
-            ActiveHUD.SetParent(null);
         }
 
         public void UnloadHUD()
         {
-            if(ActiveHUD != null)
-            {
-                ActiveHUD.SetParent(transform);
-                ActiveHUD.gameObject.SetActive(false);
-                ActiveHUD = null;
-            }
+
         }
     }
 }

@@ -18,7 +18,8 @@ namespace NEP.ScoreLab.Editor
 		private TargetPlatform m_targetPlatform;
 		private GameObject m_targetPrefab;
 		private HUDManifestObject m_targetManifestObject;
-	
+	    private string m_exportLocation;
+        
 		[MenuItem("Not Enough Photons/ScoreLab/Build", false, 10)]
 		public static void ShowWindow()
 		{
@@ -51,11 +52,12 @@ namespace NEP.ScoreLab.Editor
 				return;
 			}
 			
+			m_exportLocation = EditorGUILayout.TextField("Export Location:", m_exportLocation);
+			
 			if (GUILayout.Button("Build"))
 			{
 				string hudName = m_targetManifestObject.manifest.Name;
-				string exportLocation = Path.Combine(Application.dataPath, "Built HUDs");
-
+				
 				AssetBundleBuild[] bundles = new AssetBundleBuild[1];
 				bundles[0].assetBundleName = hudName + ".hud";
 				bundles[0].assetNames = new string[]
@@ -63,31 +65,73 @@ namespace NEP.ScoreLab.Editor
 					AssetDatabase.GetAssetPath(m_targetPrefab),
 					AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo)
 				};
-				
-				string buildPath = Path.Combine(exportLocation, m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
-				BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR ? BuildTarget.StandaloneWindows64 : BuildTarget.Android;
 
-				string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
-				
-				Directory.CreateDirectory(exportedPath);
-				var bundleManifest = BuildPipeline.BuildAssetBundles(exportedPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
-
-				foreach (var file in Directory.EnumerateFiles(exportedPath))
+				if (m_exportLocation == string.Empty)
 				{
-					if (file.EndsWith(".hud"))
-					{
-						continue;
-					}
+					string editorExportLocation = Path.Combine(Application.dataPath, "Built HUDs");
+					string buildPath = Path.Combine(editorExportLocation,
+						m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
 					
-					File.Delete(file);
+					BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR
+						? BuildTarget.StandaloneWindows64
+						: BuildTarget.Android;
+
+					string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
+
+					Directory.CreateDirectory(exportedPath);
+					var bundleManifest = BuildPipeline.BuildAssetBundles(exportedPath, bundles,
+						BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+
+					foreach (var file in Directory.EnumerateFiles(exportedPath))
+					{
+						if (file.EndsWith(".hud"))
+						{
+							continue;
+						}
+
+						File.Delete(file);
+					}
+
+					string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
+					StreamWriter sw = new StreamWriter(manifestWritePath);
+					m_targetManifestObject.SetGUID(bundleManifest
+						.GetAssetBundleHash(bundleManifest.GetAllAssetBundles()[0]).ToString());
+					sw.Write(m_targetManifestObject.ToJSON());
+					sw.Dispose();
+					sw.Close();
 				}
-				
-				string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
-				StreamWriter sw = new StreamWriter(manifestWritePath);
-				m_targetManifestObject.SetGUID(bundleManifest.GetAssetBundleHash(bundleManifest.GetAllAssetBundles()[0]).ToString());
-				sw.Write(m_targetManifestObject.ToJSON());
-				sw.Dispose();
-				sw.Close();
+				else
+				{
+					string buildPath = m_exportLocation;
+					
+					BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR
+						? BuildTarget.StandaloneWindows64
+						: BuildTarget.Android;
+
+					string exportedPath = Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
+
+					Directory.CreateDirectory(exportedPath);
+					var bundleManifest = BuildPipeline.BuildAssetBundles(exportedPath, bundles,
+						BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+
+					foreach (var file in Directory.EnumerateFiles(exportedPath))
+					{
+						if (file.EndsWith(".hud"))
+						{
+							continue;
+						}
+
+						File.Delete(file);
+					}
+
+					string manifestWritePath = Path.Combine(exportedPath, $"{hudName.ToLower()}.hud_manifest");
+					StreamWriter sw = new StreamWriter(manifestWritePath);
+					m_targetManifestObject.SetGUID(bundleManifest
+						.GetAssetBundleHash(bundleManifest.GetAllAssetBundles()[0]).ToString());
+					sw.Write(m_targetManifestObject.ToJSON());
+					sw.Dispose();
+					sw.Close();
+				}
 			}
 		}
 	}

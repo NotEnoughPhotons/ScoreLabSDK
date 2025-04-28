@@ -1,10 +1,8 @@
 using UnityEngine;
 
-using NEP.ScoreLab.Core;
-using NEP.ScoreLab.Data;
-
 namespace NEP.ScoreLab.HUD
 {
+    [RequireComponent(typeof(Canvas))]
     public class HUD : MonoBehaviour
     {
         public Module ScoreModule { get; set; }
@@ -13,41 +11,20 @@ namespace NEP.ScoreLab.HUD
 
         public Transform followTarget;
 
+        public float distanceToCamera;
+        public float movementSmoothness;
+
         private void Awake()
         {
-            if(transform.Find("Main_Score") != null)
+            if(transform.Find("MainScore") != null)
             {
-                ScoreModule = transform.Find("Main_Score").GetComponent<ScoreModule>();
+                ScoreModule = transform.Find("MainScore").GetComponent<ScoreModule>();
             }
 
             if (transform.Find("Main_Multiplier"))
             {
-                MultiplierModule = transform.Find("Main_Multiplier").GetComponent<MultiplierModule>();
+                MultiplierModule = transform.Find("MainMultiplier").GetComponent<MultiplierModule>();
             }
-        }
-
-        private void OnEnable()
-        {
-            UpdateModule(null);
-            UpdateModule(null);
-
-            API.Value.OnValueAdded += UpdateModule;
-            API.Value.OnValueTierReached += UpdateModule;
-            API.Value.OnValueAccumulated += UpdateModule;
-            API.Value.OnValueRemoved += UpdateModule;
-        }
-
-        private void OnDisable()
-        {
-            API.Value.OnValueAdded -= UpdateModule;
-            API.Value.OnValueTierReached -= UpdateModule;
-            API.Value.OnValueAccumulated -= UpdateModule;
-            API.Value.OnValueRemoved -= UpdateModule;
-        }
-
-        private void Start()
-        {
-
         }
         
         // For being attached to a physical point on the body
@@ -58,7 +35,7 @@ namespace NEP.ScoreLab.HUD
                 return;
             }
 
-            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * Settings.DistanceToCamera, Settings.MovementSmoothness * Time.deltaTime);
+            Vector3 move = Vector3.Lerp(transform.position, followTarget.position + followTarget.forward * distanceToCamera, movementSmoothness * Time.deltaTime);
             Quaternion lookRot = Quaternion.LookRotation(followTarget.forward);
 
             transform.position = move;
@@ -76,30 +53,6 @@ namespace NEP.ScoreLab.HUD
         public void SetParent(Transform parent)
         {
             transform.SetParent(parent);
-        }
-
-        public void SetScoreModule(Module module)
-        {
-            this.ScoreModule = module;
-        }
-
-        public void SetMultiplierModule(Module module)
-        {
-            this.MultiplierModule = module;
-        }
-
-        public void UpdateModule(PackedValue data)
-        {
-            if (data is PackedScore)
-            {
-                ScoreModule.AssignPackedData(data);
-                ScoreModule.OnModuleEnable();
-            }
-            else if (data is PackedMultiplier)
-            {
-                MultiplierModule.AssignPackedData(data);
-                MultiplierModule.OnModuleEnable();
-            }
         }
     }
 }
