@@ -1,9 +1,11 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
-using NEP.ScoreLab.Data;
-using NEP.ScoreLab.HUD;
+
 using UnityEngine;
 using UnityEditor;
+
+using NEP.ScoreLab.Data;
 
 namespace NEP.ScoreLab.Editor
 {
@@ -20,6 +22,8 @@ namespace NEP.ScoreLab.Editor
         private HUDManifestObject m_targetManifestObject;
         private AudioManifestObject m_targetAudioManifestObject;
         private string m_exportLocation;
+        
+        private readonly string[] m_whitelistedExtensions = new string[] { ".hud", ".hud_audio" };
 
         [MenuItem("Not Enough Photons/ScoreLab/Build", false, 10)]
         public static void ShowWindow()
@@ -67,13 +71,11 @@ namespace NEP.ScoreLab.Editor
             {
                 string exportedPath = GetExportPath();
 
-                AssetBundleBuild[] hudBundleBuild = CreateHUDBundleBuild();
-                AssetBundleBuild[] hudAudioBundleBuild = CreateHUDAudioBundleBuild();
+                AssetBundleBuild hudBundleBuild = CreateHUDBundleBuild();
                 
                 Directory.CreateDirectory(exportedPath);
 
                 GenerateBundles(exportedPath, ".hud", hudBundleBuild);
-                GenerateBundles(exportedPath, ".hud_audio", hudAudioBundleBuild);
 
                 WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
 
@@ -99,59 +101,57 @@ namespace NEP.ScoreLab.Editor
                 buildPath = m_exportLocation;
             }
 
-            return Path.Combine(buildPath, m_targetManifestObject.manifest.Name);;
+            return Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
         }
 
-        private AssetBundleBuild[] CreateHUDBundleBuild()
+        private AssetBundleBuild CreateHUDBundleBuild()
         {
-            AssetBundleBuild[] bundles = new AssetBundleBuild[1];
-            bundles[0].assetBundleName = m_targetManifestObject.manifest.Name + ".hud";
-            bundles[0].assetNames = new string[]
-            {
-                AssetDatabase.GetAssetPath(m_targetPrefab),
-                AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo)
-            };
+            List<string> assetNames = new List<string>();
+            AssetBundleBuild hudBuild = new AssetBundleBuild();
+            hudBuild.assetBundleName = m_targetManifestObject.manifest.Name + ".hud";
+            
+            assetNames.Add(AssetDatabase.GetAssetPath(m_targetPrefab));
+            assetNames.Add(AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo));
 
-            return bundles;
-        }
-
-        private AssetBundleBuild[] CreateHUDAudioBundleBuild()
-        {
             if (m_targetAudioManifestObject == null)
             {
-                return null;
+                hudBuild.assetNames = assetNames.ToArray();
+                return hudBuild;
             }
 
             int numClips = m_targetAudioManifestObject.manifest.Clips.Length;
-            
-            AssetBundleBuild[] bundles = new AssetBundleBuild[1];
-            bundles[0].assetBundleName = m_targetManifestObject.manifest.Name + ".hud_audio";
-            bundles[0].assetNames = new string[numClips];
 
             for (int i = 0; i < numClips; i++)
             {
-                bundles[i].assetNames[i] = AssetDatabase.GetAssetPath(m_targetAudioManifestObject.manifest.Clips[i]);
+                AudioClip clip = m_targetAudioManifestObject.manifest.Clips[i];
+                assetNames.Add(AssetDatabase.GetAssetPath(clip));
             }
             
-            return bundles;
+            hudBuild.assetNames = assetNames.ToArray();
+            
+            return hudBuild;
         }
 
-        private void GenerateBundles(string exportPath, string extension, AssetBundleBuild[] bundles)
+        private void GenerateBundles(string exportPath, string extension, AssetBundleBuild build)
         {
             BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR
                 ? BuildTarget.StandaloneWindows64
                 : BuildTarget.Android;
 
-            BuildPipeline.BuildAssetBundles(exportPath, bundles, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+            BuildPipeline.BuildAssetBundles(exportPath, new AssetBundleBuild[1] { build }, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+        }
 
-            foreach (var file in Directory.EnumerateFiles(exportPath))
+        private void RemoveOtherFiles(string path)
+        {
+            foreach (var file in Directory.EnumerateFiles(path))
             {
-                if (file.EndsWith(extension))
+                foreach (var extension in m_whitelistedExtensions)
                 {
-                    continue;
+                    if (!file.EndsWith(extension))
+                    {
+                        File.Delete(file);
+                    }
                 }
-
-                File.Delete(file);
             }
         }
         
@@ -166,7 +166,7 @@ namespace NEP.ScoreLab.Editor
 
         private void WriteHUDAudioManifest(string path, string name)
         {
-            string audioManifestWritePath = Path.Combine(path, $"{name}.hud_audio_manifest");
+            string audioManifestWritePath = Path.Combine(path, $"{name}.audio_manifest");
             StreamWriter audioManifestWriter = new StreamWriter(audioManifestWritePath);
             audioManifestWriter.Write(m_targetAudioManifestObject.ToJSON());
             audioManifestWriter.Dispose();

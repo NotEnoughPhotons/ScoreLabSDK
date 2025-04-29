@@ -7,11 +7,7 @@ namespace NEP.ScoreLab.Data
     [System.Serializable]
     public struct JSONAudioParams
     {
-#if UNITY_EDITOR
         public AudioClip sound;
-#else
-        public string sound;
-#endif
         
         #if UNITY_EDITOR
         [Range(0f, 1f)]
