@@ -6,6 +6,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 using NEP.ScoreLab.Data;
+using EventType = NEP.ScoreLab.Data.EventType;
 
 namespace NEP.ScoreLab.Editor
 {
@@ -78,22 +79,13 @@ namespace NEP.ScoreLab.Editor
             writer.WritePropertyName("DecayTime");
             writer.WriteValue(mult.DecayTime);
 
-            if (mult.EventType != string.Empty)
-            {
-                writer.WritePropertyName("EventType");
-                writer.WriteValue(mult.EventType);
-            }
+            writer.WritePropertyName("EventType");
+            writer.WriteValue(EventType.MultiplierEventTable[(int)mult.EventType]);
 
             if (mult.Condition != string.Empty)
             {
                 writer.WritePropertyName("Condition");
                 writer.WriteValue(mult.Condition);
-            }
-            
-            if (mult.TierEventType != string.Empty)
-            {
-                writer.WritePropertyName("TierEventType");
-                writer.WriteValue(mult.TierEventType);
             }
             
             writer.WritePropertyName("TierRequirement");

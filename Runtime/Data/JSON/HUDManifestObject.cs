@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System.IO;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace NEP.ScoreLab.Data
@@ -26,21 +27,6 @@ namespace NEP.ScoreLab.Data
                     writer.WritePropertyName("author");
                     writer.WriteValue(manifest.Author);
                     writer.WritePropertyName("description");
-                    writer.WriteValue(manifest.Description);
-
-                    if (manifest.Tags != null && manifest.Tags.Length > 0)
-                    {
-                        writer.WritePropertyName("tags");
-                        writer.WriteStartArray();
-                        for (int i = 0; i < manifest.Tags.Length; i++)
-                        {
-                            writer.WriteValue(manifest.Tags[i]);
-                        }
-                        writer.WriteEndArray();
-                    }
-                    
-                    writer.WritePropertyName("guid");
-                    writer.WriteValue(manifest.GUID);
                             
                     writer.WriteEndObject();
                 }
@@ -49,11 +35,6 @@ namespace NEP.ScoreLab.Data
             }
 
             return json;
-        }
-
-        public void SetGUID(string guid)
-        {
-            manifest.GUID = guid;
         }
     }
 }

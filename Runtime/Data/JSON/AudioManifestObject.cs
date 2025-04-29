@@ -1,17 +1,16 @@
 using System.IO;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using UnityEngine;
 
-
 namespace NEP.ScoreLab.Data
 {
-    [CreateAssetMenu(fileName = "HUD Manifest", menuName = "Not Enough Photons/ScoreLab/Announcer Manifest")]
-    public class AnnouncerManifestObject : ScriptableObject
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "Audio Manifest", menuName = "Not Enough Photons/ScoreLab/Audio Manifest")]
+    public class AudioManifestObject : ScriptableObject
     {
-        public JSONAnnouncerManifest manifest;
+        public JSONAudioManifest manifest;
         
         public string ToJSON()
         {

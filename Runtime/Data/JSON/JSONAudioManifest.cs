@@ -3,7 +3,7 @@ using UnityEngine;
 namespace NEP.ScoreLab.Data
 {
     [System.Serializable]
-    public struct JSONAnnouncerManifest
+    public class JSONAudioManifest
     {
         public AudioClip[] Clips;
     }

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using NEP.ScoreLab.Data;
+using EventType = NEP.ScoreLab.Data.EventType;
 
 namespace NEP.ScoreLab.Editor
 {
@@ -14,6 +15,7 @@ namespace NEP.ScoreLab.Editor
     {
         private ScoreObject m_scoreObject;
         private string fileName;
+        private string m_exportLocation;
         
         [MenuItem("Not Enough Photons/ScoreLab/Score Editor", false)]
         public static void ShowWindow()
@@ -26,13 +28,14 @@ namespace NEP.ScoreLab.Editor
         {
             GUILayout.Label("Fields");
             fileName = EditorGUILayout.TextField("File Name", fileName);
-            m_scoreObject = EditorGUILayout.ObjectField(m_scoreObject, typeof(ScoreObject), false) as ScoreObject;
+            m_scoreObject = EditorGUILayout.ObjectField("Score Object", m_scoreObject, typeof(ScoreObject), false) as ScoreObject;
 
             if (m_scoreObject)
             {
+                m_exportLocation = EditorGUILayout.TextField("Export Location", m_exportLocation);
                 if (GUILayout.Button("Export"))
                 {
-                    string path = $"Data/Not Enough Photons/ScoreLab/Data/Score/{fileName}.json";
+                    string path = $"{m_exportLocation}/{fileName}.json";
                     using (StreamWriter sw = new StreamWriter(Path.Combine(Application.dataPath, path)))
                     {
                         using (JsonWriter writer = new JsonTextWriter(sw))
@@ -88,17 +91,8 @@ namespace NEP.ScoreLab.Editor
             writer.WritePropertyName("DecayTime");
             writer.WriteValue(score.DecayTime);
 
-            if (score.EventType != string.Empty)
-            {
-                writer.WritePropertyName("EventType");
-                writer.WriteValue(score.EventType);
-            }
-
-            if (score.TierEventType != string.Empty)
-            {
-                writer.WritePropertyName("TierEventType");
-                writer.WriteValue(score.TierEventType);
-            }
+            writer.WritePropertyName("EventType");
+            writer.WriteValue(EventType.ScoreEventTable[(int)score.EventType]);
             
             writer.WritePropertyName("TierRequirement");
             writer.WriteValue(score.TierRequirement);
