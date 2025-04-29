@@ -2,26 +2,44 @@ namespace NEP.ScoreLab.Data
 {
     public static class EventType
     {
-        public static readonly string None = "None";
-
-        public static class Score
+        public enum ScoreEventType
         {
-            public static readonly string Kill = "SCORE_KILL";
-            public static readonly string EnemyMidAirKill = "SCORE_KILL_IN_AIR";
-            public static readonly string GameWaveCompleted = "SCORE_WAVE_COMPLETE";
-            public static readonly string GameRoundCompleted = "SCORE_ROUND_COMPLETE";
-            public static readonly string Crabcest = "SCORE_CRABCEST";
-            public static readonly string Facehug = "SCORE_FACEHUG";
+            Kill,
+            KillInAir,
+            WaveCompleted,
+            RoundCompleted,
+            Crabcest,
+            Facehug
         }
 
-        public static class Mult
+        public enum MultiplierEventType
         {
-            public static readonly string Kill = "MULT_KILL";
-            public static readonly string MidAir = "MULT_MIDAIR";
-            public static readonly string Seated = "MULT_SEATED";
-            public static readonly string SecondWind = "MULT_SECONDWIND";
-            public static readonly string Ragolled = "MULT_RAGDOLLED";
-            public static readonly string SwappedAvatars = "MULT_SWAPPED_AVATARS";
+            Kill,
+            MidAir,
+            Seated,
+            SecondWind,
+            Ragdolled,
+            SwappedAvatars
         }
+        
+        public static string[] ScoreEventTable = new string[]
+        {
+            "SCORE_KILL",
+            "SCORE_MID_AIR",
+            "SCORE_WAVE_COMPLETED",
+            "SCORE_ROUND_COMPLETED",
+            "SCORE_CRABCEST",
+            "SCORE_FACEHUG"
+        };
+
+        public static string[] MultiplierEventTable = new string[]
+        {
+            "MULT_KILL",
+            "MULT_MIDAIR",
+            "MULT_SEATED",
+            "MULT_SECONDWIND",
+            "MULT_RAGDOLLED",
+            "MULT_SWAPPED_AVATARS"
+        };
     }
 }

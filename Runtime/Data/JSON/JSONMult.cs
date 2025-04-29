@@ -2,8 +2,7 @@ namespace NEP.ScoreLab.Data
 {
     public struct JSONMult
     {
-        public string EventType;
-        public string TierEventType;
+        public EventType.MultiplierEventType EventType;
 
         public float DecayTime;
         public bool Stackable;

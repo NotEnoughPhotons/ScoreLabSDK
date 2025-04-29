@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace NEP.ScoreLab.Data
 {
+    [System.Serializable]
     public struct JSONScore
     {
-        public string EventType;
-        public string TierEventType;
+        public EventType.ScoreEventType EventType;
 
         public float DecayTime;
         public bool Stackable;
