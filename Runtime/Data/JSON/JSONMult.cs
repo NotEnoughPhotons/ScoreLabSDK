@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace NEP.ScoreLab.Data
 {
+    [System.Serializable]
     public struct JSONMult
     {
         public EventType.MultiplierEventType EventType;

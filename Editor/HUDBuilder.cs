@@ -81,11 +81,6 @@ namespace NEP.ScoreLab.Editor
 
                 WriteAllJSONScores(m_targetManifestObject.manifest);
                 WriteAllJSONMults(m_targetManifestObject.manifest);
-                
-                if (m_targetAudioManifestObject != null)
-                {
-                    WriteHUDAudioManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
-                }
             }
         }
 
@@ -167,15 +162,6 @@ namespace NEP.ScoreLab.Editor
             hudManifestWriter.Close();
         }
 
-        private void WriteHUDAudioManifest(string path, string name)
-        {
-            string audioManifestWritePath = Path.Combine(path, $"{name}.audio_manifest");
-            StreamWriter audioManifestWriter = new StreamWriter(audioManifestWritePath);
-            audioManifestWriter.Write(m_targetAudioManifestObject.ToJSON());
-            audioManifestWriter.Dispose();
-            audioManifestWriter.Close();
-        }
-
         private void WriteAllJSONScores(JSONHUDManifest manifest)
         {
             if (manifest.ScoreObjects == null || manifest.ScoreObjects.Length == 0)
@@ -186,15 +172,15 @@ namespace NEP.ScoreLab.Editor
             string exportPath = Path.Combine(m_exportLocation, manifest.Name);
             string dataPath = Path.Combine(exportPath, "Data/Score");
 
-            StreamWriter writer = new StreamWriter(dataPath);
-            
+            Directory.CreateDirectory(dataPath);
+
             foreach (var scoreObject in manifest.ScoreObjects)
             {
+                StreamWriter writer = new StreamWriter(dataPath + $"/{scoreObject.name}.json");
                 writer.Write(scoreObject.score.ToJSON());
                 writer.Dispose();
+                writer.Close();
             }
-
-            writer.Close();
         }
         
         private void WriteAllJSONMults(JSONHUDManifest manifest)
@@ -207,15 +193,15 @@ namespace NEP.ScoreLab.Editor
             string exportPath = Path.Combine(m_exportLocation, manifest.Name);
             string dataPath = Path.Combine(exportPath, "Data/Multiplier");
 
-            StreamWriter writer = new StreamWriter(dataPath);
+            Directory.CreateDirectory(dataPath);
             
             foreach (var multObject in manifest.MultObjects)
             {
+                StreamWriter writer = new StreamWriter(dataPath + $"/{multObject.name}.json");
                 writer.Write(multObject.multiplier.ToJSON());
                 writer.Dispose();
+                writer.Close();
             }
-
-            writer.Close();
         }
     }
 }
