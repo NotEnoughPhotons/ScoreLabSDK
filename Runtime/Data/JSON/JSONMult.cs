@@ -87,6 +87,9 @@ namespace NEP.ScoreLab.Data
 
             writer.WritePropertyName("TierRequirement");
             writer.WriteValue(mult.TierRequirement);
+            
+            writer.WritePropertyName("Condition");
+            writer.WriteValue(mult.Condition);
         }
     }
 }
