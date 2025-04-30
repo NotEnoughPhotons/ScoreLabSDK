@@ -5,18 +5,18 @@ using UnityEngine;
 namespace NEP.ScoreLab.Data
 {
     [System.Serializable]
-    public struct JSONAudioParams
+    public class JSONAudioParams
     {
         public AudioClip sound;
         
         #if UNITY_EDITOR
         [Range(0f, 1f)]
         #endif
-        public float volume;
+        public float volume = 1f;
         
         #if UNITY_EDITOR
-        [Range(0f, 10f)]
+        [Range(0f, 2f)]
         #endif
-        public float pitch;
+        public float pitch = 1f;
     }
 }
