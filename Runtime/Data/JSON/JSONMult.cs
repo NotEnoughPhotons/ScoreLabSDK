@@ -83,7 +83,7 @@ namespace NEP.ScoreLab.Data
             writer.WriteValue(mult.DecayTime);
 
             writer.WritePropertyName("EventType");
-            writer.WriteValue(Data.EventType.ScoreEventTable[(int)mult.EventType]);
+            writer.WriteValue(Data.EventType.MultiplierEventTable[(int)mult.EventType]);
 
             writer.WritePropertyName("TierRequirement");
             writer.WriteValue(mult.TierRequirement);
