@@ -79,6 +79,9 @@ namespace NEP.ScoreLab.Editor
 
                 WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
 
+                WriteAllJSONScores(m_targetManifestObject.manifest);
+                WriteAllJSONMults(m_targetManifestObject.manifest);
+                
                 if (m_targetAudioManifestObject != null)
                 {
                     WriteHUDAudioManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
@@ -171,6 +174,48 @@ namespace NEP.ScoreLab.Editor
             audioManifestWriter.Write(m_targetAudioManifestObject.ToJSON());
             audioManifestWriter.Dispose();
             audioManifestWriter.Close();
+        }
+
+        private void WriteAllJSONScores(JSONHUDManifest manifest)
+        {
+            if (manifest.ScoreObjects == null || manifest.ScoreObjects.Length == 0)
+            {
+                return;
+            }
+
+            string exportPath = Path.Combine(m_exportLocation, manifest.Name);
+            string dataPath = Path.Combine(exportPath, "Data/Score");
+
+            StreamWriter writer = new StreamWriter(dataPath);
+            
+            foreach (var scoreObject in manifest.ScoreObjects)
+            {
+                writer.Write(scoreObject.score.ToJSON());
+                writer.Dispose();
+            }
+
+            writer.Close();
+        }
+        
+        private void WriteAllJSONMults(JSONHUDManifest manifest)
+        {
+            if (manifest.MultObjects == null || manifest.MultObjects.Length == 0)
+            {
+                return;
+            }
+
+            string exportPath = Path.Combine(m_exportLocation, manifest.Name);
+            string dataPath = Path.Combine(exportPath, "Data/Multiplier");
+
+            StreamWriter writer = new StreamWriter(dataPath);
+            
+            foreach (var multObject in manifest.MultObjects)
+            {
+                writer.Write(multObject.multiplier.ToJSON());
+                writer.Dispose();
+            }
+
+            writer.Close();
         }
     }
 }
