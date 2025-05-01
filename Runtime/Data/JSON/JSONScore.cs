@@ -75,7 +75,7 @@ namespace NEP.ScoreLab.Data
             writer.WriteStartArray();
             for (int i = 0; i < score.EventAudio.sounds.Length; i++)
             {
-                writer.WriteValue(score.EventAudio.sounds[i]);
+                writer.WriteValue(score.EventAudio.sounds[i].name);
             }
             writer.WriteEndArray();
             writer.WritePropertyName("Volume");
