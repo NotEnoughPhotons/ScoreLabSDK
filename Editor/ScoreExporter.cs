@@ -79,8 +79,13 @@ namespace NEP.ScoreLab.Editor
             
             writer.WritePropertyName("EventAudio");
             writer.WriteStartObject();
-            writer.WritePropertyName("Clip");
-            writer.WriteValue(score.EventAudio.sound != null ? score.EventAudio.sound.name : null);
+            writer.WritePropertyName("Clips");
+            writer.WriteStartArray();
+            for (int i = 0; i < score.EventAudio.sounds.Length; i++)
+            {
+                writer.WriteValue(score.EventAudio.sounds[i]);
+            }
+            writer.WriteEndArray();
             writer.WritePropertyName("Volume");
             writer.WriteValue(score.EventAudio.volume);
             writer.WritePropertyName("Pitch");

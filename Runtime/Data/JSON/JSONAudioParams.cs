@@ -7,7 +7,7 @@ namespace NEP.ScoreLab.Data
     [System.Serializable]
     public class JSONAudioParams
     {
-        public AudioClip sound;
+        public AudioClip[] sounds;
         
         #if UNITY_EDITOR
         [Range(0f, 1f)]
