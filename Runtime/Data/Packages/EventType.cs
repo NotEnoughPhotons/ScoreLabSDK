@@ -5,6 +5,7 @@ namespace NEP.ScoreLab.Data
         public enum ScoreEventType
         {
             Kill,
+            Headshot,
             KillInAir,
             WaveCompleted,
             RoundCompleted,
@@ -19,12 +20,14 @@ namespace NEP.ScoreLab.Data
             Seated,
             SecondWind,
             Ragdolled,
-            SwappedAvatars
+            SwappedAvatars,
+            SlowMo
         }
         
         public static string[] ScoreEventTable = new string[]
         {
             "SCORE_KILL",
+            "SCORE_HEADSHOT",
             "SCORE_MID_AIR",
             "SCORE_WAVE_COMPLETED",
             "SCORE_ROUND_COMPLETED",
@@ -39,7 +42,8 @@ namespace NEP.ScoreLab.Data
             "MULT_SEATED",
             "MULT_SECONDWIND",
             "MULT_RAGDOLLED",
-            "MULT_SWAPPED_AVATARS"
+            "MULT_SWAPPED_AVATARS",
+            "MULT_SLOWMO"
         };
     }
 }
