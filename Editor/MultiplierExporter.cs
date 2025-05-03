@@ -74,6 +74,22 @@ namespace NEP.ScoreLab.Editor
             writer.WritePropertyName("Multiplier");
             writer.WriteValue(mult.Multiplier);
             
+            
+            writer.WritePropertyName("EventAudio");
+            writer.WriteStartObject();
+            writer.WritePropertyName("Clips");
+            writer.WriteStartArray();
+            for (int i = 0; i < mult.EventAudio.sounds.Length; i++)
+            {
+                writer.WriteValue(mult.EventAudio.sounds[i]);
+            }
+            writer.WriteEndArray();
+            writer.WritePropertyName("Volume");
+            writer.WriteValue(mult.EventAudio.volume);
+            writer.WritePropertyName("Pitch");
+            writer.WriteValue(mult.EventAudio.pitch);
+            writer.WriteEndObject();
+            
             writer.WritePropertyName("Stackable");
             writer.WriteValue(mult.Stackable);
             writer.WritePropertyName("DecayTime");
