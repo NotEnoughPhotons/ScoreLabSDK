@@ -12,6 +12,7 @@ namespace NEP.ScoreLab.Data
         public string Name;
         public string Author;
         public string Description;
+        public string AssetName;
         public ScoreObject[] ScoreObjects;
         public MultObject[] MultObjects;
         public Texture2D Logo;
@@ -32,6 +33,7 @@ namespace NEP.ScoreLab.Data
                     Name = data["name"].Value<string>();
                     Author = data["author"].Value<string>();
                     Description = data["description"].Value<string>();
+                    AssetName = data["assetName"].Value<string>();
                 }
             }
 

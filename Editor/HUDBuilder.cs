@@ -155,6 +155,7 @@ namespace NEP.ScoreLab.Editor
         
         private void WriteHUDManifest(string path, string name)
         {
+            m_targetManifestObject.manifest.AssetName = m_targetPrefab.name;
             string manifestWritePath = Path.Combine(path, $"{name}.hud_manifest");
             StreamWriter hudManifestWriter = new StreamWriter(manifestWritePath);
             hudManifestWriter.Write(m_targetManifestObject.ToJSON());

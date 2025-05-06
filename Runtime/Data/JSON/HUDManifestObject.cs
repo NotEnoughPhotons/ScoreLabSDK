@@ -26,7 +26,8 @@ namespace NEP.ScoreLab.Data
                     writer.WriteValue(manifest.Name);
                     writer.WritePropertyName("author");
                     writer.WriteValue(manifest.Author);
-                    writer.WritePropertyName("description");
+                    writer.WritePropertyName("assetName");
+                    writer.WriteValue(manifest.AssetName);
                             
                     writer.WriteEndObject();
                 }
@@ -35,6 +36,11 @@ namespace NEP.ScoreLab.Data
             }
 
             return json;
+        }
+
+        public void SetAssetName(string name)
+        {
+            manifest.AssetName = name;
         }
     }
 }
