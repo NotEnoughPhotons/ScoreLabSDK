@@ -10,7 +10,8 @@ namespace NEP.ScoreLab.Data
             WaveCompleted,
             RoundCompleted,
             Crabcest,
-            Facehug
+            Facehug,
+            StealthKill
         }
 
         public enum MultiplierEventType
@@ -32,7 +33,8 @@ namespace NEP.ScoreLab.Data
             "SCORE_WAVE_COMPLETED",
             "SCORE_ROUND_COMPLETED",
             "SCORE_CRABCEST",
-            "SCORE_FACEHUG"
+            "SCORE_FACEHUG",
+            "SCORE_STEALTH_KILL"
         };
 
         public static string[] MultiplierEventTable = new string[]
