@@ -9,10 +9,11 @@ namespace NEP.ScoreLab.Data
     [System.Serializable]
     public class JSONHUDManifest
     {
+        public GameObject Asset;
+        
         public string Name;
         public string Author;
         public string Description;
-        [HideInInspector] public string AssetName;
         public AudioManifestObject AudioManifest;
         public ScoreObject[] ScoreObjects;
         public MultObject[] MultObjects;
@@ -34,7 +35,7 @@ namespace NEP.ScoreLab.Data
                     Name = data["name"].Value<string>();
                     Author = data["author"].Value<string>();
                     Description = data["description"].Value<string>();
-                    AssetName = data["assetName"].Value<string>();
+                    // AssetName = data["assetName"].Value<string>();
                 }
             }
 
