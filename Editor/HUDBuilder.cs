@@ -1,7 +1,7 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
-
+using System.Text;
 using UnityEngine;
 using UnityEditor;
 
@@ -14,10 +14,11 @@ namespace NEP.ScoreLab.Editor
         private enum TargetPlatform
         {
             PCVR,
-            Quest
+            Quest,
+            Both
         }
 
-        private TargetPlatform m_targetPlatform;
+        private TargetPlatform m_targetPlatforms;
         private GameObject m_targetPrefab;
         private HUDManifestObject m_targetManifestObject;
         private string m_exportLocation;
@@ -33,7 +34,7 @@ namespace NEP.ScoreLab.Editor
 
         private void OnGUI()
         {
-            m_targetPlatform = (TargetPlatform)EditorGUILayout.EnumPopup("Platform:", m_targetPlatform);
+            m_targetPlatforms = (TargetPlatform)EditorGUILayout.EnumPopup("Platforms:", m_targetPlatforms);
 
             m_targetPrefab =
                 (GameObject)EditorGUILayout.ObjectField("Prefab:", m_targetPrefab, typeof(GameObject), false);
@@ -45,7 +46,7 @@ namespace NEP.ScoreLab.Editor
 
             if (!m_targetPrefab.GetComponent<ScoreLab.HUD.HUD>())
             {
-                EditorGUILayout.HelpBox("A ScoreLab prefab is required to have a UIController component!",
+                EditorGUILayout.HelpBox("A ScoreLab prefab is required to have a HUD component!",
                     MessageType.Error);
                 return;
             }
@@ -65,21 +66,36 @@ namespace NEP.ScoreLab.Editor
 
             if (GUILayout.Button("Build"))
             {
-                string exportedPath = GetExportPath();
-
-                AssetBundleBuild hudBundleBuild = CreateHUDBundleBuild();
-                
-                Directory.CreateDirectory(exportedPath);
-
-                GenerateBundles(exportedPath, ".hud", hudBundleBuild);
-
-                WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
-
-                WriteAllJSONScores(m_targetManifestObject.manifest);
-                WriteAllJSONMults(m_targetManifestObject.manifest);
+                if (m_targetPlatforms == TargetPlatform.Both)
+                {
+                    BuildHUD(TargetPlatform.PCVR);
+                    BuildHUD(TargetPlatform.Quest);
+                }
+                else
+                {
+                    BuildHUD(m_targetPlatforms);
+                }
             }
         }
 
+        private void BuildHUD(TargetPlatform platform)
+        {
+            AssetBundleBuild hudBundleBuild = CreateHUDBundleBuild(platform);
+            
+            string exportedPath = GetExportPath();
+            
+            Directory.CreateDirectory(exportedPath);
+
+            GenerateBundles(exportedPath, hudBundleBuild);
+
+            WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
+
+            WriteAllJSONScores(m_targetManifestObject.manifest);
+            WriteAllJSONMults(m_targetManifestObject.manifest);
+            
+            CleanupBuildDirectory(exportedPath);
+        }
+        
         private string GetExportPath()
         {
             string editorExportLocation = Path.Combine(Application.dataPath, "Built HUDs");
@@ -87,8 +103,7 @@ namespace NEP.ScoreLab.Editor
 
             if (m_exportLocation == string.Empty)
             {
-                buildPath = Path.Combine(editorExportLocation,
-                    m_targetPlatform == TargetPlatform.PCVR ? "PCVR" : "Quest");
+                buildPath = editorExportLocation;
             }
             else
             {
@@ -98,11 +113,19 @@ namespace NEP.ScoreLab.Editor
             return Path.Combine(buildPath, m_targetManifestObject.manifest.Name);
         }
 
-        private AssetBundleBuild CreateHUDBundleBuild()
+        private AssetBundleBuild CreateHUDBundleBuild(TargetPlatform target)
         {
             List<string> assetNames = new List<string>();
             AssetBundleBuild hudBuild = new AssetBundleBuild();
-            hudBuild.assetBundleName = m_targetManifestObject.manifest.Name + ".hud";
+
+            if (target == TargetPlatform.PCVR)
+            {
+                hudBuild.assetBundleName = m_targetManifestObject.manifest.Name + "_pcvr.hud";
+            }
+            else if (target == TargetPlatform.Quest)
+            {
+                hudBuild.assetBundleName = m_targetManifestObject.manifest.Name + "_quest.hud";
+            }
             
             assetNames.Add(AssetDatabase.GetAssetPath(m_targetPrefab));
             assetNames.Add(AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo));
@@ -128,27 +151,13 @@ namespace NEP.ScoreLab.Editor
             return hudBuild;
         }
 
-        private void GenerateBundles(string exportPath, string extension, AssetBundleBuild build)
+        private void GenerateBundles(string exportPath, AssetBundleBuild build)
         {
-            BuildTarget buildTarget = m_targetPlatform == TargetPlatform.PCVR
+            BuildTarget buildTarget = m_targetPlatforms == TargetPlatform.PCVR
                 ? BuildTarget.StandaloneWindows64
                 : BuildTarget.Android;
 
             BuildPipeline.BuildAssetBundles(exportPath, new AssetBundleBuild[1] { build }, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
-        }
-
-        private void RemoveOtherFiles(string path)
-        {
-            foreach (var file in Directory.EnumerateFiles(path))
-            {
-                foreach (var extension in m_whitelistedExtensions)
-                {
-                    if (!file.EndsWith(extension))
-                    {
-                        File.Delete(file);
-                    }
-                }
-            }
         }
         
         private void WriteHUDManifest(string path, string name)
@@ -200,6 +209,74 @@ namespace NEP.ScoreLab.Editor
                 writer.Write(multObject.multiplier.ToJSON());
                 writer.Dispose();
                 writer.Close();
+            }
+        }
+
+        private void CleanupBuildDirectory(string directory)
+        {
+            if (directory == string.Empty)
+            {
+                return;
+            }
+
+            string[] files = Directory.GetFiles(directory);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string file = files[i];
+
+                bool isBlacklisted = file.EndsWith(".manifest") || file.EndsWith(".meta");
+                
+                if (isBlacklisted)
+                {
+                    // NOTE: This is pretty dangerous. Must replace with something safer.
+                    File.Delete(file);
+                }
+                
+                // Typically when a HUD is built, there's a file without an extension.
+                // This file is named after whatever the parent folder is named.
+                // The file has a magic header named "UnityFS".
+
+                DirectoryInfo parentDirectory = Directory.GetParent(file);
+                
+                if (parentDirectory == null)
+                {
+                    continue;
+                }
+
+                if (!file.EndsWith(parentDirectory.Name))
+                {
+                    continue;
+                }
+                
+                bool isCorrectFile = false;
+                
+                using (FileStream stream = new FileStream(file, FileMode.Open))
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        char[] chars = reader.ReadChars(7);
+                        
+                        // Have to use a string builder here, otherwise -
+                        // System.Chars[] will get outputted if I try to print it normally.
+                        // Stupid.
+                        StringBuilder builder = new StringBuilder();
+                        builder.Append(chars);
+
+                        string magic = builder.ToString();
+
+                        // Update the flag so we know it's the correct file
+                        if (magic == "UnityFS")
+                        {
+                            isCorrectFile = true;
+                        }
+                    }
+                }
+
+                if (isCorrectFile)
+                {
+                    File.Delete(file);
+                }
             }
         }
     }
