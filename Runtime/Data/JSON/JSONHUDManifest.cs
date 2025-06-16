@@ -16,6 +16,7 @@ namespace NEP.ScoreLab.Data
         public ScoreObject[] ScoreObjects;
         public MultObject[] MultObjects;
         public Texture2D Logo;
+        public AudioManifestObject AudioManifest;
 
         public bool FromJSON(string pathToJson)
         {

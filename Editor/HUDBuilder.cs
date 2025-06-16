@@ -20,7 +20,6 @@ namespace NEP.ScoreLab.Editor
         private TargetPlatform m_targetPlatform;
         private GameObject m_targetPrefab;
         private HUDManifestObject m_targetManifestObject;
-        private AudioManifestObject m_targetAudioManifestObject;
         private string m_exportLocation;
         
         private readonly string[] m_whitelistedExtensions = new string[] { ".hud", ".hud_audio" };
@@ -61,9 +60,6 @@ namespace NEP.ScoreLab.Editor
                     MessageType.Error);
                 return;
             }
-
-            m_targetAudioManifestObject = (AudioManifestObject)EditorGUILayout.ObjectField("Audio Manifest:", m_targetAudioManifestObject,
-                typeof(AudioManifestObject), false);
             
             m_exportLocation = EditorGUILayout.TextField("Export Location:", m_exportLocation);
 
@@ -111,17 +107,19 @@ namespace NEP.ScoreLab.Editor
             assetNames.Add(AssetDatabase.GetAssetPath(m_targetPrefab));
             assetNames.Add(AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo));
 
-            if (m_targetAudioManifestObject == null)
+            AudioManifestObject audio = m_targetManifestObject.manifest.AudioManifest;
+            
+            if (audio == null)
             {
                 hudBuild.assetNames = assetNames.ToArray();
                 return hudBuild;
             }
 
-            int numClips = m_targetAudioManifestObject.manifest.Clips.Length;
+            int numClips = audio.manifest.Clips.Length;
 
             for (int i = 0; i < numClips; i++)
             {
-                AudioClip clip = m_targetAudioManifestObject.manifest.Clips[i];
+                AudioClip clip = audio.manifest.Clips[i];
                 assetNames.Add(AssetDatabase.GetAssetPath(clip));
             }
             
