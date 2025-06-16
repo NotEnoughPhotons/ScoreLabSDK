@@ -29,9 +29,25 @@ namespace NEP.ScoreLab.Data
                     writer.WritePropertyName("assetName");
                     writer.WriteValue(manifest.AssetName);
 
-                    if (manifest.AudioManifest)
+                    AudioManifestObject audio = manifest.AudioManifest;
+                    
+                    if (audio)
                     {
-                        manifest.AudioManifest.ToJSON();
+                        writer.Formatting = Formatting.Indented;
+                            
+                        writer.WriteStartObject();
+                    
+                        writer.WritePropertyName("clips");
+                        writer.WriteStartArray();
+                    
+                        for (int i = 0; i < audio.manifest.Clips.Length; i++)
+                        {
+                            writer.WriteValue(audio.manifest.Clips[i].name);
+                        }
+                    
+                        writer.WriteEndArray();
+                            
+                        writer.WriteEndObject();
                     }
                             
                     writer.WriteEndObject();
