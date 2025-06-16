@@ -28,21 +28,6 @@ namespace NEP.ScoreLab.Data
                     writer.WriteValue(manifest.Author);
                     writer.WritePropertyName("assetName");
                     writer.WriteValue(manifest.AssetName);
-
-                    AudioManifestObject audio = manifest.AudioManifest;
-                    
-                    if (audio)
-                    {
-                        writer.WritePropertyName("clips");
-                        writer.WriteStartArray();
-                    
-                        for (int i = 0; i < audio.manifest.Clips.Length; i++)
-                        {
-                            writer.WriteValue(audio.manifest.Clips[i].name);
-                        }
-                    
-                        writer.WriteEndArray();
-                    }
                             
                     writer.WriteEndObject();
                 }
