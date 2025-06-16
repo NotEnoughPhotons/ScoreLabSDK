@@ -19,7 +19,6 @@ namespace NEP.ScoreLab.Editor
         }
 
         private TargetPlatform m_targetPlatforms;
-        private GameObject m_targetPrefab;
         private HUDManifestObject m_targetManifestObject;
         private string m_exportLocation;
         
@@ -35,22 +34,7 @@ namespace NEP.ScoreLab.Editor
         private void OnGUI()
         {
             m_targetPlatforms = (TargetPlatform)EditorGUILayout.EnumPopup("Platforms:", m_targetPlatforms);
-
-            m_targetPrefab =
-                (GameObject)EditorGUILayout.ObjectField("Prefab:", m_targetPrefab, typeof(GameObject), false);
-
-            if (!m_targetPrefab)
-            {
-                return;
-            }
-
-            if (!m_targetPrefab.GetComponent<ScoreLab.HUD.HUD>())
-            {
-                EditorGUILayout.HelpBox("A ScoreLab prefab is required to have a HUD component!",
-                    MessageType.Error);
-                return;
-            }
-
+            
             m_targetManifestObject = (HUDManifestObject)EditorGUILayout.ObjectField("Manifest:", m_targetManifestObject,
                 typeof(HUDManifestObject), false);
 
@@ -58,6 +42,23 @@ namespace NEP.ScoreLab.Editor
             {
                 EditorGUILayout.HelpBox(
                     "A HUD manifest is required! Create one by right-clicking in the Explorer and going to Not Enough Photons/ScoreLab/HUD Manifest!",
+                    MessageType.Error);
+                return;
+            }
+
+            GameObject prefab = m_targetManifestObject.manifest.Asset;
+            
+            if (prefab == null)
+            {
+                EditorGUILayout.HelpBox(
+                    "The HUD manifest does not have a prefab! Assign one in the manifest.",
+                    MessageType.Error);
+                return;
+            }
+
+            if (!prefab.GetComponent<ScoreLab.HUD.HUD>())
+            {
+                EditorGUILayout.HelpBox("A ScoreLab prefab is required to have a HUD component!",
                     MessageType.Error);
                 return;
             }
@@ -125,7 +126,7 @@ namespace NEP.ScoreLab.Editor
                 hudBuild.assetBundleName = m_targetManifestObject.manifest.Name + "_quest.hud";
             }
             
-            assetNames.Add(AssetDatabase.GetAssetPath(m_targetPrefab));
+            assetNames.Add(AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Asset));
             assetNames.Add(AssetDatabase.GetAssetPath(m_targetManifestObject.manifest.Logo));
 
             AudioManifestObject audio = m_targetManifestObject.manifest.AudioManifest;
@@ -160,7 +161,6 @@ namespace NEP.ScoreLab.Editor
         
         private void WriteHUDManifest(string path, string name)
         {
-            m_targetManifestObject.manifest.AssetName = m_targetPrefab.name;
             string manifestWritePath = Path.Combine(path, $"{name}.hud_manifest");
             StreamWriter hudManifestWriter = new StreamWriter(manifestWritePath);
             hudManifestWriter.Write(m_targetManifestObject.ToJSON());
