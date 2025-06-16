@@ -33,10 +33,6 @@ namespace NEP.ScoreLab.Data
                     
                     if (audio)
                     {
-                        writer.Formatting = Formatting.Indented;
-                            
-                        writer.WriteStartObject();
-                    
                         writer.WritePropertyName("clips");
                         writer.WriteStartArray();
                     
@@ -46,8 +42,6 @@ namespace NEP.ScoreLab.Data
                         }
                     
                         writer.WriteEndArray();
-                            
-                        writer.WriteEndObject();
                     }
                             
                     writer.WriteEndObject();
