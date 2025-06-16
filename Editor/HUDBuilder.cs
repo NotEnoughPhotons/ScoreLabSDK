@@ -66,34 +66,32 @@ namespace NEP.ScoreLab.Editor
 
             if (GUILayout.Button("Build"))
             {
+                string exportedPath = GetExportPath();
+                
                 if (m_targetPlatforms == TargetPlatform.Both)
                 {
-                    BuildHUD(TargetPlatform.PCVR);
-                    BuildHUD(TargetPlatform.Quest);
+                    BuildHUD(exportedPath, TargetPlatform.PCVR);
+                    BuildHUD(exportedPath, TargetPlatform.Quest);
                 }
                 else
                 {
-                    BuildHUD(m_targetPlatforms);
+                    BuildHUD(exportedPath, m_targetPlatforms);
                 }
+                
+                WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
+
+                WriteAllJSONScores(m_targetManifestObject.manifest);
+                WriteAllJSONMults(m_targetManifestObject.manifest);
+            
+                CleanupBuildDirectory(exportedPath);
             }
         }
 
-        private void BuildHUD(TargetPlatform platform)
+        private void BuildHUD(string exportedPath, TargetPlatform platform)
         {
             AssetBundleBuild hudBundleBuild = CreateHUDBundleBuild(platform);
-            
-            string exportedPath = GetExportPath();
-            
             Directory.CreateDirectory(exportedPath);
-
             GenerateBundles(exportedPath, hudBundleBuild);
-
-            WriteHUDManifest(exportedPath, m_targetManifestObject.manifest.Name.ToLower());
-
-            WriteAllJSONScores(m_targetManifestObject.manifest);
-            WriteAllJSONMults(m_targetManifestObject.manifest);
-            
-            CleanupBuildDirectory(exportedPath);
         }
         
         private string GetExportPath()
