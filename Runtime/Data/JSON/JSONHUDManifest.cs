@@ -12,11 +12,11 @@ namespace NEP.ScoreLab.Data
         public string Name;
         public string Author;
         public string Description;
-        public string AssetName;
+        [HideInInspector] public string AssetName;
+        public AudioManifestObject AudioManifest;
         public ScoreObject[] ScoreObjects;
         public MultObject[] MultObjects;
         public Texture2D Logo;
-        public AudioManifestObject AudioManifest;
 
         public bool FromJSON(string pathToJson)
         {
