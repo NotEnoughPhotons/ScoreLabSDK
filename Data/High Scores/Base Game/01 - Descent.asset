@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f2035e0a8d4a768e9ed3ecdb8ce4c0, type: 3}
+  m_Name: 01 - Descent
+  m_EditorClassIdentifier: 
+  _barcode: c2534c5a-4197-4879-8cd3-4a695363656e
+  _grades:
+  - _grade: P
+    _threshold: 4250
+  - _grade: A
+    _threshold: 3400
+  - _grade: B
+    _threshold: 2550
+  - _grade: C
+    _threshold: 1700
+  - _grade: D
+    _threshold: 850
+  _score: 0
+  _isBaseGame: 1

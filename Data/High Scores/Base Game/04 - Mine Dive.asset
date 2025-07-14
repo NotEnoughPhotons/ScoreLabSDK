@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f2035e0a8d4a768e9ed3ecdb8ce4c0, type: 3}
+  m_Name: 04 - Mine Dive
+  m_EditorClassIdentifier: 
+  _barcode: c2534c5a-54df-470b-baaf-741f4c657665
+  _grades: []
+  _score: 0
+  _isBaseGame: 1

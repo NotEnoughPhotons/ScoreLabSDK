@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f2035e0a8d4a768e9ed3ecdb8ce4c0, type: 3}
+  m_Name: 07 - Sprint Bridge 04
+  m_EditorClassIdentifier: 
+  _barcode: SLZ.BONELAB.Content.Level.SprintBridge04
+  _grades:
+  - _grade: P
+    _threshold: 3000
+  - _grade: A
+    _threshold: 1500
+  - _grade: B
+    _threshold: 1000
+  - _grade: C
+    _threshold: 750
+  - _grade: D
+    _threshold: 600
+  _score: 0
+  _isBaseGame: 1
