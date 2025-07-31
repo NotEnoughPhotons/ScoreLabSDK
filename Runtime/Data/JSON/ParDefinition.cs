@@ -6,8 +6,8 @@ using UnityEngine;
 namespace NEP.ScoreLab.Data
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "High Score Definition", menuName="Not Enough Photons/ScoreLab/New High Score Definition", order = 20)]
-    public class HighScoreDefinition : ScriptableObject
+    [CreateAssetMenu(fileName = "Par Definition", menuName="Not Enough Photons/ScoreLab/New Par Definition", order = 20)]
+    public class ParDefinition : ScriptableObject
     {
         [System.Serializable]
         public class GradeDefinition
@@ -48,17 +48,16 @@ namespace NEP.ScoreLab.Data
         [SerializeField] private int _score;
         [SerializeField] private bool _isBaseGame;
 
-        public JObject ToJson()
+        public JToken ToJson()
         {
-            JObject result = null;
+            JToken result = null;
 
             using (JTokenWriter writer = new JTokenWriter())
             {
                 writer.Formatting = Formatting.Indented;
                     
+                writer.WritePropertyName(_barcode);
                 writer.WriteStartObject();
-                writer.WritePropertyName("barcode");
-                writer.WriteValue(_barcode);
                 if (_grades != null)
                 {
                     writer.WritePropertyName("grades");
@@ -77,8 +76,8 @@ namespace NEP.ScoreLab.Data
                     writer.WriteValue(_score);
                 }
                 writer.WriteEndObject();
-
-                result = writer.Token as JObject;
+                
+                result = writer.Token;
             }
 
             return result;

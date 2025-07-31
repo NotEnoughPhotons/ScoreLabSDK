@@ -10,16 +10,16 @@ using UnityEngine;
 
 namespace NEP.ScoreLab.Editor
 {
-    public class HighScoreExporter : EditorWindow
+    public class ParExporter : EditorWindow
     {
-        [SerializeField] List<HighScoreDefinition> m_definitions = new();
+        [SerializeField] List<ParDefinition> m_definitions = new();
         private string m_exportLocation;
         
-        [MenuItem("Not Enough Photons/ScoreLab/Export High Score Definitions", false, 10)]
+        [MenuItem("Not Enough Photons/ScoreLab/Export Par Definitions", false, 10)]
         public static void ShowWindow()
         {
-            EditorWindow window = GetWindow(typeof(HighScoreExporter));
-            window.titleContent = new GUIContent("High Score Exporter");
+            EditorWindow window = GetWindow(typeof(ParExporter));
+            window.titleContent = new GUIContent("Par Exporter");
         }
 
         private void OnGUI()
@@ -34,7 +34,7 @@ namespace NEP.ScoreLab.Editor
             if (m_definitions == null || m_definitions.Count == 0)
             {
                 EditorGUILayout.HelpBox(
-                    "At least one high score definition is required!",
+                    "At least one par definition is required!",
                     MessageType.Error);
                 return;
             }
@@ -48,14 +48,14 @@ namespace NEP.ScoreLab.Editor
             }
         }
 
-        private void WriteJSONDefinition(HighScoreDefinition[] definitions)
+        private void WriteJSONDefinition(ParDefinition[] definitions)
         {
             if (definitions == null || definitions.Length == 0)
             {
                 return;
             }
 
-            string exportPath = Path.Combine(m_exportLocation, "hstable.json");
+            string exportPath = Path.Combine(m_exportLocation, "pars.json");
 
             Directory.CreateDirectory(m_exportLocation);
 
@@ -66,14 +66,11 @@ namespace NEP.ScoreLab.Editor
                     writer.Formatting = Formatting.Indented;
                     
                     writer.WriteStartObject();
-                    writer.WritePropertyName("table");
-                    writer.WriteStartArray();
                     foreach (var definition in definitions)
                     {
-                        JObject obj = definition.ToJson();
-                        obj.WriteTo(writer);
+                        JToken token = definition.ToJson();
+                        token.WriteTo(writer);
                     }
-                    writer.WriteEndArray();
                     writer.WriteEndObject();
                 }
             }
