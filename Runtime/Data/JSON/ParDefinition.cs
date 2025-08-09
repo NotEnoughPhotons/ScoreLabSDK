@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -9,44 +8,7 @@ namespace NEP.ScoreLab.Data
     [CreateAssetMenu(fileName = "Par Definition", menuName="Not Enough Photons/ScoreLab/New Par Definition", order = 20)]
     public class ParDefinition : ScriptableObject
     {
-        [System.Serializable]
-        public class GradeDefinition
-        {
-            public string Grade => _grade;
-            public int Threshold => _threshold;
-        
-            [SerializeField] private string _grade;
-            [SerializeField] private int _threshold;
-
-            public JObject ToJSON()
-            {
-                JObject result = null;
-
-                using (JTokenWriter writer = new JTokenWriter())
-                {
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("grade");
-                    writer.WriteValue(_grade);
-                    writer.WritePropertyName("threshold");
-                    writer.WriteValue(_threshold);
-                    writer.WriteEndObject();
-
-                    result = writer.Token as JObject;
-                }
-                
-                return result;
-            }
-        }
-        
-        public string Barcode => _barcode;
-        public GradeDefinition[] Grades => _grades;
-        public int Score => _score;
-        public bool IsBaseGame => _isBaseGame;
-        
-        [SerializeField] private string _barcode;
-        [SerializeField] private GradeDefinition[] _grades;
-        [SerializeField] private int _score;
-        [SerializeField] private bool _isBaseGame;
+        public ParData Data { get; private set; }
 
         public JToken ToJson()
         {
@@ -56,16 +18,16 @@ namespace NEP.ScoreLab.Data
             {
                 writer.Formatting = Formatting.Indented;
                     
-                writer.WritePropertyName(_barcode);
+                writer.WritePropertyName(Data.Barcode);
                 writer.WriteStartObject();
-                if (_grades != null)
+                if (Data.Grades != null)
                 {
                     writer.WritePropertyName("grades");
                     writer.WriteStartArray();
                     JArray array = writer.CurrentToken as JArray;
-                    for (int i = 0; i < _grades.Length; i++)
+                    for (int i = 0; i < Data.Grades.Length; i++)
                     {
-                        JObject grade = _grades[i].ToJSON();
+                        JObject grade = Data.Grades[i].ToJSON();
                         array.Add(grade);
                     }
                     writer.WriteEndArray();
@@ -73,7 +35,7 @@ namespace NEP.ScoreLab.Data
                 else
                 {
                     writer.WritePropertyName("score");
-                    writer.WriteValue(_score);
+                    writer.WriteValue(Data.Score);
                 }
                 writer.WriteEndObject();
                 
