@@ -14,8 +14,22 @@ namespace NEP.ScoreLab.Editor
             
             holder.ParDefinition = (ParDefinition)EditorGUILayout.ObjectField("Par Definition", holder.ParDefinition, typeof(ParDefinition), false);
 
-            if (holder.ParDefinition != null && GUILayout.Button("Serialize"))
-                holder.Data = holder.ParDefinition.ToJson().ToString();
+            if (!holder.ParDefinition)
+                return;
+            
+            var so = new SerializedObject(holder);
+
+            if (so == null)
+            {
+                Debug.LogError("Serialized Par Definition is null");
+            }
+            
+            if (GUILayout.Button("Serialize"))
+            {
+                so.FindProperty("Data").stringValue = holder.ParDefinition.ToJson().ToString();
+                so.ApplyModifiedProperties();
+                Debug.Log(so.FindProperty("Data").stringValue);
+            }
         }
     }
 }
