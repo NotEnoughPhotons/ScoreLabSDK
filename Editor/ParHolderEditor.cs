@@ -15,7 +15,7 @@ namespace NEP.ScoreLab.Editor
             holder.ParDefinition = (ParDefinition)EditorGUILayout.ObjectField("Par Definition", holder.ParDefinition, typeof(ParDefinition), false);
 
             if (holder.ParDefinition != null && GUILayout.Button("Serialize"))
-                holder.ParData = holder.ParDefinition.Data;
+                holder.Data = holder.ParDefinition.ToJson().ToString();
         }
     }
 }
