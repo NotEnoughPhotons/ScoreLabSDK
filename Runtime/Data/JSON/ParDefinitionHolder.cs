@@ -6,7 +6,7 @@ namespace NEP.ScoreLab.SDK
 {
     public class ParDefinitionHolder : MonoBehaviour
     {
-        public string Data;
-        public ParDefinition ParDefinition;
+        [SerializeField] public string Data;
+        [SerializeField] public ParDefinition ParDefinition;
     }
 }
