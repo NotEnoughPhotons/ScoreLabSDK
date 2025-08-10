@@ -19,9 +19,10 @@ namespace NEP.ScoreLab.Data
             using (JTokenWriter writer = new JTokenWriter())
             {
                 writer.Formatting = Formatting.Indented;
-                    
-                writer.WritePropertyName(m_data.Barcode);
+                
                 writer.WriteStartObject();
+                writer.WritePropertyName("barcode");
+                writer.WriteValue(m_data.Barcode);
                 if (m_data.Grades != null)
                 {
                     writer.WritePropertyName("grades");
